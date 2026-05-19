@@ -1,0 +1,1 @@
+"""CourseInsight source package."""
