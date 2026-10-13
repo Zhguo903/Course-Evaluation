@@ -40,60 +40,6 @@ COURSE_TOPICS = {
     "Business": ["Strategy", "Marketing", "Finance", "Operations"],
 }
 
-GENERAL_COMMENTS = [
-    "The professor explained concepts clearly, but assignments were time consuming.",
-    "Useful course for data science students. The project was practical.",
-    "The exams were difficult and the workload was heavy.",
-    "Light workload and fair grading. Good for students who want a manageable course.",
-    "Lots of coding practice with Python and SQL.",
-    "Very theoretical and math heavy.",
-    "The lectures were interesting and the instructor was helpful.",
-    "Some topics were confusing, but the tutorials made the material manageable.",
-]
-
-DEPARTMENT_COMMENTS = {
-    "Computer Science": [
-        "Lots of coding practice with Python, SQL, and debugging assignments.",
-        "The final project was practical and useful for software and data roles.",
-        "Heavy programming workload, but the labs helped me learn implementation.",
-    ],
-    "Data Science": [
-        "Strong focus on data analysis, visualization, machine learning, and projects.",
-        "Useful course for data science students with practical Python notebooks.",
-        "The project was realistic and helped connect statistics with business questions.",
-    ],
-    "Statistics": [
-        "Very theoretical with formulas, proofs, and challenging exams.",
-        "The professor explained inference clearly, but problem sets were heavy.",
-        "Useful statistical thinking, especially for data analysis and modeling.",
-    ],
-    "Mathematics": [
-        "Proof heavy course with abstract theory and difficult exams.",
-        "The workload was heavy, but the formulas and concepts became clearer over time.",
-        "Very theoretical and math heavy, best for students who like rigorous reasoning.",
-    ],
-    "Business": [
-        "Case studies, presentations, and essays were practical for business students.",
-        "Fair grading with useful presentation practice and manageable workload.",
-        "The group project and case study discussions were interesting.",
-    ],
-    "Economics": [
-        "The course used case studies, essays, and quantitative market analysis.",
-        "Econometrics parts were useful, but exams were difficult.",
-        "Good mix of theory, policy discussion, and practical data interpretation.",
-    ],
-    "Biology": [
-        "Labs were helpful and the exams focused on detailed concepts.",
-        "Interesting examples, but memorization workload was heavy before exams.",
-        "The project connected biological systems with data interpretation.",
-    ],
-    "Psychology": [
-        "Interesting lectures with helpful examples and fair exams.",
-        "The essay and research methods project were practical.",
-        "Some readings were boring, but the professor was clear and helpful.",
-    ],
-}
-
 
 def generate_courses(n_courses: int = 200) -> pd.DataFrame:
     """Generate synthetic course dimension data."""
@@ -124,7 +70,16 @@ def generate_courses(n_courses: int = 200) -> pd.DataFrame:
                 "campus": random.choice(campuses),
             }
         )
-    return pd.DataFrame(rows)
+    courses = pd.DataFrame(rows)
+    # Prerequisites reference generated lower-level courses rather than invented codes.
+    for index, course in courses.iterrows():
+        candidates = courses.loc[
+            (courses["department"] == course["department"])
+            & (courses["course_level"] < course["course_level"]),
+            "course_code",
+        ]
+        courses.at[index, "prerequisite"] = candidates.iloc[0] if len(candidates) else ""
+    return courses
 
 
 def generate_instructors(n_instructors: int = 60) -> pd.DataFrame:
@@ -195,7 +150,8 @@ def generate_offerings(
         dept: instructors[instructors["department"] == dept]["instructor_id"].tolist() for dept in DEPARTMENTS
     }
     for offering_id in range(1, n_offerings + 1):
-        course = courses.sample(1, random_state=RANDOM_SEED + offering_id).iloc[0]
+        # Round-robin coverage gives every course offerings before adding repeats.
+        course = courses.iloc[(offering_id - 1) % len(courses)]
         department_instructors = instructors_by_dept[course["department"]]
         capacity = random.choice([40, 60, 80, 100, 120, 150, 200])
         enrolled_count = max(5, min(capacity, int(np.random.normal(capacity * 0.78, capacity * 0.15))))
@@ -204,7 +160,11 @@ def generate_offerings(
                 "offering_id": offering_id,
                 "course_id": int(course["course_id"]),
                 "instructor_id": random.choice(department_instructors),
-                "semester_id": int(semesters.sample(1, random_state=RANDOM_SEED + offering_id)["semester_id"].iloc[0]),
+                "semester_id": int(
+                    semesters.iloc[
+                        ((offering_id - 1) // len(courses) + int(course["course_id"])) % len(semesters)
+                    ]["semester_id"]
+                ),
                 "capacity": capacity,
                 "enrolled_count": enrolled_count,
                 "delivery_mode": random.choice(["In-person", "Online", "Hybrid"]),
@@ -213,33 +173,65 @@ def generate_offerings(
     return pd.DataFrame(rows)
 
 
-def _review_scores(department: str) -> tuple[float, float, float, float]:
-    """Generate correlated review scores by department profile."""
-    base_rating = {
-        "Computer Science": 3.8,
-        "Data Science": 4.0,
-        "Statistics": 3.6,
-        "Mathematics": 3.4,
-        "Business": 3.9,
-        "Economics": 3.7,
-        "Biology": 3.6,
-        "Psychology": 3.8,
-    }[department]
-    workload_base = {
-        "Computer Science": 3.8,
-        "Data Science": 3.6,
-        "Statistics": 3.7,
-        "Mathematics": 4.0,
-        "Business": 3.0,
-        "Economics": 3.4,
-        "Biology": 3.5,
-        "Psychology": 2.9,
-    }[department]
-    rating = np.clip(np.random.normal(base_rating, 0.75), 1, 5)
-    difficulty = np.clip(np.random.normal(workload_base, 0.7), 1, 5)
-    workload = np.clip(np.random.normal(workload_base, 0.75), 1, 5)
-    usefulness = np.clip(np.random.normal((rating + 4.0) / 2, 0.55), 1, 5)
-    return round(rating, 1), round(difficulty, 1), round(workload, 1), round(usefulness, 1)
+def _course_profile(course: dict) -> tuple[float, float, float, float, bool]:
+    """Stable course-specific tendencies independent of individual reviewers."""
+    rng = np.random.default_rng(RANDOM_SEED + int(course["course_id"]))
+    level_effect = (int(course["course_level"]) - 250) / 250
+    practical = bool(
+        rng.random()
+        < (0.75 if course["department"] in {"Computer Science", "Data Science", "Business"} else 0.4)
+    )
+    difficulty = float(np.clip(3.0 + level_effect + rng.normal(0, 0.65), 1.5, 4.7))
+    workload = float(np.clip(difficulty * 0.6 + 1.2 + rng.normal(0, 0.6), 1.5, 4.7))
+    rating = float(np.clip(3.8 + rng.normal(0, 0.55) - 0.1 * (workload - 3), 2.0, 4.8))
+    usefulness = float(np.clip(3.6 + 0.4 * practical + rng.normal(0, 0.5), 2.0, 4.8))
+    return rating, difficulty, workload, usefulness, practical
+
+
+def _review_scores(course: dict) -> tuple[float, float, float, float]:
+    """Individual responses fluctuate around a stable course profile."""
+    profile = _course_profile(course)
+    return tuple(round(float(np.clip(np.random.normal(base, 0.45), 1, 5)), 1) for base in profile[:4])
+
+
+def _review_text(course: dict, scores: tuple[float, float, float, float]) -> str:
+    rating, difficulty, workload, usefulness = scores
+    topic = str(course["course_name"])
+    practical = _course_profile(course)[4]
+    workload_text = (
+        "Heavy workload with time consuming assignments"
+        if workload >= 3.8
+        else "Light workload with manageable assignments"
+        if workload <= 2.6
+        else "Moderate workload with regular assignments"
+    )
+    difficulty_text = (
+        "Difficult exams required consistent preparation"
+        if difficulty >= 3.8
+        else "Accessible concepts and fair exams"
+        if difficulty <= 2.6
+        else "Exams covered the lectures and required practice"
+    )
+    teaching_text = (
+        "Clear lectures and helpful feedback"
+        if rating >= 3.8
+        else "Some explanations were confusing"
+        if rating <= 2.8
+        else "The tutorials supported the lectures"
+    )
+    format_text = (
+        "Practical projects and hands-on exercises"
+        if practical
+        else "Theoretical concepts, formulas, and analytical reasoning"
+    )
+    value_text = (
+        "Useful skills for future study and careers"
+        if usefulness >= 3.8
+        else "More specialized material with limited immediate application"
+    )
+    # Include the actual subject in every review; unrelated generic coding/math
+    # claims no longer leak into courses from other disciplines.
+    return f"{topic} focused on {topic.rsplit(' ', 1)[0].lower()}. {format_text}. {workload_text}. {difficulty_text}. {teaching_text}. {value_text}."
 
 
 def generate_reviews(
@@ -248,26 +240,19 @@ def generate_reviews(
     semesters: pd.DataFrame,
     n_reviews: int = 12000,
 ) -> pd.DataFrame:
-    """Generate synthetic course reviews with department-aware text."""
-    course_lookup = courses.set_index("course_id").to_dict("index")
+    """Generate coherent subject-specific reviews from stable course profiles."""
+    course_lookup = courses.set_index("course_id", drop=False).to_dict("index")
     semester_lookup = semesters.set_index("semester_id").to_dict("index")
     rows = []
     sampled_offerings = offerings.sample(n=n_reviews, replace=True, random_state=RANDOM_SEED)
     for review_id, (_, offering) in enumerate(sampled_offerings.iterrows(), start=1):
         course = course_lookup[int(offering["course_id"])]
-        department = course["department"]
-        rating, difficulty, workload, usefulness = _review_scores(department)
-        templates = GENERAL_COMMENTS + DEPARTMENT_COMMENTS[department]
-        if workload >= 4.2:
-            templates += ["The workload was heavy and assignments were time consuming."]
-        if rating >= 4.3:
-            templates += ["Great instructor, clear lectures, and helpful feedback."]
-        if difficulty >= 4.2:
-            templates += ["The exams were hard and required consistent preparation."]
-        review_text = random.choice(templates)
+        rating, difficulty, workload, usefulness = _review_scores(course)
+        review_text = _review_text(course, (rating, difficulty, workload, usefulness))
         semester = semester_lookup[int(offering["semester_id"])]
         start_date = datetime.fromisoformat(str(semester["start_date"]))
-        review_date = start_date + timedelta(days=random.randint(20, 110))
+        end_date = datetime.fromisoformat(str(semester["end_date"]))
+        review_date = start_date + timedelta(days=random.randint(20, (end_date - start_date).days))
         rows.append(
             {
                 "review_id": review_id,

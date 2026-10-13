@@ -1,4 +1,9 @@
-"""ETL cleaning pipeline for CourseInsight raw CSV data."""
+"""Normalize raw CSVs without disguising invalid records as valid data.
+
+Invalid values remain missing or out of range for the data-quality gate. Duplicate
+primary keys keep their first occurrence in file order; missing keys are retained
+so the quality report can account for every invalid record.
+"""
 
 from __future__ import annotations
 
@@ -18,78 +23,84 @@ except ImportError:  # pragma: no cover
 def load_raw_data() -> Dict[str, pd.DataFrame]:
     """Load all raw CSV files from the raw data directory."""
     ensure_directories()
-    data = {}
-    for key, filename in RAW_FILES.items():
-        path = RAW_DATA_DIR / filename
-        data[key] = read_csv(path)
-    return data
+    return {key: read_csv(RAW_DATA_DIR / filename) for key, filename in RAW_FILES.items()}
+
+
+def _strings(values: pd.Series) -> pd.Series:
+    """Preserve missing values, including common serialized null markers."""
+    result = values.astype("string").str.strip()
+    return result.mask(result.str.lower().isin(["", "nan", "nat", "none", "null", "<na>"]))
+
+
+def _integers(values: pd.Series) -> pd.Series:
+    numeric = pd.to_numeric(values, errors="coerce")
+    return numeric.where(numeric.mod(1).eq(0) & numeric.ge(-(2**63)) & numeric.lt(2**63)).astype("Int64")
+
+
+def _dates(values: pd.Series) -> pd.Series:
+    # Vectorized mixed-format parsing preserves valid ISO variants without a
+    # costly per-record parser or a format inferred only from the first row.
+    parsed = pd.to_datetime(values, format="mixed", errors="coerce", utc=True)
+    return parsed.dt.strftime("%Y-%m-%d").astype("string")
+
+
+def _deduplicate(df: pd.DataFrame, key: str) -> pd.DataFrame:
+    return df.loc[df[key].isna() | ~df[key].duplicated(keep="first")].reset_index(drop=True)
 
 
 def clean_text_value(value: object) -> str:
-    """Normalize review text while preserving basic English characters."""
-    if pd.isna(value):
+    """Normalize English review text; missing values become empty text."""
+    if pd.isna(value) or str(value).strip().lower() in {"nan", "nat", "none", "null", "<na>"}:
         return ""
-    text = str(value).lower()
-    text = re.sub(r"[^a-z0-9\s.,;:!?'-]", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text
+    text = re.sub(r"[^a-z0-9\s.,;:!?'-]", " ", str(value).lower())
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def clean_courses(courses: pd.DataFrame) -> pd.DataFrame:
-    """Clean course fields and remove duplicate course IDs."""
     df = courses.copy()
-    df["course_id"] = pd.to_numeric(df["course_id"], errors="coerce").astype("Int64")
-    df["course_code"] = df["course_code"].astype(str).str.upper().str.replace(r"\s+", "", regex=True)
-    df["course_name"] = df["course_name"].astype(str).str.strip()
-    df["department"] = df["department"].astype(str).str.strip()
-    df["course_level"] = pd.to_numeric(df["course_level"], errors="coerce").fillna(0).astype(int)
+    df["course_id"] = _integers(df["course_id"])
+    df["course_code"] = _strings(df["course_code"]).str.upper().str.replace(r"\s+", "", regex=True)
+    for column in ["course_name", "department", "prerequisite", "campus"]:
+        df[column] = _strings(df[column])
+    df["prerequisite"] = df["prerequisite"].fillna("")
+    df["course_level"] = _integers(df["course_level"])
     df["credit"] = pd.to_numeric(df["credit"], errors="coerce")
-    df["prerequisite"] = df["prerequisite"].fillna("").astype(str).str.strip()
-    df["campus"] = df["campus"].astype(str).str.strip()
-    df = df.dropna(subset=["course_id"]).drop_duplicates(subset=["course_id"])
-    return df
+    return _deduplicate(df, "course_id")
 
 
 def clean_instructors(instructors: pd.DataFrame) -> pd.DataFrame:
-    """Clean instructor fields and remove duplicate instructor IDs."""
     df = instructors.copy()
-    df["instructor_id"] = pd.to_numeric(df["instructor_id"], errors="coerce").astype("Int64")
-    df["instructor_name"] = df["instructor_name"].astype(str).str.strip()
-    df["department"] = df["department"].astype(str).str.strip()
-    df = df.dropna(subset=["instructor_id"]).drop_duplicates(subset=["instructor_id"])
-    return df
+    df["instructor_id"] = _integers(df["instructor_id"])
+    for column in ["instructor_name", "department"]:
+        df[column] = _strings(df[column])
+    return _deduplicate(df, "instructor_id")
 
 
 def clean_semesters(semesters: pd.DataFrame) -> pd.DataFrame:
-    """Clean semester fields and normalize date columns."""
     df = semesters.copy()
-    df["semester_id"] = pd.to_numeric(df["semester_id"], errors="coerce").astype("Int64")
-    df["year"] = pd.to_numeric(df["year"], errors="coerce").astype("Int64")
-    df["term"] = df["term"].astype(str).str.strip().str.title()
-    df["start_date"] = pd.to_datetime(df["start_date"], errors="coerce").dt.date.astype(str)
-    df["end_date"] = pd.to_datetime(df["end_date"], errors="coerce").dt.date.astype(str)
-    df = df.dropna(subset=["semester_id"]).drop_duplicates(subset=["semester_id"])
-    return df
+    for column in ["semester_id", "year"]:
+        df[column] = _integers(df[column])
+    df["term"] = _strings(df["term"]).str.title()
+    for column in ["start_date", "end_date"]:
+        df[column] = _dates(df[column])
+    return _deduplicate(df, "semester_id")
 
 
 def clean_reviews(reviews: pd.DataFrame) -> pd.DataFrame:
-    """Clean review ratings, review text, and duplicate review IDs."""
     df = reviews.copy()
-    for col in ["review_id", "course_id", "instructor_id", "semester_id"]:
-        df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
-    for col in ["rating", "difficulty", "workload", "usefulness"]:
-        df[col] = pd.to_numeric(df[col], errors="coerce").clip(lower=1, upper=5)
+    for column in ["review_id", "course_id", "instructor_id", "semester_id"]:
+        df[column] = _integers(df[column])
+    for column in ["rating", "difficulty", "workload", "usefulness"]:
+        df[column] = pd.to_numeric(df[column], errors="coerce")
     df["review_text"] = df["review_text"].apply(clean_text_value)
-    df["review_date"] = pd.to_datetime(df["review_date"], errors="coerce").dt.date.astype(str)
-    df = df.dropna(subset=["review_id", "course_id"]).drop_duplicates(subset=["review_id"])
-    return df
+    df["review_date"] = _dates(df["review_date"])
+    return _deduplicate(df, "review_id")
 
 
 def clean_offerings(offerings: pd.DataFrame) -> pd.DataFrame:
-    """Clean offering capacity, enrollment, delivery mode, and duplicates."""
     df = offerings.copy()
-    for col in ["offering_id", "course_id", "instructor_id", "semester_id", "capacity", "enrolled_count"]:
-        df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0).astype(int)
+    for column in ["offering_id", "course_id", "instructor_id", "semester_id", "capacity", "enrolled_count"]:
+        df[column] = _integers(df[column])
     mode_map = {
         "in person": "In-person",
         "in-person": "In-person",
@@ -97,28 +108,19 @@ def clean_offerings(offerings: pd.DataFrame) -> pd.DataFrame:
         "online": "Online",
         "hybrid": "Hybrid",
     }
-    normalized = df["delivery_mode"].astype(str).str.strip().str.lower().str.replace("_", " ")
-    df["delivery_mode"] = normalized.map(mode_map).fillna("In-person")
-    df = df.drop_duplicates(subset=["offering_id"])
-    return df
+    normalized = _strings(df["delivery_mode"]).str.lower().str.replace("_", " ", regex=False)
+    df["delivery_mode"] = normalized.map(mode_map).astype("string")
+    return _deduplicate(df, "offering_id")
 
 
 def save_processed_data(data: Dict[str, pd.DataFrame]) -> None:
-    """Save cleaned DataFrames to the processed data directory."""
     ensure_directories()
-    mapping = {
-        "courses": PROCESSED_FILES["courses"],
-        "instructors": PROCESSED_FILES["instructors"],
-        "semesters": PROCESSED_FILES["semesters"],
-        "offerings": PROCESSED_FILES["offerings"],
-        "reviews": PROCESSED_FILES["reviews"],
-    }
-    for key, filename in mapping.items():
-        write_csv(data[key], PROCESSED_DATA_DIR / filename)
+    for key in RAW_FILES:
+        write_csv(data[key], PROCESSED_DATA_DIR / PROCESSED_FILES[key])
 
 
 def run_etl() -> Dict[str, pd.DataFrame]:
-    """Run the full raw-to-processed ETL pipeline."""
+    """Normalize all input tables and persist them for quality validation."""
     log_step("Loading raw CSV files")
     raw = load_raw_data()
     log_step("Cleaning raw tables")

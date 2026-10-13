@@ -1,10 +1,10 @@
-"""Lightweight NLP keyword extraction, sentiment labels, and course tags."""
+"""Explainable English lexicon tags and TF-IDF keywords (not a trained NLP model)."""
 
 from __future__ import annotations
 
 import re
-from collections import Counter
-from typing import Dict, Iterable, List
+from functools import lru_cache
+from typing import Iterable
 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -28,7 +28,6 @@ POSITIVE_WORDS = {
     "great",
     "manageable",
 }
-
 NEGATIVE_WORDS = {
     "hard",
     "difficult",
@@ -39,88 +38,141 @@ NEGATIVE_WORDS = {
     "time consuming",
     "boring",
 }
-
+TAG_MENTION_THRESHOLD = 0.30
 TAG_KEYWORDS = {
-    "Project Based": ["project", "practical", "case study"],
+    "Project Based": ["project", "projects", "case study", "case studies"],
     "Coding Heavy": ["python", "sql", "coding", "programming", "debugging"],
-    "Math Heavy": ["math", "proof", "formula", "calculus", "linear algebra"],
-    "Exam Heavy": ["exam", "exams", "midterm", "final"],
-    "Theory Heavy": ["theory", "theoretical", "proof", "abstract"],
-    "Practical": ["practical", "useful", "case study", "project"],
+    "Math Heavy": ["math", "proof", "proofs", "formula", "formulas", "calculus", "linear algebra"],
+    "Exam Heavy": [
+        "exam heavy",
+        "exam based",
+        "many exams",
+        "multiple exams",
+        "difficult exams",
+        "exams were difficult",
+        "exams were hard",
+        "challenging exams",
+        "midterm and final",
+    ],
+    "Theory Heavy": ["theory", "theoretical", "proof", "proofs", "abstract"],
+    "Practical": ["practical", "useful", "case study", "case studies", "project", "projects"],
+}
+WORKLOAD_KEYWORDS = [
+    "heavy workload",
+    "workload was heavy",
+    "workload is heavy",
+    "time consuming",
+    "heavy assignments",
+    "assignments were heavy",
+    "heavy problem sets",
+    "problem sets were heavy",
+    "too much work",
+    "demanding workload",
+]
+DATA_KEYWORDS = ["data", "python", "sql", "project", "projects", "machine learning", "visualization"]
+_NEGATORS = {
+    "not",
+    "no",
+    "never",
+    "hardly",
+    "isn't",
+    "wasn't",
+    "weren't",
+    "aren't",
+    "don't",
+    "doesn't",
+    "didn't",
 }
 
 
 def clean_text(text: object) -> str:
-    """Clean text for NLP analysis with simple English normalization."""
+    """Normalize English text, including hyphenated phrases, without substring matches."""
     if pd.isna(text):
         return ""
-    value = str(text).lower()
-    value = re.sub(r"[^a-z0-9\s'-]", " ", value)
-    value = re.sub(r"\s+", " ", value).strip()
-    return value
+    value = str(text).lower().replace("’", "'")
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9\s']", " ", value)).strip()
+
+
+def _phrase_polarities(text: object, phrase: str) -> tuple[int, ...]:
+    """Normalize missing inputs before using a bounded cache of repeated text rules."""
+    if pd.isna(text):
+        return ()
+    return _cached_phrase_polarities(str(text), phrase)
+
+
+@lru_cache(maxsize=16384)
+def _cached_phrase_polarities(text: str, phrase: str) -> tuple[int, ...]:
+    """Find bounded phrases; negate within three preceding words in the same clause."""
+    polarities = []
+    clauses = re.split(r"[.!?;,:\n]|\b(?:but|however|yet)\b", str(text).lower())
+    pattern = r"(?<!\w)" + re.escape(clean_text(phrase)) + r"(?!\w)"
+    for clause in clauses:
+        normalized = clean_text(clause)
+        for match in re.finditer(pattern, normalized):
+            preceding = normalized[: match.start()].split()[-3:]
+            # 'not only practical' is affirmative, unlike 'not very practical'.
+            context = " ".join(preceding).replace("not only", "only").split()
+            polarities.append(-1 if any(word in _NEGATORS for word in context) else 1)
+    return tuple(polarities)
+
+
+def mention_ratio(texts: Iterable[object], phrases: Iterable[str]) -> float:
+    """Share of non-empty reviews with an affirmed phrase; repeated words count once."""
+    texts = [text for text in texts if clean_text(text)]
+    phrases = tuple(phrases)
+    if not texts:
+        return 0.0
+    return sum(any(1 in _phrase_polarities(text, phrase) for phrase in phrases) for text in texts) / len(
+        texts
+    )
 
 
 def sentiment_label(text: object) -> str:
-    """Assign a simple positive, negative, or neutral label using keyword rules."""
-    cleaned = clean_text(text)
-    positive_hits = sum(1 for word in POSITIVE_WORDS if word in cleaned)
-    negative_hits = sum(1 for word in NEGATIVE_WORDS if word in cleaned)
-    if positive_hits > negative_hits:
-        return "positive"
-    if negative_hits > positive_hits:
-        return "negative"
-    return "neutral"
+    """Rule sentiment with phrase boundaries and simple clause-local negation."""
+    score = sum(sum(_phrase_polarities(text, word)) for word in POSITIVE_WORDS)
+    score -= sum(sum(_phrase_polarities(text, word)) for word in NEGATIVE_WORDS)
+    return "positive" if score > 0 else "negative" if score < 0 else "neutral"
 
 
 def extract_keywords(reviews: pd.DataFrame, top_n: int = 8) -> pd.DataFrame:
-    """Extract top TF-IDF keywords for each course from review text."""
+    """Extract deterministic TF-IDF keywords, retaining empty course documents."""
     grouped = (
         reviews.assign(review_text=reviews["review_text"].apply(clean_text))
         .groupby("course_id")["review_text"]
         .apply(lambda values: " ".join(values))
         .reset_index()
     )
-    if grouped.empty:
-        return pd.DataFrame(columns=["course_id", "keywords"])
+    result = grouped[["course_id"]].copy()
+    result["keywords"] = ""
+    if grouped.empty or top_n <= 0:
+        return result
     vectorizer = TfidfVectorizer(stop_words="english", ngram_range=(1, 2), min_df=1, max_features=300)
-    matrix = vectorizer.fit_transform(grouped["review_text"])
+    try:
+        matrix = vectorizer.fit_transform(grouped["review_text"])
+    except ValueError as exc:
+        if "empty vocabulary" not in str(exc):
+            raise
+        return result
     terms = vectorizer.get_feature_names_out()
-    keyword_rows = []
-    for idx, course_id in enumerate(grouped["course_id"]):
+    for idx in range(len(grouped)):
         row = matrix[idx].toarray().ravel()
-        top_indices = row.argsort()[::-1][:top_n]
-        keywords = [terms[i] for i in top_indices if row[i] > 0]
-        keyword_rows.append({"course_id": course_id, "keywords": ", ".join(keywords)})
-    return pd.DataFrame(keyword_rows)
-
-
-def _word_frequency(texts: Iterable[str]) -> Counter:
-    """Count normalized word and phrase occurrences in a collection of texts."""
-    joined = " ".join(clean_text(text) for text in texts)
-    counts = Counter(joined.split())
-    for phrase in ["time consuming", "case study", "machine learning", "data science"]:
-        counts[phrase] = joined.count(phrase)
-    return counts
-
-
-def _contains_any(counts: Counter, words: List[str], min_count: int = 2) -> bool:
-    """Return whether any configured keyword reaches the minimum frequency."""
-    return any(counts.get(word, 0) >= min_count for word in words)
+        indices = sorted(
+            (i for i, weight in enumerate(row) if weight > 0), key=lambda i: (-row[i], terms[i])
+        )[:top_n]
+        result.loc[idx, "keywords"] = ", ".join(terms[i] for i in indices)
+    return result
 
 
 def generate_course_tags(
-    courses: pd.DataFrame | None = None,
-    reviews: pd.DataFrame | None = None,
-    output_path=None,
+    courses: pd.DataFrame | None = None, reviews: pd.DataFrame | None = None, output_path=None
 ) -> pd.DataFrame:
-    """Generate tags and keywords for each course and save them to processed data."""
+    """Tag by review mention share (30%), with explicit numeric evidence for GPA/workload."""
     if courses is None:
         courses = read_csv(PROCESSED_DATA_DIR / PROCESSED_FILES["courses"])
     if reviews is None:
         reviews = read_csv(PROCESSED_DATA_DIR / PROCESSED_FILES["reviews"])
     if output_path is None:
         output_path = PROCESSED_DATA_DIR / PROCESSED_FILES["course_tags"]
-
     review_metrics = (
         reviews.assign(sentiment=reviews["review_text"].apply(sentiment_label))
         .groupby("course_id")
@@ -128,50 +180,46 @@ def generate_course_tags(
             avg_rating=("rating", "mean"),
             avg_difficulty=("difficulty", "mean"),
             avg_workload=("workload", "mean"),
-            positive_ratio=("sentiment", lambda s: (s == "positive").mean()),
+            positive_ratio=("sentiment", lambda values: (values == "positive").mean()),
             review_count=("review_id", "count"),
         )
         .reset_index()
     )
-    keywords = extract_keywords(reviews)
-    review_texts: Dict[int, List[str]] = reviews.groupby("course_id")["review_text"].apply(list).to_dict()
-    base = courses.merge(review_metrics, on="course_id", how="left").merge(keywords, on="course_id", how="left")
-
+    review_texts = reviews.groupby("course_id")["review_text"].apply(list).to_dict()
+    base = courses.merge(review_metrics, on="course_id", how="left").merge(
+        extract_keywords(reviews), on="course_id", how="left"
+    )
     rows = []
     for _, row in base.iterrows():
-        counts = _word_frequency(review_texts.get(row["course_id"], []))
-        tags: list[str] = []
-        avg_rating = row.get("avg_rating", 0) if pd.notna(row.get("avg_rating", 0)) else 0
-        avg_difficulty = row.get("avg_difficulty", 0) if pd.notna(row.get("avg_difficulty", 0)) else 0
-        avg_workload = row.get("avg_workload", 0) if pd.notna(row.get("avg_workload", 0)) else 0
-        department = str(row["department"])
-
-        if avg_rating > 4 and avg_difficulty < 3.5:
+        texts = review_texts.get(row["course_id"], [])
+        tags = []
+        if row["avg_rating"] > 4 and row["avg_difficulty"] < 3.5:
             tags.append("GPA Friendly")
-        if avg_workload > 4 or _contains_any(counts, ["heavy", "workload", "time consuming"], min_count=4):
+        if row["avg_workload"] > 4 or mention_ratio(texts, WORKLOAD_KEYWORDS) >= TAG_MENTION_THRESHOLD:
             tags.append("Heavy Workload")
         for tag, words in TAG_KEYWORDS.items():
-            if _contains_any(counts, words, min_count=2):
+            if mention_ratio(texts, words) >= TAG_MENTION_THRESHOLD:
                 tags.append(tag)
-        if department in {"Data Science", "Computer Science", "Statistics"} and _contains_any(
-            counts, ["data", "python", "sql", "project", "machine learning"], min_count=2
+        if (
+            row["department"] in {"Data Science", "Computer Science", "Statistics"}
+            and mention_ratio(texts, DATA_KEYWORDS) >= TAG_MENTION_THRESHOLD
         ):
             tags.append("Data Science Friendly")
-        if avg_rating >= 4.1 and row.get("positive_ratio", 0) >= 0.35:
+        if row["avg_rating"] >= 4.1 and row["positive_ratio"] >= 0.35:
             tags.append("Good Instructor")
-
         rows.append(
             {
                 "course_id": row["course_id"],
                 "course_code": row["course_code"],
                 "course_name": row["course_name"],
-                "department": department,
-                "keywords": row.get("keywords", ""),
-                "tags": ", ".join(dict.fromkeys(tags)),
+                "department": row["department"],
+                "keywords": row["keywords"] if pd.notna(row["keywords"]) else "",
+                "tags": ", ".join(tags),
             }
         )
-
-    tags_df = pd.DataFrame(rows)
+    tags_df = pd.DataFrame(
+        rows, columns=["course_id", "course_code", "course_name", "department", "keywords", "tags"]
+    )
     write_csv(tags_df, output_path)
     log_step(f"Course tags saved to {output_path}")
     return tags_df

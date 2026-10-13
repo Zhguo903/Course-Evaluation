@@ -1,47 +1,35 @@
-# Warehouse Design
+# Warehouse Design · v2
 
-CourseInsight uses a local DuckDB database to model a compact but realistic ODS-DWD-DWS-ADS data warehouse.
+CourseInsight uses a local DuckDB database and a layered ODS–DWD–DWS–ADS model. Source CSVs and intermediate CSVs are reproducible working files; the database is the published analytics snapshot.
 
-## ODS: Operational Data Store
+## Layers
 
-ODS tables preserve the raw CSV shape with minimal transformation. They are useful for lineage, debugging, and comparing source data against cleaned tables.
+| Layer | Tables | Purpose |
+| --- | --- | --- |
+| ODS | `ods_courses_raw`, `ods_instructors_raw`, `ods_semesters_raw`, `ods_course_offerings_raw`, `ods_reviews_raw` | Preserve source records for traceability |
+| DWD | `dwd_courses_clean`, `dwd_instructors_clean`, `dwd_semesters_clean`, `dwd_course_offerings_clean`, `dwd_reviews_clean` | Standardized entity and fact detail |
+| DWS | `dws_course_summary`, `dws_instructor_summary`, `dws_department_summary` | SQL aggregation at course, instructor and department grain |
+| DWS | `dws_course_text_features`, `dws_course_tags` | Review mention proportions and generated course tags/keywords |
+| ADS | `ads_course_profile`, `ads_course_recommendation`, `ads_data_quality_report` | Derived scores, default ranking and successful publication quality checks |
 
-Tables:
-- ods_courses_raw
-- ods_instructors_raw
-- ods_semesters_raw
-- ods_course_offerings_raw
-- ods_reviews_raw
+## Grain and relationships
 
-## DWD: Data Warehouse Detail
+- Course, instructor and semester dimensions have unique positive integer IDs.
+- Each offering references one course, instructor and semester and includes seat capacity and enrollment.
+- Each review references the same three dimensions; the triplet must match an actual offering. A review date must be within its semester bounds.
+- Review facts aggregate to one row per course in the course summary. Courses without reviews remain visible, with zero review count and NULL averages.
+- Tags and profiles are course-level features. Review-count smoothing uses the global review-weighted rating prior.
 
-DWD tables contain cleaned, standardized, row-level detail data. Examples include normalized course codes, numeric score fields, clipped rating ranges, and cleaned review text.
+## Validation and publication
 
-Tables:
-- dwd_courses_clean
-- dwd_instructors_clean
-- dwd_semesters_clean
-- dwd_course_offerings_clean
-- dwd_reviews_clean
+The ETL standardizes types, identifiers and text, and deterministically keeps the first record for a repeated non-null primary key. Missing and invalid values remain visible to validation. The quality report checks required values, uniqueness, ranges, formats, dates, foreign keys and review/offering context.
 
-## DWS: Data Warehouse Summary
+A failing report is saved to `data/processed/data_quality_report.csv` and raises `DataQualityError` before publication. Building the warehouse directly also runs validation. All warehouse layers are then rebuilt in one DuckDB transaction; a build failure rolls the transaction back. The prior published snapshot remains available after validation or build failures.
 
-DWS tables aggregate reusable business metrics by subject area.
+The dashboard reads course profiles, review detail and tags from the same database snapshot. It can display the latest CSV quality report, including failed attempts, separately from the successful report persisted in ADS. This prevents invalid intermediate review files from silently changing the published analytics.
 
-Tables:
-- dws_course_summary: course-level review count, average scores, positive and negative review ratios
-- dws_instructor_summary: instructor-level review count and average score metrics
-- dws_department_summary: department-level course count, review count, and average experience metrics
+`python run_pipeline.py` recreates synthetic inputs. `python run_pipeline.py --skip-generate` reuses the five source CSVs and applies the same quality gate. CSV and database scoring paths share `sql/04_create_ads_tables.sql`.
 
-## ADS: Application Data Service
+## Operating scope
 
-ADS tables are shaped for dashboards and recommendation use cases. They combine DWS metrics with derived scoring logic.
-
-Tables:
-- ads_course_profile: course profile with GPA-friendly, value, data-career relevance, workload risk, and recommendation scores
-- ads_course_recommendation: sorted course profile table for recommendation consumption
-- ads_data_quality_report: data quality report loaded into the warehouse for monitoring
-
-## Design Notes
-
-This MVP uses DuckDB for local analytics and reproducibility. In a production environment, the same layered model could be migrated to Snowflake, BigQuery, PostgreSQL, or Spark-based lakehouse tables.
+This is a single-user local batch prototype. It does not include a scheduler, incremental change capture or multi-user write coordination. The default dataset is synthetic. A production adaptation would require real-source contracts, privacy controls, ranking evaluation and infrastructure appropriate to its data volume.

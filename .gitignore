@@ -13,3 +13,6 @@ data/warehouse/*.wal
 
 *.log
 *.tmp
+.ruff_cache/
+.coverage
+htmlcov/

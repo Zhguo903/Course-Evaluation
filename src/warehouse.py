@@ -3,14 +3,33 @@
 from __future__ import annotations
 
 import duckdb
+import pandas as pd
 
 try:
-    from src.config import DUCKDB_PATH, PROCESSED_DATA_DIR, PROCESSED_FILES, RAW_DATA_DIR, RAW_FILES, ensure_directories
-    from src.data_quality import main as run_quality_report
+    from src.config import (
+        DUCKDB_PATH,
+        PROCESSED_DATA_DIR,
+        PROCESSED_FILES,
+        RAW_DATA_DIR,
+        RAW_FILES,
+        SQL_DIR,
+        ensure_directories,
+    )
+    from src.data_quality import assert_quality, main as run_quality_report
+    from src.nlp_tags import DATA_KEYWORDS, WORKLOAD_KEYWORDS, mention_ratio
     from src.utils import log_step
 except ImportError:  # pragma: no cover
-    from config import DUCKDB_PATH, PROCESSED_DATA_DIR, PROCESSED_FILES, RAW_DATA_DIR, RAW_FILES, ensure_directories
-    from data_quality import main as run_quality_report
+    from config import (
+        DUCKDB_PATH,
+        PROCESSED_DATA_DIR,
+        PROCESSED_FILES,
+        RAW_DATA_DIR,
+        RAW_FILES,
+        SQL_DIR,
+        ensure_directories,
+    )
+    from data_quality import assert_quality, main as run_quality_report
+    from nlp_tags import DATA_KEYWORDS, WORKLOAD_KEYWORDS, mention_ratio
     from utils import log_step
 
 
@@ -70,8 +89,8 @@ def build_dws_layer(conn: duckdb.DuckDBPyConnection) -> None:
             ROUND(AVG(r.difficulty), 3) AS avg_difficulty,
             ROUND(AVG(r.workload), 3) AS avg_workload,
             ROUND(AVG(r.usefulness), 3) AS avg_usefulness,
-            ROUND(AVG(CASE WHEN r.rating >= 4 THEN 1 ELSE 0 END), 3) AS positive_review_ratio,
-            ROUND(AVG(CASE WHEN r.rating <= 2 THEN 1 ELSE 0 END), 3) AS negative_review_ratio
+            ROUND(AVG(CASE WHEN r.review_id IS NULL THEN NULL WHEN r.rating >= 4 THEN 1 ELSE 0 END), 3) AS positive_review_ratio,
+            ROUND(AVG(CASE WHEN r.review_id IS NULL THEN NULL WHEN r.rating <= 2 THEN 1 ELSE 0 END), 3) AS negative_review_ratio
         FROM dwd_courses_clean c
         LEFT JOIN dwd_reviews_clean r ON c.course_id = r.course_id
         GROUP BY c.course_id, c.course_code, c.course_name, c.department, c.course_level
@@ -111,73 +130,61 @@ def build_dws_layer(conn: duckdb.DuckDBPyConnection) -> None:
     )
 
 
-def build_ads_layer(conn: duckdb.DuckDBPyConnection) -> None:
-    """Build ADS application tables for course profiles, recommendations, and data quality."""
-    log_step("Building ADS layer")
-    conn.execute(
-        """
-        CREATE OR REPLACE TEMP TABLE course_text_features AS
-        SELECT
-            c.course_id,
-            AVG(CASE WHEN lower(r.review_text) LIKE '%python%'
-                       OR lower(r.review_text) LIKE '%sql%'
-                       OR lower(r.review_text) LIKE '%data%'
-                       OR lower(r.review_text) LIKE '%machine learning%'
-                       OR lower(r.review_text) LIKE '%visualization%'
-                       OR lower(r.review_text) LIKE '%project%' THEN 1 ELSE 0 END) AS data_keyword_ratio,
-            AVG(CASE WHEN lower(r.review_text) LIKE '%heavy%'
-                       OR lower(r.review_text) LIKE '%workload%'
-                       OR lower(r.review_text) LIKE '%time consuming%' THEN 1 ELSE 0 END) AS workload_negative_ratio
-        FROM dwd_courses_clean c
-        LEFT JOIN dwd_reviews_clean r ON c.course_id = r.course_id
-        GROUP BY c.course_id
-        """
-    )
-    conn.execute(
-        """
-        CREATE OR REPLACE TABLE ads_course_profile AS
-        WITH scored AS (
-            SELECT
-                s.course_id,
-                s.course_code,
-                s.course_name,
-                s.department,
-                COALESCE(s.avg_rating, 0) AS avg_rating,
-                COALESCE(s.avg_difficulty, 0) AS avg_difficulty,
-                COALESCE(s.avg_workload, 0) AS avg_workload,
-                COALESCE(s.avg_usefulness, 0) AS avg_usefulness,
-                0.4 * COALESCE(s.avg_rating, 0)
-                    + 0.3 * (5 - COALESCE(s.avg_difficulty, 0))
-                    + 0.3 * (5 - COALESCE(s.avg_workload, 0)) AS gpa_friendly_score,
-                COALESCE(s.avg_usefulness, 0) / NULLIF(COALESCE(s.avg_workload, 0), 0) AS course_value_score,
-                LEAST(
-                    5,
-                    CASE WHEN s.department IN ('Data Science', 'Computer Science', 'Statistics') THEN 3.5 ELSE 2.0 END
-                    + 2.0 * COALESCE(t.data_keyword_ratio, 0)
-                ) AS data_career_relevance_score,
-                0.6 * COALESCE(s.avg_workload, 0) + 0.4 * COALESCE(t.workload_negative_ratio, 0) AS workload_risk_score
-            FROM dws_course_summary s
-            LEFT JOIN course_text_features t ON s.course_id = t.course_id
+def _text_features(reviews: pd.DataFrame) -> pd.DataFrame:
+    """Review mention proportions shared by the SQL warehouse and CSV fallback."""
+    rows = []
+    for course_id, group in reviews.groupby("course_id"):
+        texts = group["review_text"].tolist()
+        rows.append(
+            {
+                "course_id": course_id,
+                "data_keyword_ratio": mention_ratio(texts, DATA_KEYWORDS),
+                "workload_negative_ratio": mention_ratio(texts, WORKLOAD_KEYWORDS),
+            }
         )
-        SELECT
-            *,
-            0.25 * avg_rating
-                + 0.20 * gpa_friendly_score
-                + 0.20 * data_career_relevance_score
-                + 0.15 * COALESCE(course_value_score, 0)
-                + 0.10 * avg_usefulness
-                + 0.10 * (5 - avg_workload) AS recommend_score
-        FROM scored
-        """
-    )
-    conn.execute(
-        """
-        CREATE OR REPLACE TABLE ads_course_recommendation AS
-        SELECT *
-        FROM ads_course_profile
-        ORDER BY recommend_score DESC
-        """
-    )
+    result = pd.DataFrame(rows, columns=["course_id", "data_keyword_ratio", "workload_negative_ratio"])
+    if result.empty:
+        # Keep the join key compatible with integer course ids for an empty review table.
+        result = result.astype(
+            {
+                "course_id": reviews["course_id"].dtype,
+                "data_keyword_ratio": "float64",
+                "workload_negative_ratio": "float64",
+            }
+        )
+    return result
+
+
+def _ads_statements() -> list[str]:
+    """Use the versioned SQL as the single definition of application metrics."""
+    return (SQL_DIR / "04_create_ads_tables.sql").read_text().split(";")
+
+
+def build_course_profile(summary: pd.DataFrame, reviews: pd.DataFrame) -> pd.DataFrame:
+    """Apply the exact warehouse scoring SQL to a CSV-derived course summary."""
+    with duckdb.connect(":memory:") as conn:
+        conn.register("dws_course_summary", summary)
+        conn.register("dwd_reviews_clean", reviews)
+        conn.register("dws_course_text_features", _text_features(reviews))
+        conn.execute(_ads_statements()[0])
+        return conn.execute("SELECT * FROM ads_course_profile ORDER BY course_code").df()
+
+
+def build_ads_layer(conn: duckdb.DuckDBPyConnection) -> None:
+    """Build course profiles with volume-aware ratings and bounded 1–5 scores."""
+    log_step("Building ADS layer")
+    reviews = conn.execute("SELECT course_id, review_text FROM dwd_reviews_clean").df()
+    conn.register("_course_text_features", _text_features(reviews))
+    try:
+        conn.execute(
+            "CREATE OR REPLACE TABLE dws_course_text_features AS SELECT * FROM _course_text_features"
+        )
+    finally:
+        conn.unregister("_course_text_features")
+    _create_table_from_csv(conn, "dws_course_tags", PROCESSED_DATA_DIR / PROCESSED_FILES["course_tags"])
+    statements = _ads_statements()
+    conn.execute(statements[0])
+    conn.execute(statements[1])
     quality_path = PROCESSED_DATA_DIR / PROCESSED_FILES["data_quality"]
     if not quality_path.exists():
         run_quality_report()
@@ -185,14 +192,20 @@ def build_ads_layer(conn: duckdb.DuckDBPyConnection) -> None:
 
 
 def build_warehouse() -> None:
-    """Build all warehouse layers in dependency order."""
+    """Validate before opening the DB and publish all tables in one transaction."""
+    assert_quality(run_quality_report())
     conn = init_duckdb()
     try:
+        conn.execute("BEGIN TRANSACTION")
         build_ods_layer(conn)
         build_dwd_layer(conn)
         build_dws_layer(conn)
         build_ads_layer(conn)
+        conn.execute("COMMIT")
         log_step(f"DuckDB warehouse saved to {DUCKDB_PATH}")
+    except Exception:
+        conn.execute("ROLLBACK")
+        raise
     finally:
         conn.close()
 

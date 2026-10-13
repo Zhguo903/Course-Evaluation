@@ -1,8 +1,8 @@
-"""Course recommendation and similarity logic for CourseInsight."""
+"""Deterministic preference ranking and TF-IDF similarity for CourseInsight."""
 
 from __future__ import annotations
 
-from typing import Dict, Iterable, List
+from typing import Dict
 
 import duckdb
 import pandas as pd
@@ -12,9 +12,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 try:
     from src.config import DUCKDB_PATH, PROCESSED_DATA_DIR, PROCESSED_FILES
     from src.utils import join_non_empty
+    from src.warehouse import build_course_profile
 except ImportError:  # pragma: no cover
     from config import DUCKDB_PATH, PROCESSED_DATA_DIR, PROCESSED_FILES
     from utils import join_non_empty
+    from warehouse import build_course_profile
 
 
 DEFAULT_PREFERENCES = {
@@ -25,79 +27,127 @@ DEFAULT_PREFERENCES = {
     "prefer_gpa_friendly": False,
     "avoid_exam_heavy": False,
 }
+RESULT_COLUMNS = [
+    "course_code",
+    "course_name",
+    "department",
+    "avg_rating",
+    "avg_difficulty",
+    "avg_workload",
+    "recommend_score",
+    "preference_score",
+    "review_count",
+    "smoothed_rating",
+    "confidence",
+    "tags",
+    "recommendation_reason",
+]
+SIMILARITY_COLUMNS = ["course_code", "course_name", "department", "similarity_score", "common_tags"]
+DATA_DEPARTMENTS = {"Data Science", "Computer Science", "Statistics"}
 
 
 def _load_course_profile() -> pd.DataFrame:
-    """Load ADS course profile from DuckDB or derive a fallback from processed CSVs."""
+    """Load ADS, or score processed CSVs with the exact same versioned SQL."""
     if DUCKDB_PATH.exists():
         with duckdb.connect(str(DUCKDB_PATH), read_only=True) as conn:
             return conn.execute("SELECT * FROM ads_course_profile").df()
-
     courses = pd.read_csv(PROCESSED_DATA_DIR / PROCESSED_FILES["courses"])
     reviews = pd.read_csv(PROCESSED_DATA_DIR / PROCESSED_FILES["reviews"])
     metrics = (
         reviews.groupby("course_id")
         .agg(
+            review_count=("review_id", "count"),
             avg_rating=("rating", "mean"),
             avg_difficulty=("difficulty", "mean"),
             avg_workload=("workload", "mean"),
             avg_usefulness=("usefulness", "mean"),
         )
+        .round(3)
         .reset_index()
     )
-    profile = courses.merge(metrics, on="course_id", how="left").fillna(0)
-    profile["gpa_friendly_score"] = (
-        0.4 * profile["avg_rating"] + 0.3 * (5 - profile["avg_difficulty"]) + 0.3 * (5 - profile["avg_workload"])
+    profile = courses.merge(metrics, on="course_id", how="left")
+    profile["review_count"] = profile["review_count"].fillna(0).astype(int)
+    profile["positive_review_ratio"] = (
+        reviews.groupby("course_id")["rating"]
+        .apply(lambda values: (values >= 4).mean())
+        .reindex(profile["course_id"])
+        .to_numpy()
+        .round(3)
     )
-    profile["course_value_score"] = profile["avg_usefulness"] / profile["avg_workload"].replace(0, pd.NA)
-    profile["data_career_relevance_score"] = profile["department"].isin(
-        ["Data Science", "Computer Science", "Statistics"]
-    ).map({True: 4.0, False: 2.0})
-    profile["recommend_score"] = (
-        0.25 * profile["avg_rating"]
-        + 0.20 * profile["gpa_friendly_score"]
-        + 0.20 * profile["data_career_relevance_score"]
-        + 0.15 * profile["course_value_score"].fillna(0)
-        + 0.10 * profile["avg_usefulness"]
-        + 0.10 * (5 - profile["avg_workload"])
+    profile["negative_review_ratio"] = (
+        reviews.groupby("course_id")["rating"]
+        .apply(lambda values: (values <= 2).mean())
+        .reindex(profile["course_id"])
+        .to_numpy()
+        .round(3)
     )
-    return profile
+    return build_course_profile(profile, reviews)
 
 
 def build_recommendation_table() -> pd.DataFrame:
-    """Merge course profiles, tags, and keywords into a recommendation-ready table."""
-    profile = _load_course_profile()
-    tags_path = PROCESSED_DATA_DIR / PROCESSED_FILES["course_tags"]
-    tags = pd.read_csv(tags_path) if tags_path.exists() else pd.DataFrame(columns=["course_id", "tags", "keywords"])
-    table = profile.merge(tags[["course_id", "tags", "keywords"]], on="course_id", how="left")
-    table["tags"] = table["tags"].fillna("")
-    table["keywords"] = table["keywords"].fillna("")
-    return table
+    """Merge course metadata, observed metrics, explainable scores, tags, and keywords."""
+    if DUCKDB_PATH.exists():
+        # Both derived datasets come from one committed warehouse snapshot.
+        with duckdb.connect(str(DUCKDB_PATH), read_only=True) as conn:
+            conn.execute("BEGIN TRANSACTION")
+            profile = conn.execute("SELECT * FROM ads_course_profile").df()
+            tags = conn.execute("SELECT course_id, tags, keywords FROM dws_course_tags").df()
+            conn.execute("COMMIT")
+    else:
+        profile = _load_course_profile()
+        tags_path = PROCESSED_DATA_DIR / PROCESSED_FILES["course_tags"]
+        tags = (
+            pd.read_csv(tags_path)
+            if tags_path.exists()
+            else pd.DataFrame(columns=["course_id", "tags", "keywords"])
+        )
+    table = profile.merge(
+        tags[["course_id", "tags", "keywords"]], on="course_id", how="left", validate="one_to_one"
+    )
+    table[["tags", "keywords"]] = table[["tags", "keywords"]].fillna("")
+    return table.sort_values("course_code", kind="stable").reset_index(drop=True)
 
 
-def _has_tag(tags: str, tag: str) -> bool:
-    """Return whether a comma-separated tag string contains a specific tag."""
-    return tag.lower() in str(tags).lower()
+def _tag_set(tags: object) -> set[str]:
+    if pd.isna(tags):
+        return set()
+    return {tag.strip().casefold() for tag in str(tags).split(",") if tag.strip()}
+
+
+def _has_tag(tags: object, tag: str) -> bool:
+    """Match complete comma-separated tags, with case and whitespace normalized."""
+    return tag.strip().casefold() in _tag_set(tags)
+
+
+def _preference_adjustments(row: pd.Series, preferences: Dict[str, bool]) -> list[tuple[str, float]]:
+    """One source of truth for both numerical adjustments and their explanations."""
+    adjustments = []
+    if preferences.get("prefer_low_workload"):
+        adjustments.append(("lower-workload preference", (6 - row["avg_workload"]) * 0.6))
+    if preferences.get("prefer_high_rating"):
+        adjustments.append(("rating preference", row["smoothed_rating"] * 0.5))
+    if preferences.get("prefer_project_based") and _has_tag(row["tags"], "Project Based"):
+        adjustments.append(("project-based tag", 1.2))
+    if preferences.get("prefer_data_science") and (
+        _has_tag(row["tags"], "Data Science Friendly") or row["department"] in DATA_DEPARTMENTS
+    ):
+        adjustments.append(("data relevance (department or tag)", 1.2))
+    if preferences.get("prefer_gpa_friendly") and _has_tag(row["tags"], "GPA Friendly"):
+        adjustments.append(("GPA-friendly tag", 1.0))
+    if preferences.get("avoid_exam_heavy") and _has_tag(row["tags"], "Exam Heavy"):
+        adjustments.append(("exam-heavy penalty", -1.5))
+    return adjustments
 
 
 def _recommendation_reason(row: pd.Series, preferences: Dict[str, bool]) -> str:
-    """Generate a concise human-readable recommendation reason."""
-    reasons: List[str] = []
-    if preferences.get("prefer_high_rating") and row["avg_rating"] >= 4:
-        reasons.append("high rating")
-    if preferences.get("prefer_low_workload") and row["avg_workload"] <= 3.2:
-        reasons.append("manageable workload")
-    if preferences.get("prefer_project_based") and _has_tag(row["tags"], "Project Based"):
-        reasons.append("project-based content")
-    if preferences.get("prefer_data_science") and (
-        _has_tag(row["tags"], "Data Science Friendly") or row["department"] in {"Data Science", "Computer Science", "Statistics"}
-    ):
-        reasons.append("strong data science relevance")
-    if preferences.get("prefer_gpa_friendly") and _has_tag(row["tags"], "GPA Friendly"):
-        reasons.append("GPA-friendly profile")
-    if not reasons:
-        reasons.append("balanced rating, usefulness, and workload metrics")
-    return "Recommended because this course has " + join_non_empty(reasons) + "."
+    """State actual score components, including penalties and limited evidence."""
+    parts = [f"Base score {row['recommend_score']:.2f}"]
+    parts.extend(f"{label} {amount:+.2f}" for label, amount in _preference_adjustments(row, preferences))
+    if pd.notna(row["review_count"]):
+        parts.append(f"{int(row['review_count'])} reviews")
+        if row["review_count"] < 10:
+            parts.append("limited review evidence")
+    return join_non_empty(parts, sep="; ") + "."
 
 
 def recommend_courses(
@@ -105,79 +155,94 @@ def recommend_courses(
     top_n: int = 10,
     recommendation_table: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
-    """Return top N recommended courses based on explicit user preferences."""
+    """Rank reviewed courses; preference_score is an unbounded ranking heuristic."""
     preferences = {**DEFAULT_PREFERENCES, **(preferences or {})}
     table = recommendation_table.copy() if recommendation_table is not None else build_recommendation_table()
-    table["preference_score"] = table["recommend_score"].fillna(0)
-
-    if preferences.get("prefer_low_workload"):
-        table["preference_score"] += (5 - table["avg_workload"].fillna(5)) * 0.6
-    if preferences.get("prefer_high_rating"):
-        table["preference_score"] += table["avg_rating"].fillna(0) * 0.5
-    if preferences.get("prefer_project_based"):
-        table["preference_score"] += table["tags"].apply(lambda tags: 1.2 if _has_tag(tags, "Project Based") else 0)
-    if preferences.get("prefer_data_science"):
-        table["preference_score"] += table.apply(
-            lambda row: 1.2
-            if _has_tag(row["tags"], "Data Science Friendly")
-            or row["department"] in {"Data Science", "Computer Science", "Statistics"}
-            else 0,
-            axis=1,
-        )
-    if preferences.get("prefer_gpa_friendly"):
-        table["preference_score"] += table["tags"].apply(lambda tags: 1.0 if _has_tag(tags, "GPA Friendly") else 0)
-    if preferences.get("avoid_exam_heavy"):
-        table["preference_score"] -= table["tags"].apply(lambda tags: 1.5 if _has_tag(tags, "Exam Heavy") else 0)
-
-    result = table.sort_values("preference_score", ascending=False).head(top_n).copy()
-    result["recommendation_reason"] = result.apply(lambda row: _recommendation_reason(row, preferences), axis=1)
-    columns = [
-        "course_code",
-        "course_name",
-        "department",
+    metadata = [column for column in ["course_id", "course_level"] if column in table]
+    columns = metadata + RESULT_COLUMNS
+    if table.empty or top_n <= 0:
+        return pd.DataFrame(columns=columns)
+    for column in ["course_code", "course_name", "department", "tags"]:
+        if column not in table:
+            table[column] = ""
+        table[column] = table[column].fillna("").astype(str)
+    # Legacy callers may omit review_count; unknown evidence is not fabricated.
+    if "review_count" not in table:
+        table["review_count"] = pd.NA
+    if "smoothed_rating" not in table:
+        table["smoothed_rating"] = table["avg_rating"]
+    if "confidence" not in table:
+        table["confidence"] = pd.NA
+    for column in [
         "avg_rating",
         "avg_difficulty",
         "avg_workload",
         "recommend_score",
-        "tags",
-        "recommendation_reason",
+        "smoothed_rating",
+        "review_count",
+    ]:
+        table[column] = pd.to_numeric(table[column], errors="coerce")
+    valid = table["review_count"].isna() | (table["review_count"] > 0)
+    for column in ["avg_rating", "avg_difficulty", "avg_workload", "smoothed_rating"]:
+        valid &= table[column].between(1, 5)
+    valid &= table["recommend_score"].notna()
+    table = table[valid].copy()
+    table["preference_score"] = [
+        row["recommend_score"] + sum(amount for _, amount in _preference_adjustments(row, preferences))
+        for _, row in table.iterrows()
+    ]
+    table["_tie_id"] = table["course_id"].astype(str) if "course_id" in table else ""
+    result = (
+        table.sort_values(
+            ["preference_score", "course_code", "_tie_id"], ascending=[False, True, True], kind="stable"
+        )
+        .head(top_n)
+        .copy()
+    )
+    result["recommendation_reason"] = [
+        _recommendation_reason(row, preferences) for _, row in result.iterrows()
     ]
     return result[columns].reset_index(drop=True)
 
 
 def similar_courses(
-    course_code: str,
-    top_n: int = 5,
-    recommendation_table: pd.DataFrame | None = None,
+    course_code: str, top_n: int = 5, recommendation_table: pd.DataFrame | None = None
 ) -> pd.DataFrame:
-    """Recommend similar courses using TF-IDF over tags, keywords, and department."""
-    table = recommendation_table.copy() if recommendation_table is not None else build_recommendation_table()
-    table["course_code"] = table["course_code"].astype(str)
-    if course_code not in set(table["course_code"]):
-        return pd.DataFrame(columns=["course_code", "course_name", "department", "similarity_score", "common_tags"])
-
-    corpus = (
-        table["department"].fillna("")
-        + " "
-        + table["tags"].fillna("")
-        + " "
-        + table["keywords"].fillna("")
-        + " "
-        + table["course_name"].fillna("")
-    )
-    matrix = TfidfVectorizer(stop_words="english").fit_transform(corpus)
-    idx = table.index[table["course_code"] == course_code][0]
-    scores = cosine_similarity(matrix[idx], matrix).ravel()
-    table = table.copy()
-    table["similarity_score"] = scores
-    source_tags = {tag.strip() for tag in str(table.loc[idx, "tags"]).split(",") if tag.strip()}
+    """Return only positive-overlap content matches, using positional matrix indices."""
+    table = (
+        recommendation_table.copy() if recommendation_table is not None else build_recommendation_table()
+    ).reset_index(drop=True)
+    empty = pd.DataFrame(columns=SIMILARITY_COLUMNS)
+    if table.empty or top_n <= 0:
+        return empty
+    for column in ["course_code", "course_name", "department", "tags", "keywords"]:
+        if column not in table:
+            table[column] = ""
+        table[column] = table[column].fillna("").astype(str)
+    source = table.index[table["course_code"] == str(course_code)]
+    if source.empty:
+        return empty
+    corpus = table[["department", "tags", "keywords", "course_name"]].agg(" ".join, axis=1)
+    try:
+        matrix = TfidfVectorizer(stop_words="english").fit_transform(corpus)
+    except ValueError as exc:
+        if "empty vocabulary" not in str(exc):
+            raise
+        return empty
+    idx = source[0]
+    table["similarity_score"] = cosine_similarity(matrix[idx], matrix).ravel()
+    display_tags = {
+        tag.strip().casefold(): tag.strip() for tag in table.loc[idx, "tags"].split(",") if tag.strip()
+    }
     table["common_tags"] = table["tags"].apply(
-        lambda tags: join_non_empty(sorted(source_tags.intersection({tag.strip() for tag in str(tags).split(",") if tag.strip()})))
+        lambda tags: join_non_empty(
+            display_tags[tag] for tag in sorted(set(display_tags).intersection(_tag_set(tags)))
+        )
     )
     return (
-        table[table["course_code"] != course_code]
-        .sort_values("similarity_score", ascending=False)
-        .head(top_n)[["course_code", "course_name", "department", "similarity_score", "common_tags"]]
+        table[(table["course_code"] != str(course_code)) & (table["similarity_score"] > 0)]
+        .sort_values(["similarity_score", "course_code"], ascending=[False, True], kind="stable")
+        .head(top_n)[SIMILARITY_COLUMNS]
         .reset_index(drop=True)
     )
 

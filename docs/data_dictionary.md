@@ -65,7 +65,7 @@ Processed tables mirror the raw entities after cleaning:
 | instructors_clean.csv | Clean instructor dimension |
 | semesters_clean.csv | Clean semester dimension |
 | course_offerings_clean.csv | Clean offering fact table |
-| reviews_clean.csv | Clean review fact table with normalized text and clipped scores |
+| reviews_clean.csv | Clean review facts with normalized text; invalid scores remain visible to validation |
 | course_tags.csv | Course-level NLP keywords and generated tags |
 | data_quality_report.csv | Rule-level quality check results |
 
@@ -78,6 +78,26 @@ Processed tables mirror the raw entities after cleaning:
 | DWS | dws_course_summary | Course-level metrics |
 | DWS | dws_instructor_summary | Instructor-level metrics |
 | DWS | dws_department_summary | Department-level metrics |
-| ADS | ads_course_profile | Application-ready course profiles and scores |
+| DWS | dws_course_text_features | Non-negated review mention proportions |
+| DWS | dws_course_tags | Published course keyword/tag snapshot |
+| ADS | ads_course_profile | Application-ready course profiles, review counts and smoothed scores |
 | ADS | ads_course_recommendation | Sorted recommendation table |
 | ADS | ads_data_quality_report | BI-ready quality report |
+
+## v2 Profile and Recommendation Fields
+
+| Field | Meaning |
+| --- | --- |
+| review_count | Number of valid reviews; known zero-review courses are excluded from rankings |
+| confidence | n / (n + 10), the weight of a course mean in rating smoothing, not an accuracy probability |
+| smoothed_rating | Review-count weighted blend of the course rating and global review mean |
+| recommend_score | Default 1–5 weighted course-profile ranking score |
+| preference_score | Actual ranking score after explicit preference adjustments; may exceed 5 |
+| recommendation_reason | Explanation aligned with the applied preference contributions |
+| similarity_score | TF-IDF cosine similarity of course content, between 0 and 1 |
+
+## Data Quality Report
+
+`check_name`, `table_name`, `status`, `failed_count`, `total_count`, `failure_rate`, and UTC `check_time` describe each check. Empty tables have a failing presence check and zero record counts; this avoids inventing a failing record. A row can fail multiple checks, so summed failed_count is a count of rule violations rather than distinct bad records.
+
+Required source columns must be present as shown above. Optional course prerequisites may be empty. Text analytics currently supports English comments; the interface is Chinese-first. Numeric scores must lie within 1–5. Dates must parse successfully, semester start must not exceed end, and reviews must fall inside the referenced semester.
