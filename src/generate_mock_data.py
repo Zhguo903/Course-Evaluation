@@ -1,4 +1,4 @@
-"""Generate synthetic campus course review data for CourseInsight."""
+"""Load official course metadata and generate explicitly synthetic demo reviews."""
 
 from __future__ import annotations
 
@@ -9,77 +9,31 @@ import numpy as np
 import pandas as pd
 
 try:
+    from src.catalog import load_catalog
     from src.config import DEPARTMENTS, RAW_DATA_DIR, RAW_FILES, ensure_directories
     from src.utils import log_step, write_csv
 except ImportError:  # pragma: no cover
+    from catalog import load_catalog
     from config import DEPARTMENTS, RAW_DATA_DIR, RAW_FILES, ensure_directories
     from utils import log_step, write_csv
 
 
 RANDOM_SEED = 42
 
-COURSE_PREFIX = {
-    "Statistics": "STA",
-    "Computer Science": "CSC",
-    "Data Science": "JSC",
-    "Economics": "ECO",
-    "Mathematics": "MAT",
-    "Biology": "BIO",
-    "Psychology": "PSY",
-    "Business": "MGT",
-}
-
-COURSE_TOPICS = {
-    "Statistics": ["Regression", "Statistical Learning", "Inference", "Experimental Design"],
-    "Computer Science": ["Databases", "Algorithms", "Software Design", "Machine Learning"],
-    "Data Science": ["Data Mining", "Analytics", "Visualization", "Applied Machine Learning"],
-    "Economics": ["Microeconomics", "Econometrics", "Markets", "Public Policy"],
-    "Mathematics": ["Linear Algebra", "Calculus", "Optimization", "Proofs"],
-    "Biology": ["Genetics", "Ecology", "Cell Biology", "Bioinformatics"],
-    "Psychology": ["Cognition", "Behavior", "Research Methods", "Social Psychology"],
-    "Business": ["Strategy", "Marketing", "Finance", "Operations"],
-}
-
 
 def generate_courses(n_courses: int = 200) -> pd.DataFrame:
-    """Generate synthetic course dimension data."""
-    rows = []
-    used_codes: set[str] = set()
-    campuses = ["St. George", "Scarborough", "Mississauga"]
+    """Load an offline official UofT three-campus course catalog snapshot.
 
-    for course_id in range(1, n_courses + 1):
-        department = DEPARTMENTS[(course_id - 1) % len(DEPARTMENTS)]
-        prefix = COURSE_PREFIX[department]
-        level = random.choice([100, 200, 300, 400])
-        number = level + random.randint(0, 99)
-        course_code = f"{prefix}{number}"
-        while course_code in used_codes:
-            number = level + random.randint(0, 99)
-            course_code = f"{prefix}{number}"
-        used_codes.add(course_code)
-        topic = random.choice(COURSE_TOPICS[department])
-        rows.append(
-            {
-                "course_id": course_id,
-                "course_code": course_code,
-                "course_name": f"{topic} {level // 100}",
-                "department": department,
-                "course_level": level,
-                "credit": random.choice([0.5, 1.0]),
-                "prerequisite": "" if level == 100 else f"{prefix}{level - 100 + random.randint(0, 49)}",
-                "campus": random.choice(campuses),
-            }
-        )
-    courses = pd.DataFrame(rows)
-    # Prerequisites reference generated lower-level courses rather than invented codes.
-    for index, course in courses.iterrows():
-        candidates = courses.loc[
-            (courses["department"] == course["department"])
-            & (courses["course_level"] < course["course_level"]),
-            "course_code",
-        ]
-        courses.at[index, "prerequisite"] = candidates.iloc[0] if len(candidates) else ""
-    return courses
+    The metadata is official; related reviews, instructors, and offerings are
+    synthetic examples. A subset is supported without fabricating extra courses.
+    """
+    records = load_catalog()
+    if isinstance(n_courses, bool) or not isinstance(n_courses, int) or not 0 <= n_courses <= len(records):
+        raise ValueError(f"n_courses must be an integer between 0 and {len(records)}")
+    courses = pd.DataFrame(records).iloc[:n_courses].copy()
+    if "course_id" not in courses:
+        courses.insert(0, "course_id", range(1, n_courses + 1))
+    return courses.reset_index(drop=True)
 
 
 def generate_instructors(n_instructors: int = 60) -> pd.DataFrame:
@@ -178,8 +132,7 @@ def _course_profile(course: dict) -> tuple[float, float, float, float, bool]:
     rng = np.random.default_rng(RANDOM_SEED + int(course["course_id"]))
     level_effect = (int(course["course_level"]) - 250) / 250
     practical = bool(
-        rng.random()
-        < (0.75 if course["department"] in {"Computer Science", "Data Science", "Business"} else 0.4)
+        rng.random() < (0.75 if course["department"] in {"Computer Science", "Biology", "Economics"} else 0.4)
     )
     difficulty = float(np.clip(3.0 + level_effect + rng.normal(0, 0.65), 1.5, 4.7))
     workload = float(np.clip(difficulty * 0.6 + 1.2 + rng.normal(0, 0.6), 1.5, 4.7))
@@ -222,7 +175,7 @@ def _review_text(course: dict, scores: tuple[float, float, float, float]) -> str
     format_text = (
         "Practical projects and hands-on exercises"
         if practical
-        else "Theoretical concepts, formulas, and analytical reasoning"
+        else "Theoretical concepts, readings, and analytical reasoning"
     )
     value_text = (
         "Useful skills for future study and careers"
@@ -231,7 +184,7 @@ def _review_text(course: dict, scores: tuple[float, float, float, float]) -> str
     )
     # Include the actual subject in every review; unrelated generic coding/math
     # claims no longer leak into courses from other disciplines.
-    return f"{topic} focused on {topic.rsplit(' ', 1)[0].lower()}. {format_text}. {workload_text}. {difficulty_text}. {teaching_text}. {value_text}."
+    return f"{topic} focused on {topic.lower()}. {format_text}. {workload_text}. {difficulty_text}. {teaching_text}. {value_text}."
 
 
 def generate_reviews(
@@ -265,6 +218,8 @@ def generate_reviews(
                 "usefulness": usefulness,
                 "review_text": review_text,
                 "review_date": review_date.date().isoformat(),
+                "data_source": "synthetic_community_inspired",
+                "source_note": "Synthetic examples inspired by maintainer-described community discussion themes; no original group messages or real review records are ingested.",
             }
         )
     return pd.DataFrame(rows)
@@ -275,7 +230,9 @@ def generate_all() -> None:
     random.seed(RANDOM_SEED)
     np.random.seed(RANDOM_SEED)
     ensure_directories()
-    log_step("Generating mock courses, instructors, semesters, offerings, and reviews")
+    log_step(
+        "Loading official UofT course metadata; generating synthetic instructors, offerings, and reviews"
+    )
     courses = generate_courses()
     instructors = generate_instructors()
     semesters = generate_semesters()

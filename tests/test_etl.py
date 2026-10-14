@@ -114,3 +114,72 @@ def test_mixed_iso_dates_preserve_valid_values_and_missing():
     result = _dates(pd.Series(["2025-01-02", "2025-01-03T14:30:00Z", None, "invalid"]))
     assert result.iloc[:2].tolist() == ["2025-01-02", "2025-01-03"]
     assert result.iloc[2:].isna().all()
+
+
+def test_official_course_requirement_text_is_preserved_without_eligibility_inference() -> None:
+    raw = pd.DataFrame(
+        {
+            "course_id": [1],
+            "course_code": [" csca08h3 "],
+            "course_name": ["Introduction to Computer Science I"],
+            "department": ["Computer Science"],
+            "course_level": [100],
+            "credit": [0.5],
+            "campus": ["Scarborough"],
+            "prerequisite": [
+                "(MAT102H5 AND 60% in CSC108H5) OR consent of the department; 4.0 credits required."
+            ],
+            "corequisite": ["MAT133Y1 or MAT135H1"],
+            "exclusion": ["CSC108H1, CSC108H5"],
+            "recommended_preparation": ["Some programming experience"],
+            "enrolment_requirements": ["Permission of the instructor"],
+            "requirement_notes": ["Restricted to students in the admission stream."],
+            "breadth_categories": [[]],
+            "requirement_categories": [["Quantitative Reasoning"]],
+            "breadth_requirements": ["Quantitative Reasoning"],
+            "requirement_system": ["utsc_breadth"],
+            "metadata_source": ["official_calendar"],
+            "prerequisite_status": ["listed"],
+            "source_url": ["https://utsc.calendar.utoronto.ca/course/csca08h3"],
+            "source_retrieved_at": ["2026-10-13"],
+        }
+    )
+    cleaned = clean_courses(raw)
+    assert cleaned.loc[0, "course_code"] == "CSCA08H3"
+    for field in [
+        "prerequisite",
+        "corequisite",
+        "exclusion",
+        "recommended_preparation",
+        "enrolment_requirements",
+        "requirement_notes",
+    ]:
+        assert cleaned.loc[0, field] == raw.loc[0, field]
+    assert cleaned.loc[0, "requirement_categories"] == '["Quantitative Reasoning"]'
+    assert cleaned.loc[0, "breadth_categories"] == "[]"
+
+
+def test_legacy_course_import_adds_empty_metadata_without_claiming_official_source() -> None:
+    raw = pd.DataFrame(
+        {
+            "course_id": [1],
+            "course_code": ["STA303"],
+            "course_name": ["Regression"],
+            "department": ["Statistics"],
+            "course_level": [300],
+            "credit": [0.5],
+            "campus": ["Main"],
+        }
+    )
+    cleaned = clean_courses(raw)
+    for field in [
+        "prerequisite",
+        "corequisite",
+        "metadata_source",
+        "source_url",
+        "prerequisite_status",
+        "requirement_system",
+    ]:
+        assert cleaned.loc[0, field] == ""
+    assert cleaned.loc[0, "breadth_categories"] == "[]"
+    assert cleaned.loc[0, "requirement_categories"] == "[]"

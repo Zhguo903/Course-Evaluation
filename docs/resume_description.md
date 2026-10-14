@@ -2,32 +2,32 @@
 
 ## 中文项目介绍
 
-**CourseInsight｜课程评价分析与可解释选课推荐系统**
+**CourseInsight｜多伦多大学课程探索与可解释选课推荐系统**
 
-基于 Python、pandas、DuckDB 与 Streamlit 构建本地课程评价数据产品原型。使用覆盖 200 门课程、60 位教师、800 条开课记录及 12,000 条评论的模拟数据，完成数据清洗、质量校验、ODS–DWD–DWS–ADS 分层建模和 SQL 指标分析。结合 TF-IDF 关键词提取、规则标签、评论数量平滑与用户偏好加权，实现课程画像、可解释推荐及相似课程检索，并通过交互式看板支持课程筛选、对比和结果导出。
+面向多伦多大学学生构建课程信息整合与推荐原型，结合 St. George、UTM 和 UTSC 的官方课程目录，以及参考学生会、校友及课友群常见选课反馈生成的模拟评价，帮助学生更高效地比较感兴趣的课程。整理 200 门真实课程的校区、广度/分布类别、先修及相关注册要求，保留官方来源并区分三校区的分类体系。基于 Python、pandas、DuckDB 与 Streamlit 完成数据清洗、质量校验、分层数仓、课程画像与偏好排序，提供课程筛选、比较、相似检索和结果导出。
 
 ## 个人网站精简版
 
-将课程评分与文字评论整理为可比较的课程画像，通过学习负担、课程难度和内容偏好辅助选课。项目串联数据清洗、DuckDB 分层数仓、文本分析与交互式看板，完整展示从模拟原始数据到可解释推荐的数据产品流程。
+为多伦多大学学生整合三校区官方课程信息与社区交流主题下的模拟选课反馈。支持按校区和 BR/Distribution 分类探索课程、查阅先修条件，并结合学习负担和内容偏好进行比较与推荐。
 
 ## 简历要点
 
-- 设计 ODS–DWD–DWS–ADS 本地数仓，使用 pandas 标准化明细数据，使用 DuckDB SQL 汇总课程、教师与院系指标。
-- 构建覆盖字段、日期、评分范围及表间关联的数据质量检查，保存异常报告并在检查失败时阻止数仓发布。
-- 结合 TF-IDF、评论提及比例标签与评分平滑，实现基于显式偏好的推荐、排序解释和相似课程检索。
-- 开发 Streamlit + Plotly 看板，提供多条件筛选、课程比较和 CSV 导出，并通过回归测试与 GitHub Actions 验证核心流程。
+- 整合 St. George、UTM 和 UTSC 的 200 门官方课程记录，保存广度/分布类别、先修/共修/排除要求及可追溯来源。
+- 设计 ODS–DWD–DWS–ADS 本地数仓，保留复杂课程要求原文，避免跨校区分类误映射。
+- 使用 TF-IDF、比例标签与评分平滑，为 12,000 条模拟评价构建课程画像和可解释偏好排序。
+- 开发支持校区、类别筛选、课程比较及 CSV 导出的 Streamlit 看板，并以质量门禁和自动化测试验证数据流程。
 
 ## English description
 
-**CourseInsight | Course Review Analytics & Explainable Recommendations**
+**CourseInsight | University of Toronto Course Explorer & Explainable Recommendations**
 
-Built a local analytics engineering prototype with Python, pandas, DuckDB and Streamlit. Used synthetic data covering 200 courses, 60 instructors, 800 offerings and 12,000 reviews to implement ETL, integrity checks, layered ODS–DWD–DWS–ADS modeling and SQL analytics. Combined TF-IDF keywords, proportion-based rule tags, review-count rating smoothing and explicit preference scoring to deliver course profiles, explainable rankings and similar-course retrieval. Developed an interactive dashboard for filtering, comparison, exports and data-quality inspection.
+Built a course-information and recommendation prototype for University of Toronto students. Integrated official course metadata from St. George, UTM and UTSC, including campus-specific breadth/distribution categories, prerequisites, corequisites, exclusions and other enrolment requirements. Used synthetic feedback inspired by student-union, alumni and peer-group discussion themes, as described by the maintainer, to demonstrate course profiles and preference-based rankings. Implemented ETL, validation, a layered DuckDB warehouse and a Streamlit dashboard for course filtering, comparison, similarity search and CSV exports.
 
-- Designed a layered DuckDB warehouse and reusable course, instructor and department metrics.
-- Implemented data-quality checks and a publication gate that preserves failure diagnostics.
-- Developed preference-based ranking, score-aligned explanations and TF-IDF similarity retrieval.
-- Delivered a Streamlit dashboard with regression tests and GitHub Actions verification.
+- Integrated 200 official course records with source links and retrieval dates while keeping campus classification systems separate.
+- Preserved complete prerequisite and enrolment condition wording through the analytics warehouse.
+- Developed explainable rankings from 12,000 synthetic reviews using TF-IDF features, rule tags and rating smoothing.
+- Delivered campus-aware exploration and comparison with automated integrity and application checks.
 
 ## 表述依据
 
-数据规模为默认模拟生成规模；GPA 友好度与职业相关性是启发式指标。当前版本没有真实用户运营数据或推荐效果评估结果，因此不使用准确率提升、真实成绩改善等未经验证的表述。
+课程元数据来自官方目录，200 门为选取样本。社区信息参考背景由维护者说明；仓库不含原始群聊消息或真实学生评价。教师、开课与评价记录为模拟数据，GPA 友好度与职业相关性为启发式指标；没有真实选课效率或推荐准确率提升的实测数据。

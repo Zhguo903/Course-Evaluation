@@ -2,15 +2,20 @@
 
 from __future__ import annotations
 
+import json
+from urllib.parse import urlparse
+
 from datetime import datetime, timezone
 from typing import Dict
 
 import pandas as pd
 
 try:
+    from src.catalog import validate_catalog
     from src.config import PROCESSED_DATA_DIR, PROCESSED_FILES
     from src.utils import log_step, read_csv, write_csv
 except ImportError:  # pragma: no cover
+    from catalog import validate_catalog
     from config import PROCESSED_DATA_DIR, PROCESSED_FILES
     from utils import log_step, read_csv, write_csv
 
@@ -51,7 +56,104 @@ def check_rating_range(reviews: pd.DataFrame, column: str = "rating") -> pd.Seri
 
 
 def check_course_code_format(courses: pd.DataFrame) -> pd.Series:
-    return _column(courses, "course_code").astype("string").str.fullmatch(r"[A-Z]{3}\d{3}", na=False)
+    return (
+        _column(courses, "course_code")
+        .astype("string")
+        .str.fullmatch(r"(?:[A-Z]{3}\d{3}(?:[HY][15])?|[A-Z]{3}[A-D]\d{2}[HY]3)", na=False)
+    )
+
+
+def _valid_breadth(value: object) -> bool:
+    """BR IDs are metadata, not a claim that the student has fulfilled BR."""
+    if isinstance(value, list):
+        categories = value
+    elif pd.isna(value) or str(value).strip() == "":
+        categories = []
+    else:
+        try:
+            categories = json.loads(str(value))
+        except (TypeError, ValueError):
+            return False
+    return (
+        isinstance(categories, list)
+        and all(type(category) is int and 1 <= category <= 5 for category in categories)
+        and len(categories) == len(set(categories))
+    )
+
+
+def _valid_requirement_categories(value: object) -> bool:
+    if isinstance(value, list):
+        categories = value
+    elif pd.isna(value):
+        return False
+    else:
+        try:
+            categories = json.loads(str(value))
+        except (TypeError, ValueError):
+            return False
+    return (
+        isinstance(categories, list)
+        and all(isinstance(category, str) and bool(category.strip()) for category in categories)
+        and len(categories) == len(set(categories))
+    )
+
+
+def _empty_categories(value: object) -> bool:
+    if isinstance(value, list):
+        return value == []
+    if pd.isna(value):
+        return True
+    try:
+        return json.loads(str(value)) == []
+    except (TypeError, ValueError):
+        return False
+
+
+def _official_source_matches(url: object, code: object) -> bool:
+    if pd.isna(url) or pd.isna(code):
+        return False
+    try:
+        parsed = urlparse(str(url))
+    except ValueError:
+        return False
+    source_host = {
+        "1": "artsci.calendar.utoronto.ca",
+        "5": "utm.calendar.utoronto.ca",
+        "3": "utsc.calendar.utoronto.ca",
+    }.get(str(code)[-1:])
+    return (
+        parsed.scheme == "https"
+        and parsed.netloc == source_host
+        and parsed.path.rstrip("/").lower() == f"/course/{str(code).lower()}"
+    )
+
+
+def _official_metadata_consistent(record: dict) -> bool:
+    """Apply the same raw-text/category validation to imports and snapshots."""
+    source = record.get("metadata_source")
+    if not isinstance(source, str) or source != "official_calendar":
+        return True
+    normalized = record.copy()
+    # CSV readers represent blank optional requirement text as NaN. Restore its
+    # empty-string representation without rewriting any nonempty requirement.
+    for field in [
+        "prerequisite",
+        "corequisite",
+        "exclusion",
+        "recommended_preparation",
+        "enrolment_requirements",
+        "requirement_notes",
+        "breadth_requirements",
+        "distribution_requirements",
+    ]:
+        value = normalized.get(field)
+        if pd.api.types.is_scalar(value) and pd.isna(value):
+            normalized[field] = ""
+    try:
+        validate_catalog([normalized])
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return False
+    return True
 
 
 def check_enrollment_capacity(offerings: pd.DataFrame) -> pd.Series:
@@ -135,6 +237,71 @@ def run_data_quality_checks(data: Dict[str, pd.DataFrame] | None = None) -> pd.D
         data[key] for key in ["courses", "semesters", "offerings", "reviews"]
     )
     add("course_code_format", "courses", check_course_code_format(courses))
+    add("breadth_categories_valid", "courses", _column(courses, "breadth_categories").map(_valid_breadth))
+    official = _column(courses, "metadata_source").eq("official_calendar").fillna(False)
+    add(
+        "official_metadata_consistent",
+        "courses",
+        pd.Series(
+            [_official_metadata_consistent(record) for record in courses.to_dict("records")],
+            index=courses.index,
+            dtype=bool,
+        ),
+    )
+    codes = _column(courses, "course_code").astype("string")
+    add(
+        "official_course_code_format",
+        "courses",
+        ~official | codes.str.fullmatch(r"(?:[A-Z]{3}[1-4]\d{2}[HY][15]|[A-Z]{3}[A-D]\d{2}[HY]3)", na=False),
+    )
+    source_matches = pd.Series(
+        [_official_source_matches(url, code) for url, code in zip(_column(courses, "source_url"), codes)],
+        index=courses.index,
+        dtype=bool,
+    )
+    add("official_course_source_url", "courses", ~official | source_matches)
+    retrieved = pd.to_datetime(
+        _column(courses, "source_retrieved_at"), format="mixed", errors="coerce", utc=True
+    )
+    add("official_source_retrieved_at", "courses", ~official | retrieved.notna())
+    campus_for_code = codes.str[-1].map({"1": "St. George", "5": "Mississauga", "3": "Scarborough"})
+    add("official_course_campus", "courses", ~official | _column(courses, "campus").eq(campus_for_code))
+    system_for_code = codes.str[-1].map({"1": "artsci_breadth", "5": "utm_distribution", "3": "utsc_breadth"})
+    add(
+        "official_requirement_system",
+        "courses",
+        ~official | _column(courses, "requirement_system").eq(system_for_code),
+    )
+    add(
+        "official_requirement_categories",
+        "courses",
+        ~official
+        | _column(courses, "requirement_categories").map(_valid_requirement_categories).astype(bool),
+    )
+    sg_or_empty = codes.str[-1].eq("1") | _column(courses, "breadth_categories").map(
+        _empty_categories
+    ).astype(bool)
+    add("official_sg_breadth_categories_only", "courses", ~official | sg_or_empty)
+    credits_for_code = codes.str[-2].map({"H": 0.5, "Y": 1.0})
+    add(
+        "official_course_credit",
+        "courses",
+        ~official | pd.to_numeric(_column(courses, "credit"), errors="coerce").eq(credits_for_code),
+    )
+    levels_for_code = codes.str[3].map(
+        {"1": 100, "2": 200, "3": 300, "4": 400, "A": 100, "B": 200, "C": 300, "D": 400}
+    )
+    add(
+        "official_course_level",
+        "courses",
+        ~official | pd.to_numeric(_column(courses, "course_level"), errors="coerce").eq(levels_for_code),
+    )
+    prerequisite = _column(courses, "prerequisite").astype("string").str.strip().fillna("")
+    status = _column(courses, "prerequisite_status")
+    consistent_status = (prerequisite.ne("") & status.eq("listed")) | (
+        prerequisite.eq("") & status.eq("not_listed")
+    )
+    add("official_prerequisite_status", "courses", ~official | consistent_status)
     add("course_code_unique", "courses", ~_column(courses, "course_code").duplicated(keep=False))
     add(
         "course_level_valid",

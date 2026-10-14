@@ -137,3 +137,23 @@ def test_recommendation_tags_are_read_from_committed_database(warehouse_input, t
     table = recommender.build_recommendation_table()
     assert table.loc[table["course_id"] == 1, "tags"].item() == "Project Based"
     assert table["course_level"].tolist() == [100, 200, 300]
+
+
+def test_official_requirements_survive_warehouse_and_ranking(warehouse_input):
+    courses, reviews = warehouse_input
+    courses = courses.copy()
+    courses["campus"] = "St. George"
+    courses["requirement_system"] = "artsci_breadth"
+    courses["breadth_categories"] = "[5]"
+    courses["requirement_categories"] = '["The Physical and Mathematical Universes (5)"]'
+    courses["prerequisite"] = "(MAT135H1 and MAT136H1) or MAT137Y1; minimum grade 70%"
+    courses["corequisite"] = "STA237H1"
+    courses["source_url"] = "https://artsci.calendar.utoronto.ca/course/sta303h1"
+    with duckdb.connect(":memory:") as conn:
+        summary = _dws(conn, courses, reviews)
+    profile = warehouse.build_course_profile(summary, reviews)
+    result = recommender.recommend_courses(recommendation_table=profile)
+    assert result.prerequisite.eq(courses.prerequisite.iloc[0]).all()
+    assert result.breadth_categories.eq("[5]").all()
+    assert result.source_url.eq(courses.source_url.iloc[0]).all()
+    assert result.corequisite.eq("STA237H1").all()

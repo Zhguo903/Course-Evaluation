@@ -17,12 +17,12 @@ DUCKDB_PATH = WAREHOUSE_DIR / "course_insight.duckdb"
 DEPARTMENTS = [
     "Statistics",
     "Computer Science",
-    "Data Science",
     "Economics",
     "Mathematics",
     "Biology",
     "Psychology",
-    "Business",
+    "English",
+    "History",
 ]
 
 RAW_FILES = {

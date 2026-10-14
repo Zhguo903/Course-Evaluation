@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "source_retrieved_at": "2026-10-13",
+  "course_count": 200,
+  "campus_coverage": {
+    "St. George": 80,
+    "Mississauga": 60,
+    "Scarborough": 60
+  },
+  "scope": "Curated sample across 8 subjects and 3 campuses; not the complete university catalogue",
+  "metadata_source": "official_calendar",
+  "catalog_sha256": "944fecfde69906a88ba21ac4af4771ebce8ec254054bccfeba4489019a45948a",
+  "missing_requirements": "Empty official field means not listed, not automatically no requirement",
+  "requirements": "Original calendar text, whitespace normalized; no eligibility inference",
+  "review_data": "Excluded; student reviews and instructors in the demo remain synthetic",
+  "sources": [
+    {
+      "key": "sg-statistics",
+      "url": "https://artsci.calendar.utoronto.ca/section/Statistical-Sciences",
+      "selected_courses": 10,
+      "html_sha256": "f8bf86730f51c4ee7779f8d41330c14777869af83a5a3da6dcde3d15597f0c78"
+    },
+    {
+      "key": "sg-computer-science",
+      "url": "https://artsci.calendar.utoronto.ca/section/Computer-Science",
+      "selected_courses": 10,
+      "html_sha256": "0dd7a91f075c4ba5ff7665dab3fcb106d4fe913e5318d6662b155d5b8b177daf"
+    },
+    {
+      "key": "sg-economics",
+      "url": "https://artsci.calendar.utoronto.ca/section/Economics",
+      "selected_courses": 10,
+      "html_sha256": "9af478aa2bc8fef7bad268d7de45a4b1860d99c7e37d47b65cb41a112fa39646"
+    },
+    {
+      "key": "sg-mathematics",
+      "url": "https://artsci.calendar.utoronto.ca/section/Mathematics",
+      "selected_courses": 10,
+      "html_sha256": "40c4b11af8081a97accefa8bc6149db388fd6deab28214e2cd0aa241750baf0b"
+    },
+    {
+      "key": "sg-biology",
+      "url": "https://artsci.calendar.utoronto.ca/section/Cell-and-Systems-Biology",
+      "selected_courses": 10,
+      "html_sha256": "8e4b2dca9d63557ff4c72c8d4df3734e402283aa54f0e7399a2b42bf1fa34dbc"
+    },
+    {
+      "key": "sg-psychology",
+      "url": "https://artsci.calendar.utoronto.ca/section/Psychology",
+      "selected_courses": 10,
+      "html_sha256": "ac4f9b3927a345b09bbca0e8ef4bc5b0be915941944626392fcc669a7c12c37f"
+    },
+    {
+      "key": "sg-english",
+      "url": "https://artsci.calendar.utoronto.ca/section/English",
+      "selected_courses": 10,
+      "html_sha256": "157d486ef6e5ee855487f5fe2c1c2c4febfa6a0fcb589c1a510da232289acf72"
+    },
+    {
+      "key": "sg-history",
+      "url": "https://artsci.calendar.utoronto.ca/section/History",
+      "selected_courses": 10,
+      "html_sha256": "b1136d865c4b38cf163c1ca8f7c15c8e758d7ef30e21f1a35d90068de31df821"
+    },
+    {
+      "key": "utm-statistics",
+      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Statistics%2C+Applied",
+      "selected_courses": 8,
+      "html_sha256": "efdfb757ee2bd390826fc9fb5063f137f399c1215b5734107afef366e6c1fa94"
+    },
+    {
+      "key": "utm-computer-science",
+      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Computer+Science",
+      "selected_courses": 8,
+      "html_sha256": "ce1b8c9b6d069c40370e993e9f3ea0c114479b379dc5c4ffc9bfd4ef6ed02c2a"
+    },
+    {
+      "key": "utm-economics",
+      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Economics",
+      "selected_courses": 8,
+      "html_sha256": "85fd7f8f594b92bf46a7452f681803becf241dd018c28ebc88166ec812dd854c"
+    },
+    {
+      "key": "utm-mathematics",
+      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Mathematical+Sciences",
+      "selected_courses": 8,
+      "html_sha256": "baf687887ba44aa2b5b41310a645c22f4d2e97ffa610e66cc55f4f6a88bd9556"
+    },
+    {
+      "key": "utm-biology",
+      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Biology",
+      "selected_courses": 7,
+      "html_sha256": "8b8f1f5761224754ac1967ed26ef17f8ce011faba95db5de1eb8cf03b2f545bc"
+    },
+    {
+      "key": "utm-psychology",
+      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Psychology",
+      "selected_courses": 7,
+      "html_sha256": "88368b55b84bd3e05cf82c9694333106e7ee07915e3fb5d5726eb4348e0579eb"
+    },
+    {
+      "key": "utm-english",
+      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=English",
+      "selected_courses": 7,
+      "html_sha256": "21c8f671ef93e0f3490d4edc138e1192af44084c9cad43b1772ef3b6a2722270"
+    },
+    {
+      "key": "utm-history",
+      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=History",
+      "selected_courses": 7,
+      "html_sha256": "a85346bf4f52a111ac405bf84c315ab503d2c6f647cf15e503bf1c883b315c6d"
+    },
+    {
+      "key": "utsc-statistics",
+      "url": "https://utsc.calendar.utoronto.ca/section/Statistics",
+      "selected_courses": 8,
+      "html_sha256": "0f1ccd843ad6847460eb0a5512a7f75a891080662f9ae9cf3bb2a2fe627bbce7"
+    },
+    {
+      "key": "utsc-computer-science",
+      "url": "https://utsc.calendar.utoronto.ca/section/Computer-Science",
+      "selected_courses": 8,
+      "html_sha256": "f2b11e077ba973fbbc0095d2713e610ff6aafd3581dbe9706bdf6a8ac0b8bc61"
+    },
+    {
+      "key": "utsc-economics",
+      "url": "https://utsc.calendar.utoronto.ca/section/Economics-for-Management-Studies",
+      "selected_courses": 8,
+      "html_sha256": "a4a5e543d71f2af72bb30449e4727a1e5b2768a52da1f3bf34e7e11171985b9f"
+    },
+    {
+      "key": "utsc-mathematics",
+      "url": "https://utsc.calendar.utoronto.ca/section/Mathematics",
+      "selected_courses": 8,
+      "html_sha256": "d8a895ba83a3e50b6d8148b31b4bc5d3aa3767245d42baee366c8e9affbdb879"
+    },
+    {
+      "key": "utsc-biology",
+      "url": "https://utsc.calendar.utoronto.ca/section/Biological-Sciences",
+      "selected_courses": 7,
+      "html_sha256": "175f35b0d212aeecf1b370861d7d7c01f50e172ee21fd9177a2939439ff2e8fa"
+    },
+    {
+      "key": "utsc-psychology",
+      "url": "https://utsc.calendar.utoronto.ca/section/Psychology",
+      "selected_courses": 7,
+      "html_sha256": "b11beb14010ad3ab418ffe2e19253415b467c77bee10efbec38da0d337cd606e"
+    },
+    {
+      "key": "utsc-english",
+      "url": "https://utsc.calendar.utoronto.ca/section/English",
+      "selected_courses": 7,
+      "html_sha256": "3574893bc9ce8f425d6b88c916d02e3ae67e7005d4968f3fac31033be9aeb412"
+    },
+    {
+      "key": "utsc-history",
+      "url": "https://utsc.calendar.utoronto.ca/section/History",
+      "selected_courses": 7,
+      "html_sha256": "e73facfbc52a882d251357c0d0cbeda434def92641c1f14daa9710cb4c462f93"
+    }
+  ]
+}

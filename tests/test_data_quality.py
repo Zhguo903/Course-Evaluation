@@ -120,3 +120,163 @@ def test_quality_empty_tables_have_honest_counts_and_fail_presence() -> None:
 def test_enrollment_rejects_negative_and_fractional_counts() -> None:
     offerings = pd.DataFrame({"enrolled_count": [-1, 1.5, 1], "capacity": [20, 20, 0]})
     assert not check_enrollment_capacity(offerings).any()
+
+
+def test_course_codes_support_all_three_campuses_and_legacy_imports() -> None:
+    courses = pd.DataFrame(
+        {
+            "course_code": [
+                "STA130H1",
+                "ENG100Y1",
+                "CSC108H5",
+                "CSCA08H3",
+                "ENGB04H3",
+                "STA303",
+                "CSCE08H3",
+                "CSC108H2",
+                "sta130h1",
+            ]
+        }
+    )
+    assert check_course_code_format(courses).tolist() == [
+        True,
+        True,
+        True,
+        True,
+        True,
+        True,
+        False,
+        False,
+        False,
+    ]
+
+
+def _official_data() -> dict:
+    data = _valid_data()
+    data["courses"] = pd.DataFrame(
+        {
+            "course_id": [1, 2, 3],
+            "course_code": ["STA130H1", "CSC108H5", "CSCA08H3"],
+            "course_name": [
+                "Introduction to Statistical Reasoning",
+                "Introduction to Computer Programming",
+                "Introduction to Computer Science I",
+            ],
+            "department": ["Statistics", "Computer Science", "Computer Science"],
+            "course_level": [100, 100, 100],
+            "credit": [0.5, 0.5, 0.5],
+            "campus": ["St. George", "Mississauga", "Scarborough"],
+            "metadata_source": ["official_calendar"] * 3,
+            "source_retrieved_at": ["2026-10-13"] * 3,
+            "source_url": [
+                "https://artsci.calendar.utoronto.ca/course/sta130h1",
+                "https://utm.calendar.utoronto.ca/course/csc108h5",
+                "https://utsc.calendar.utoronto.ca/course/csca08h3",
+            ],
+            "breadth_categories": ["[5]", "[]", "[]"],
+            "requirement_system": ["artsci_breadth", "utm_distribution", "utsc_breadth"],
+            "requirement_categories": [
+                '["The Physical and Mathematical Universes (5)"]',
+                '["Science"]',
+                '["Quantitative Reasoning"]',
+            ],
+            "breadth_requirements": [
+                "The Physical and Mathematical Universes (5)",
+                "",
+                "Quantitative Reasoning",
+            ],
+            "distribution_requirements": ["", "Science", ""],
+            "corequisite": [""] * 3,
+            "exclusion": [""] * 3,
+            "recommended_preparation": [""] * 3,
+            "enrolment_requirements": [""] * 3,
+            "requirement_notes": [""] * 3,
+            "prerequisite": ["", "", "MHF4U or equivalent"],
+            "prerequisite_status": ["not_listed", "not_listed", "listed"],
+        }
+    )
+    return data
+
+
+def test_official_course_metadata_passes_with_campus_specific_requirements() -> None:
+    from src.data_quality import assert_quality, run_data_quality_checks
+
+    assert_quality(run_data_quality_checks(_official_data()))
+
+
+def test_official_metadata_rejects_wrong_campus_provenance_and_br_system() -> None:
+    from src.data_quality import run_data_quality_checks
+
+    data = _official_data()
+    data["courses"].loc[0, "source_url"] = "https://example.com/course/sta130h1"
+    data["courses"].loc[0, "source_retrieved_at"] = "invalid"
+    data["courses"].loc[1, "breadth_categories"] = "[5]"
+    data["courses"].loc[1, "requirement_system"] = "artsci_breadth"
+    data["courses"].loc[2, "prerequisite_status"] = "not_listed"
+    report = run_data_quality_checks(data).set_index("check_name")
+    for check in [
+        "official_course_source_url",
+        "official_source_retrieved_at",
+        "official_sg_breadth_categories_only",
+        "official_requirement_system",
+        "official_prerequisite_status",
+    ]:
+        assert report.loc[check, "failed_count"] == 1
+
+
+def test_breadth_metadata_rejects_out_of_range_and_non_integer_ids() -> None:
+    from src.data_quality import run_data_quality_checks
+
+    data = _official_data()
+    data["courses"]["breadth_categories"] = ["[0,6]", '["5"]', "[true]"]
+    report = run_data_quality_checks(data).set_index("check_name")
+    assert report.loc["breadth_categories_valid", "failed_count"] == 3
+
+
+def test_official_metadata_rejects_category_labels_and_ids_mismatching_literal_text() -> None:
+    from src.data_quality import run_data_quality_checks
+
+    data = _official_data()
+    # Genuine official links cannot make imported category labels authoritative.
+    data["courses"].loc[0, "breadth_categories"] = "[1]"
+    data["courses"].loc[0, "requirement_categories"] = '["Creative and Cultural Representations (1)"]'
+    data["courses"].loc[1, "requirement_categories"] = '["Quantitative Reasoning"]'
+    data["courses"].loc[2, "requirement_categories"] = '["Science"]'
+    report = run_data_quality_checks(data).set_index("check_name")
+    assert report.loc["official_course_source_url", "status"] == "PASS"
+    assert report.loc["official_requirement_categories", "status"] == "PASS"
+    assert report.loc["official_metadata_consistent", "failed_count"] == 3
+    assert report.loc["official_metadata_consistent", "status"] == "FAIL"
+
+
+def test_official_metadata_validation_preserves_grade_and_or_credit_and_consent_text() -> None:
+    from src.data_quality import assert_quality, run_data_quality_checks
+    from src.etl import clean_courses
+
+    data = _official_data()
+    requirement = "(A minimum of 60% in CSC108H5 AND MAT102H5) OR 4.0 credits and consent of the department."
+    data["courses"].loc[1, "prerequisite"] = requirement
+    data["courses"].loc[1, "prerequisite_status"] = "listed"
+    data["courses"] = clean_courses(data["courses"])
+    assert_quality(run_data_quality_checks(data))
+    assert data["courses"].loc[1, "prerequisite"] == requirement
+
+
+def test_official_metadata_consistency_survives_csv_empty_requirement_fields() -> None:
+    from io import StringIO
+    from src.data_quality import assert_quality, run_data_quality_checks
+
+    data = _official_data()
+    buffer = StringIO()
+    data["courses"].to_csv(buffer, index=False)
+    buffer.seek(0)
+    data["courses"] = pd.read_csv(buffer)
+    assert_quality(run_data_quality_checks(data))
+
+
+def test_legacy_missing_metadata_source_does_not_trigger_official_checks() -> None:
+    from src.data_quality import assert_quality, run_data_quality_checks
+
+    data = _valid_data()
+    data["courses"]["metadata_source"] = pd.NA
+    assert_quality(run_data_quality_checks(data))

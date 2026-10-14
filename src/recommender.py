@@ -158,7 +158,28 @@ def recommend_courses(
     """Rank reviewed courses; preference_score is an unbounded ranking heuristic."""
     preferences = {**DEFAULT_PREFERENCES, **(preferences or {})}
     table = recommendation_table.copy() if recommendation_table is not None else build_recommendation_table()
-    metadata = [column for column in ["course_id", "course_level"] if column in table]
+    metadata_fields = [
+        "course_id",
+        "course_level",
+        "campus",
+        "credit",
+        "breadth_categories",
+        "breadth_requirements",
+        "requirement_system",
+        "requirement_categories",
+        "distribution_requirements",
+        "prerequisite",
+        "corequisite",
+        "exclusion",
+        "recommended_preparation",
+        "enrolment_requirements",
+        "requirement_notes",
+        "prerequisite_status",
+        "source_url",
+        "source_retrieved_at",
+        "metadata_source",
+    ]
+    metadata = [column for column in metadata_fields if column in table]
     columns = metadata + RESULT_COLUMNS
     if table.empty or top_n <= 0:
         return pd.DataFrame(columns=columns)

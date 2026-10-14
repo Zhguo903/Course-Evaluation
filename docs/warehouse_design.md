@@ -28,8 +28,10 @@ A failing report is saved to `data/processed/data_quality_report.csv` and raises
 
 The dashboard reads course profiles, review detail and tags from the same database snapshot. It can display the latest CSV quality report, including failed attempts, separately from the successful report persisted in ADS. This prevents invalid intermediate review files from silently changing the published analytics.
 
-`python run_pipeline.py` recreates synthetic inputs. `python run_pipeline.py --skip-generate` reuses the five source CSVs and applies the same quality gate. CSV and database scoring paths share `sql/04_create_ads_tables.sql`.
+`python run_pipeline.py` loads the versioned three-campus official course snapshot and recreates synthetic teachers, offerings and reviews. `python run_pipeline.py --skip-generate` reuses the five source CSVs and applies the same quality gate. CSV and database scoring paths share `sql/04_create_ads_tables.sql`.
 
 ## Operating scope
 
-This is a single-user local batch prototype. It does not include a scheduler, incremental change capture or multi-user write coordination. The default dataset is synthetic. A production adaptation would require real-source contracts, privacy controls, ranking evaluation and infrastructure appropriate to its data volume.
+This is a single-user local batch prototype. It does not include a scheduler, incremental change capture or multi-user write coordination. Default course metadata comes from official UofT Calendars; teachers, offerings and review records remain synthetic. A production adaptation would require real-source contracts, privacy controls, ranking evaluation and infrastructure appropriate to its data volume.
+
+The course-level summary retains all standardized course columns, including campus, classification system, JSON category lists, exact prerequisites and source provenance. ADS SQL carries these columns through unchanged, so scoring cannot silently discard enrolment requirements.

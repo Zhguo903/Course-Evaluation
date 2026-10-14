@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.1.0 · 2026-10-13
+
+- Replace randomly named course metadata with 200 verified official UofT course records: 80 St. George Arts & Science, 60 UTM and 60 UTSC.
+- Preserve campus-specific BR/Distribution categories, prerequisites, corequisites, exclusions, preparation, enrolment notes, source URLs and retrieval dates.
+- Add an offline versioned catalogue, a reproducible official-source updater and a source manifest.
+- Keep St. George BR1–5, UTM Distribution and UTSC Breadth systems separate, including multi-category and unlisted-category courses.
+- Add campus/classification filtering and an official-requirements panel; retain literal grade, AND/OR, credit, permission and programme restrictions.
+- Update project positioning for University of Toronto students. Attribute community discussion themes to the maintainer, and clearly label generated reviews as synthetic rather than original messages or real student ratings.
+- Extend validation and regression coverage for official provenance, full course identifiers and metadata preservation: 80 tests and 60 data-quality checks pass.
+
+Upgrade: run `python run_pipeline.py` to rebuild the local warehouse against the supplied official snapshot. Existing CSVs can still be reused with `--skip-generate`; neutral metadata defaults preserve compatibility, but official attribution requires consistent provenance.
+
 ## v2.0.0 · 2026-10-13
 
 ### Data and warehouse

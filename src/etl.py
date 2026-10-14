@@ -7,6 +7,7 @@ so the quality report can account for every invalid record.
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Dict
 
@@ -56,13 +57,43 @@ def clean_text_value(value: object) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _breadth_json(value: object) -> str:
+    """Serialize native lists; preserve malformed metadata for quality reporting."""
+    if isinstance(value, list):
+        return json.dumps(value, separators=(",", ":"))
+    if pd.isna(value) or str(value).strip().lower() in {"", "nan", "nat", "none", "null", "<na>"}:
+        return "[]"
+    return str(value).strip()
+
+
 def clean_courses(courses: pd.DataFrame) -> pd.DataFrame:
     df = courses.copy()
     df["course_id"] = _integers(df["course_id"])
     df["course_code"] = _strings(df["course_code"]).str.upper().str.replace(r"\s+", "", regex=True)
-    for column in ["course_name", "department", "prerequisite", "campus"]:
+    for column in ["course_name", "department", "campus"]:
         df[column] = _strings(df[column])
-    df["prerequisite"] = df["prerequisite"].fillna("")
+    # Official requirement wording carries AND/OR, minimum grades, credits, and
+    # permission clauses. Preserve it verbatim apart from surrounding whitespace.
+    for column in [
+        "prerequisite",
+        "corequisite",
+        "exclusion",
+        "recommended_preparation",
+        "enrolment_requirements",
+        "breadth_requirements",
+        "distribution_requirements",
+        "requirement_system",
+        "source_url",
+        "source_retrieved_at",
+        "metadata_source",
+        "requirement_notes",
+        "prerequisite_status",
+    ]:
+        source = df[column] if column in df else pd.Series("", index=df.index, dtype="string")
+        df[column] = source.astype("string").str.strip().fillna("")
+    for column in ["breadth_categories", "requirement_categories"]:
+        source = df[column] if column in df else pd.Series("[]", index=df.index)
+        df[column] = source.map(_breadth_json)
     df["course_level"] = _integers(df["course_level"])
     df["credit"] = pd.to_numeric(df["credit"], errors="coerce")
     return _deduplicate(df, "course_id")

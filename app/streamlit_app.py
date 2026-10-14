@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -23,6 +24,22 @@ st.set_page_config(page_title="CourseInsight · 课程探索", page_icon="🎓",
 LABELS = {
     "course_code": "课程代码 / Code",
     "course_name": "课程名称 / Course",
+    "campus": "校区 / Campus",
+    "credit": "学分 / Credit",
+    "breadth_requirements": "官方广度要求 / Breadth",
+    "distribution_requirements": "官方分布要求 / Distribution",
+    "prerequisite": "先修要求 / Prerequisite",
+    "corequisite": "共修要求 / Corequisite",
+    "exclusion": "互斥课程 / Exclusion",
+    "recommended_preparation": "建议准备 / Recommended preparation",
+    "enrolment_requirements": "注册要求 / Enrolment requirements",
+    "requirement_notes": "其他要求 / Requirement notes",
+    "source_url": "官方目录 / Official calendar",
+    "source_retrieved_at": "目录采集日期 / Retrieved",
+    "metadata_source": "课程元数据来源",
+    "requirement_system": "校区分类体系",
+    "requirement_categories": "官方类别原文",
+    "breadth_categories": "St. George BR 编号",
     "department": "院系 / Department",
     "course_level": "课程级别 / Level",
     "review_count": "评论数 / Reviews",
@@ -48,15 +65,68 @@ LABELS = {
 COURSE_COLUMNS = [
     "course_code",
     "course_name",
+    "campus",
     "department",
+    "credit",
+    "breadth_requirements",
+    "distribution_requirements",
+    "prerequisite",
     "review_count",
     "avg_rating",
     "avg_difficulty",
     "avg_workload",
     "avg_usefulness",
     "tags",
+    "source_url",
 ]
 REQUIRED_PATHS = [DUCKDB_PATH]
+BR_NAMES = {
+    1: "Creative and Cultural Representations",
+    2: "Thought, Belief and Behaviour",
+    3: "Society and Its Institutions",
+    4: "Living Things and Their Environment",
+    5: "The Physical and Mathematical Universes",
+}
+
+
+def text_value(value: object) -> str:
+    """Treat missing catalog fields as unlisted, rather than inventing requirements."""
+    return "" if value is None or pd.isna(value) else str(value).strip()
+
+
+def category_values(value: object) -> list:
+    """Accept the catalog JSON contract, plus semicolon lists from older exports."""
+    if isinstance(value, (list, tuple)):
+        return list(value)
+    raw = text_value(value)
+    if not raw:
+        return []
+    try:
+        decoded = json.loads(raw)
+    except (TypeError, ValueError):
+        return [part.strip() for part in raw.split(";") if part.strip()]
+    return decoded if isinstance(decoded, list) else []
+
+
+def course_categories(row: pd.Series) -> list[str]:
+    """Keep each campus classification in its own official system."""
+    system = text_value(row.get("requirement_system"))
+    if system == "artsci_breadth":
+        labels = []
+        for value in category_values(row.get("breadth_categories")):
+            try:
+                number = int(value)
+            except (TypeError, ValueError):
+                continue
+            if number in BR_NAMES:
+                labels.append(f"St. George · BR {number} · {BR_NAMES[number]}")
+        return sorted(set(labels))
+    campus_label = {"utm_distribution": "UTM · Distribution", "utsc_breadth": "UTSC · Breadth"}.get(system)
+    if campus_label:
+        return sorted(
+            {f"{campus_label} · {label}" for label in category_values(row.get("requirement_categories"))}
+        )
+    return []
 
 
 def file_signature() -> tuple:
@@ -97,6 +167,18 @@ def load_tables(signature: tuple) -> dict[str, pd.DataFrame]:
         "avg_usefulness",
         "tags",
         "keywords",
+        "campus",
+        "requirement_system",
+        "breadth_categories",
+        "requirement_categories",
+        "prerequisite",
+        "corequisite",
+        "exclusion",
+        "recommended_preparation",
+        "enrolment_requirements",
+        "source_url",
+        "source_retrieved_at",
+        "metadata_source",
     }
     if not required_columns.issubset(table.columns):
         raise ValueError("数据仓库版本过旧或字段不完整，请重新运行数据流程。")
@@ -113,7 +195,12 @@ def display_table(frame: pd.DataFrame, columns: list[str] | None = None) -> None
     """Keep original column names for exports while displaying readable labels."""
     if columns is not None:
         frame = frame[[column for column in columns if column in frame]]
-    st.dataframe(frame.rename(columns=LABELS), hide_index=True, width="stretch")
+    st.dataframe(
+        frame.rename(columns=LABELS),
+        column_config={LABELS["source_url"]: st.column_config.LinkColumn(display_text="查看官方目录")},
+        hide_index=True,
+        width="stretch",
+    )
 
 
 def download_csv(frame: pd.DataFrame, label: str, filename: str, key: str) -> None:
@@ -132,7 +219,7 @@ def format_metric(value: float) -> str:
 
 def empty_courses() -> bool:
     if filtered.empty:
-        st.info("当前筛选没有匹配课程。请扩大院系范围、降低最低评分或评论数，或清空搜索词。")
+        st.info("当前筛选没有匹配课程。请扩大校区、类别或院系范围、降低最低评分或评论数，或清空搜索词。")
         return True
     return False
 
@@ -140,7 +227,7 @@ def empty_courses() -> bool:
 def missing_data(message: str) -> None:
     """A clean checkout should open a useful setup page without building on reruns."""
     st.info(message)
-    st.markdown("首次使用时，先生成模拟数据并构建本地数据仓库。")
+    st.markdown("首次使用时，先导入官方课程目录快照、生成模拟评价并构建本地数据仓库。")
     st.code("python run_pipeline.py\nstreamlit run app/streamlit_app.py", language="bash")
     st.caption("也可以点击下方按钮生成演示数据。只有点击按钮才会运行；运行会更新本地演示数据文件。")
     if st.button("生成演示数据 / Build demo data", type="primary"):
@@ -166,11 +253,12 @@ def missing_data(message: str) -> None:
 
 
 st.title("CourseInsight")
-st.markdown("### 看懂课程评价，找到适合自己的课")
-st.caption("课程探索 · 指标比较 · 可解释推荐 | Course review analytics & explainable recommendations")
+st.markdown("### 帮助多伦多大学学生，更高效地规划选课")
+st.caption("三校区官方课程要求 · 学习体验比较 · 可解释推荐 | UofT course planning")
 st.info(
-    "演示数据说明：本项目使用合成课程与评论，不代表真实学校或教师。"
-    "评分、标签和推荐用于展示分析流程；GPA Friendly 仅是基于评价指标的规则标签，不预测真实成绩。",
+    "数据来源说明：课程名称、代码与修课要求来自多伦多大学三校区官方目录快照子集。"
+    "评价按维护者描述的学生会、校友及课友群选课交流主题生成，属于模拟数据，不是群聊原文或真实评论摘录；"
+    "教师与开课记录也为模拟数据。评分、标签与推荐用于演示，不预测真实成绩。",
     icon="ℹ️",
 )
 
@@ -191,9 +279,24 @@ if "status" in latest_quality and latest_quality["status"].eq("FAIL").any():
 with st.sidebar:
     st.header("课程筛选 / Filters")
     st.caption("筛选同时影响概览、画像、比较和推荐结果。")
-    search = st.text_input("搜索课程、标签或关键词", placeholder="例如：Python、Statistics、Project")
+    search = st.text_input("搜索课程、要求或关键词", placeholder="例如：CSC108H1、Python、Statistics")
+    campuses = sorted(courses["campus"].dropna().unique().tolist())
+    selected_campuses = st.multiselect("校区 / Campus", campuses, default=campuses, key="campus_filter")
+    classification_by_course = courses.apply(course_categories, axis=1)
+    classification_options = sorted({label for labels in classification_by_course for label in labels})
+    selected_classifications = st.multiselect(
+        "课程分类 / BR & Distribution",
+        classification_options,
+        key="classification_filter",
+        help="留空表示不限类别。选择多个类别时，课程匹配任一类别即可。多类别课程保留所有官方标签。",
+    )
+    st.caption(
+        "St. George 使用 BR 1–5；UTM 使用 Distribution；UTSC 使用自己的 Breadth 分类。分类匹配不等于已满足毕业要求。"
+    )
     departments = sorted(courses["department"].dropna().unique().tolist())
-    selected_departments = st.multiselect("院系 / Department", departments, default=departments)
+    selected_departments = st.multiselect(
+        "院系 / Department", departments, default=departments, key="department_filter"
+    )
     levels = []
     if "course_level" in courses:
         level_options = sorted(courses["course_level"].dropna().unique().tolist(), key=str)
@@ -208,7 +311,8 @@ with st.sidebar:
         st.rerun()
 
 mask = (
-    courses["department"].isin(selected_departments)
+    courses["campus"].isin(selected_campuses)
+    & courses["department"].isin(selected_departments)
     & courses["review_count"].ge(min_reviews)
     & (courses["avg_rating"].ge(min_rating) | (courses["avg_rating"].isna() & (min_rating == 1.0)))
     & (
@@ -219,8 +323,21 @@ mask = (
 )
 if "course_level" in courses:
     mask &= courses["course_level"].isin(levels)
+if selected_classifications:
+    selected_set = set(selected_classifications)
+    mask &= classification_by_course.map(lambda labels: bool(selected_set.intersection(labels)))
 if search.strip():
-    search_columns = ["course_code", "course_name", "department", "tags", "keywords"]
+    search_columns = [
+        "course_code",
+        "course_name",
+        "campus",
+        "department",
+        "tags",
+        "keywords",
+        "breadth_requirements",
+        "distribution_requirements",
+        "prerequisite",
+    ]
     searchable = (
         courses[[column for column in search_columns if column in courses]]
         .fillna("")
@@ -236,6 +353,9 @@ st.caption(f"当前范围：{len(filtered):,} / {len(courses):,} 门课程 · {l
 def render_overview() -> None:
     if empty_courses():
         return
+    st.caption(
+        "课程目录覆盖三个校区的选定课程子集，并非全部课程或当期开课清单。官方要求保留英文原文，模拟评价单独标识。"
+    )
     metric_columns = st.columns(5)
     metric_columns[0].metric("匹配课程", f"{len(filtered):,}")
     metric_columns[1].metric("评论样本", f"{len(filtered_reviews):,}")
@@ -243,7 +363,7 @@ def render_overview() -> None:
         ["rating", "difficulty", "workload"], ["平均评分", "平均难度", "平均工作量"], metric_columns[2:]
     ):
         metric_column.metric(label, format_metric(filtered_reviews[column].mean()))
-    st.caption("概览均值直接按当前范围内的评论计算，每条评论权重相同；课程列表展示各课程的评论均值。")
+    st.caption("概览均值直接按当前范围内的模拟评论计算，每条评论权重相同；课程列表展示各课程的模拟评论均值。")
     count_by_department = filtered.groupby("department").size().rename("course_count").reset_index()
     review_departments = filtered_reviews.merge(
         filtered[["course_id", "department"]], on="course_id", how="left"
@@ -280,6 +400,40 @@ def render_overview() -> None:
     download_csv(filtered, "下载筛选课程 CSV", "courseinsight_courses.csv", "catalog_csv")
 
 
+def render_official_requirements(selected: pd.Series) -> None:
+    st.subheader("官方课程要求 / Official requirements")
+    source_url = text_value(selected.get("source_url"))
+    retrieved = text_value(selected.get("source_retrieved_at"))
+    campus = text_value(selected.get("campus"))
+    st.caption(f"{campus} · 官方目录快照 · 采集日期：{retrieved or '未记录'}")
+    if source_url.startswith("https://"):
+        st.markdown(f"[查看该课程的官方目录]({source_url})")
+    categories = course_categories(selected)
+    st.write("课程分类：" + (" / ".join(categories) if categories else "来源未列出可解析类别"))
+    st.caption(
+        "以下保留官方页面原文。未列出字段不等于没有要求；本工具不自动判断先修资格、"
+        "注册优先级或毕业要求是否满足，请以相应校区的当前官方规定及个人学业记录为准。"
+    )
+    fields = [
+        "breadth_requirements",
+        "distribution_requirements",
+        "prerequisite",
+        "corequisite",
+        "exclusion",
+        "recommended_preparation",
+        "enrolment_requirements",
+        "requirement_notes",
+    ]
+    for field in fields:
+        # Breadth and distribution belong to different campus systems; omit the irrelevant field.
+        if field == "distribution_requirements" and selected.get("requirement_system") != "utm_distribution":
+            continue
+        if field == "breadth_requirements" and selected.get("requirement_system") == "utm_distribution":
+            continue
+        st.markdown(f"**{LABELS[field]}**")
+        st.write(text_value(selected.get(field)) or "该字段未在官方来源中列出。")
+
+
 def render_profile() -> None:
     if empty_courses():
         return
@@ -292,7 +446,13 @@ def render_profile() -> None:
     )
     selected = lookup.loc[selected_code]
     st.subheader(f"{selected_code} · {selected['course_name']}")
-    st.caption(f"{selected['department']} · {int(selected['review_count']):,} 条评论")
+    credit = text_value(selected.get("credit"))
+    st.caption(f"{selected['department']}" + (f" · {credit} 学分" if credit else ""))
+    render_official_requirements(selected)
+    st.subheader("模拟学习体验 / Synthetic review analytics")
+    st.caption(
+        f"以下评分、标签和样本来自 {int(selected['review_count']):,} 条模拟评论，与官方课程要求分开展示。"
+    )
     for column, metric in zip(
         st.columns(4), ["avg_rating", "avg_difficulty", "avg_workload", "avg_usefulness"]
     ):
@@ -310,11 +470,11 @@ def render_profile() -> None:
     st.markdown("**文本关键词 / Keywords**")
     st.write(selected.get("keywords", "") or "暂未提取到关键词。")
     st.caption("标签使用评论关键词与规则生成，可能遗漏语境或否定表达；请结合评论阅读。")
-    st.subheader("评论样本 / Sample reviews")
+    st.subheader("模拟评论样本 / Synthetic review samples")
     samples = reviews[reviews["course_id"] == selected["course_id"]].copy()
     if "review_date" in samples:
         samples = samples.sort_values("review_date", ascending=False)
-    st.caption("按日期倒序展示前 12 条，供查看原始样本；并非自动选取的代表性评论。")
+    st.caption("按日期倒序展示前 12 条生成样本，不是学生群聊原文或真实评价摘录。")
     display_table(
         samples.head(12), ["review_date", "rating", "difficulty", "workload", "usefulness", "review_text"]
     )
@@ -382,7 +542,11 @@ def render_recommendations() -> None:
     result_columns = [
         "course_code",
         "course_name",
+        "campus",
         "department",
+        "breadth_requirements",
+        "distribution_requirements",
+        "prerequisite",
         "review_count",
         "preference_score",
         "recommend_score",
@@ -390,6 +554,7 @@ def render_recommendations() -> None:
         "avg_workload",
         "tags",
         "recommendation_reason",
+        "source_url",
     ]
     display_table(results, result_columns)
     download_csv(results, "下载推荐结果 CSV", "courseinsight_recommendations.csv", "recommendation_csv")
@@ -397,7 +562,8 @@ def render_recommendations() -> None:
         st.write(
             "推荐由课程评价均值、规则标签及显式偏好共同计算。推荐理由来自实际匹配的指标或标签，"
             "没有匹配到特定偏好时会说明基础排序依据。GPA Friendly 并未使用真实 GPA 数据。"
-            "偏好会调整排序；如需限制难度、工作量或院系，请使用侧栏筛选。"
+            "偏好会调整模拟评价的排序；如需限制校区、课程类别、难度、工作量或院系，请使用侧栏筛选。"
+            "满足筛选条件不表示你具备修读资格。"
         )
 
 
@@ -422,6 +588,14 @@ def render_similar() -> None:
     if similar.empty:
         st.info("未找到可匹配的课程文本。")
         return
+    metadata = [
+        column
+        for column in ["campus", "breadth_requirements", "distribution_requirements", "source_url"]
+        if column in courses and column not in similar
+    ]
+    similar = similar.merge(
+        courses[["course_code", *metadata]], on="course_code", how="left", validate="one_to_one"
+    )
     display_table(similar)
     st.caption("相似度为 0–1 的文本余弦相似度，不代表内容等价、学分互认或推荐成功率。")
     download_csv(similar, "下载相似课程 CSV", "courseinsight_similar_courses.csv", "similar_csv")
@@ -478,4 +652,4 @@ for tab, render in zip(
     with tab:
         render()
 
-st.caption("CourseInsight · Python / DuckDB / TF-IDF / Streamlit · 合成数据演示项目")
+st.caption("CourseInsight · UofT 官方目录快照 + 模拟评价 · Python / DuckDB / TF-IDF / Streamlit")

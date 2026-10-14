@@ -5,14 +5,14 @@
 ### courses_raw.csv
 | Field | Description |
 | --- | --- |
-| course_id | Synthetic unique course identifier |
-| course_code | Campus-style course code, such as STA303 |
-| course_name | Synthetic course title |
+| course_id | Local stable course identifier for the selected official snapshot |
+| course_code | Full official course code, such as STA303H1, CSC108H5 or CSCA08H3 |
+| course_name | Official course title from the relevant campus Calendar |
 | department | Academic department |
 | course_level | Course level, such as 100, 200, 300, or 400 |
 | credit | Course credit value |
-| prerequisite | Synthetic prerequisite course code |
-| campus | Campus where the course is offered |
+| prerequisite | Official prerequisite wording; retain logical operators, grades and permissions |
+| campus | Campus identified by the official course record, not a simulated offering location |
 
 ### instructors_raw.csv
 | Field | Description |
@@ -101,3 +101,24 @@ Processed tables mirror the raw entities after cleaning:
 `check_name`, `table_name`, `status`, `failed_count`, `total_count`, `failure_rate`, and UTC `check_time` describe each check. Empty tables have a failing presence check and zero record counts; this avoids inventing a failing record. A row can fail multiple checks, so summed failed_count is a count of rule violations rather than distinct bad records.
 
 Required source columns must be present as shown above. Optional course prerequisites may be empty. Text analytics currently supports English comments; the interface is Chinese-first. Numeric scores must lie within 1–5. Dates must parse successfully, semester start must not exceed end, and reviews must fall inside the referenced semester.
+
+## Official Course Metadata (v2.1)
+
+| Field | Meaning |
+| --- | --- |
+| requirement_system | artsci_breadth, utm_distribution or utsc_breadth; distinct campus systems |
+| breadth_categories | JSON array of numeric 1–5 IDs for St. George Arts & Science only; [] for other systems |
+| requirement_categories | JSON array of official category labels, interpreted within requirement_system |
+| breadth_requirements | Original Calendar breadth text for St. George or UTSC |
+| distribution_requirements | Original Calendar distribution text for UTM |
+| corequisite | Official concurrent-or-prior course condition wording |
+| exclusion | Official course exclusions; not an automatic prerequisite substitution |
+| recommended_preparation | Recommended preparation, separately from mandatory prerequisites |
+| enrolment_requirements | Explicit enrolment restriction fields where present |
+| requirement_notes | Other course-specific notes/limitations retained from the source |
+| prerequisite_status | listed or not_listed; absence of a field is not a registration guarantee |
+| metadata_source | official_calendar for verified records; neutral/empty for legacy custom inputs |
+| source_url | Official course page URL |
+| source_retrieved_at | Source retrieval date/time |
+
+Course metadata survives DWD, DWS, ADS, preference results and CSV exports. Real course identifiers do not make generated ratings authentic. Generated review rows carry data_source=synthetic_community_inspired and a source_note explaining that no original group messages are ingested.
