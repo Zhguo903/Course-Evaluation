@@ -4,7 +4,7 @@
 
 **课程目录与课表使用真实官方数据。** 默认展示三个官方本科目录的全部 **10,037 门课程**：St. George Faculty of Arts & Science 5,368 门、UTM 2,491 门、UTSC 2,178 门。另从官方 Timetable Builder 获取 **7,093 条开课记录**，覆盖 Fall 2026、Winter 2027 和 2026–2027 全年课程。数据核验日期为 **2026-10-13（多伦多时间）**。
 
-项目的选课需求来自学生会、校友及课友群中常见的交流场景；当前课程事实均取自官方来源，每条课程保留来源链接。仓库不包含群聊摘录或生成的学生评价，v3 已移除模拟评分、教师和评论；v3.1 加入有来源标注的历史问卷数值与公开个人评价，不生成难度、工作量或 GPA 预测。
+项目的选课需求来自学生会、校友及课友群中常见的交流场景；当前课程事实均取自官方来源，每条课程保留来源链接。仓库不包含群聊摘录或生成的学生评价，v3 已移除模拟评分、教师和评论；v3.1 加入有来源标注的历史问卷数值与公开个人评价，v3.2 扩充公开课程资料与 Engineering 历史报告，不生成难度、工作量或 GPA 预测。
 
 ## 快速开始
 
@@ -29,6 +29,7 @@ streamlit run app/streamlit_app.py
 - 查看先修、共修、排除课程、建议准备、注册限制、来源链接和核验时间。
 - 对比课程、分页查看结果，并下载当前筛选结果的 CSV。
 - 在“学生评价与学习资料”页查看个人评价、历史问卷报告和学习资料；按“有已导入评价”或“有课程专属资料”筛选。
+- 按资料类型及标题筛选；每课展示最多 20 条，完整索引可下载 CSV；展开数据覆盖查看各校区课程数。
 
 “推荐”指根据用户条件筛选并解释匹配原因。课程顺序不代表教学质量、容易程度或个人注册资格。
 
@@ -53,25 +54,27 @@ streamlit run app/streamlit_app.py
 
 详见 [数据口径](docs/data_sources.md)、[全网数据源调研](docs/data_source_research.md) 和 [课表接口与校验](docs/timetable_sources.md)。
 
-## 学生评价与学习资料 · v3.1
+## 学生评价与学习资料 · v3.2
 
 新增三类可追溯内容，分别保存，不混成一个评分：
 
 | 类型 | 已导入内容 | 如何理解 |
 | --- | --- | --- |
-| 历史问卷报告 | **64,554 条**三校区历史报告，其中 **54,092 条**精确匹配当前目录的 **6,491 门课程** | 公开社区整理的历史官方问卷数值副本，年份因校区而异（2012–2024），未逐条与登录后的校方报告复核 |
+| 历史问卷报告 | **70,453 条**三校区及 Engineering 历史报告，其中 **54,196 条**精确匹配当前目录的 **6,505 门课程** | 公开社区整理的历史官方问卷数值副本，年份因校区而异（2012–2024），未逐条与登录后的校方报告复核 |
 | 公开个人评价 | **28 条**，来自同一位 CS ’25 作者的 2020–2025 课程回顾 | 中文转述、原帖链接和作者的 1–10 个人推荐分；没有核验作者选课身份，不代表学生共识 |
-| 学习资源 | **21 条**，其中 15 条精确关联 11 门当前课程，另 6 条通用或历史入口 | 官方讲义、旧 syllabus、CSSC 学生指南、教材和图书馆／学习支持链接；明确年份和登录要求 |
+| 学习资源 | **752 条**，其中 746 条精确关联 **575 门**当前课程，另 6 条通用或历史入口 | 672 份大纲、18 条讲义、4 条练习、3 条模拟试卷、8 份旧试卷及课程网站、学生指南等；共有 748 个唯一 URL |
 
-历史问卷分别展示整体学习体验、工作量、推荐意愿的 **1–5 原量表**。工作量高分表示负担更重，不能改名为课程难度。缺失保持为空，保留源异常；不跨学期、题目或教师报告计算综合分，也不将回复数加总当作独立学生人数。10,462 条无法精确匹配当前代码的历史报告保留在数据库，不错误关联到相似课程。
+历史问卷分别展示整体学习体验、工作量、推荐意愿的 **1–5 原量表**。工作量高分表示负担更重，不能改名为课程难度。缺失保持为空，保留源异常；不跨学期、题目或教师报告计算综合分，也不将回复数加总当作独立学生人数。16,257 条无法精确匹配当前代码的历史报告保留在数据库，不错误关联到相似课程。
 
-原始历史文件来自公开 [数据帖](https://www.reddit.com/r/UofT/comments/1ihe5tu/) 中贡献者分享的 [三校区 CSV 文件夹](https://drive.google.com/drive/folders/1Pg7qk7N2PvKaqMsGjw09El9jsWVmHPEB)。仅保留数值事实与来源，不镜像原 CSV 全文、教师名单或受限评价。详细字段、异常及来源性质见 [历史评价说明](docs/feedback_data_sources.md)。
+Engineering 源新增 14 门课程的历史评价覆盖，未找到已核验的 2025–2026 新原始问卷；新版本不会用旧报告冒充当前评价。
+
+原始历史文件来自公开 [数据帖](https://www.reddit.com/r/UofT/comments/1ihe5tu/) 中贡献者分享的 [三校区及 Engineering CSV 文件夹](https://drive.google.com/drive/folders/1Pg7qk7N2PvKaqMsGjw09El9jsWVmHPEB)。仅保留数值事实与来源，不镜像原 CSV 全文、教师名单或受限评价。详细字段、异常及来源性质见 [历史评价说明](docs/feedback_data_sources.md)。
 
 公开个人评价来自 [作者原帖](https://www.reddit.com/r/UofT/comments/1kjq8ji/rating_and_reviewing_every_course_i_took_at_uoft/)。历史 MAT137、MAT235 因代码缺失或变更未自动匹配到当前课程。
 
 [官方评价入口](https://teaching.utoronto.ca/course-evaluations/for-students/) 仍需 UTORid；[UofT Index](https://uoftindex.com/) 仅作为外部查询入口，未抓取其数据库。资料只保存链接与元数据；需要登录的往年试卷入口会明确标注，未复制试卷或教材全文。
 
-发布页另提供完整历史评价 CSV、个人评价 CSV、资料索引 CSV 和含 **10 张表**的 DuckDB。
+发布页另提供完整历史评价 CSV、个人评价 CSV、资料索引 CSV 和含 **10 张表**的 DuckDB。详见 [最新覆盖统计](docs/data_coverage.md) 与 [学习资料来源和重建](docs/learning_resources.md)。
 
 ## 更新官方数据
 
@@ -93,7 +96,7 @@ python scripts/verify_support.py
 python run_pipeline.py
 ```
 
-修改已核验的个人评价或资料索引后，使用 `python scripts/verify_support.py --refresh-manifest` 更新元数据哈希，再重建数据库。历史评价也支持 `--source-dir` 离线重放；源网址失效、解析或校验失败时不会用生成内容替代。
+资料批次扩展与去重命令见 [学习资料维护](docs/learning_resources.md)。修改已核验的个人评价或资料索引后，使用 `python scripts/verify_support.py --refresh-manifest` 更新元数据哈希，再重建数据库。历史评价也支持 `--source-dir` 离线重放；源网址失效、解析或校验失败时不会用生成内容替代。
 
 
 ## 数据结构
@@ -133,4 +136,4 @@ python run_pipeline.py
 
 CourseInsight helps University of Toronto students find courses by campus, level, academic subject and campus-specific breadth or distribution category. Version 3 uses complete official undergraduate catalogues for St. George Arts & Science, UTM and UTSC: 10,037 courses, supplemented by 7,093 official timetable records retrieved on October 13, 2026. The interface provides transparent matching reasons, published offering status, original requirement text, comparison, CSV export and official source links. Missing or unpublished information remains explicitly unknown. There are no synthetic reviews or inferred difficulty, workload or GPA scores.
 
-Version 3.1 adds 64,554 historical survey reports from a publicly shared third-party copy, 28 attributed individual opinions from one author, and 21 verified resource links. Historical survey values retain their original question meanings and 1–5 scales; individual recommendation ratings retain their 1–10 scale. Reports are never combined into a universal score, and response counts are not presented as unique students. Unmatched historical course codes remain unassigned. Resource content and restricted materials are not mirrored.
+Version 3.2 includes 70,453 historical survey reports from publicly shared third-party copies (54,196 reports matching 6,505 current courses), 28 attributed individual opinions from one author, and 752 resource entries covering 575 current courses through 748 unique URLs. Materials include 672 syllabi, 18 lecture-note links, 4 practice links, 3 practice exams and 8 past exams, plus course sites and student guides. Historical survey values retain their original question meanings and 1–5 scales; individual recommendation ratings retain their 1–10 scale. Reports are never combined into a universal score, and response counts are not presented as unique students. Unmatched historical course codes remain unassigned. Resource content and restricted materials are not mirrored.

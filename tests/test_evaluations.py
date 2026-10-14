@@ -29,10 +29,12 @@ def _csv(source, changes=None, additional=None):
     campus_codes = {"St. George": "CSC108H1", "Mississauga": "CSC108H5", "Scarborough": "CSCA08H3"}
     code = campus_codes[source["campus"]]
     record = {
-        "Course Code": code, "Course": f"Computer Programming {code}-F-LEC0101", "Year": "2024", "Term": "Fall",
+        "Course Code": code, source.get("course_label_field", "Course"): f"Computer Programming {code}-F-LEC0101", "Year": "2024", "Term": "Fall",
         "Number Invited": "100", source["responses_field"]: "40", source["overall_field"]: "4.1",
-        source["workload_field"]: "3.5", source["recommendation_field"]: "4.3", "Last Name": "ExampleTeacher",
+        source["workload_field"]: "3.5", "Last Name": "ExampleTeacher",
     }
+    if source["recommendation_field"]:
+        record[source["recommendation_field"]] = "4.3"
     record.update(changes or {})
     output = io.StringIO()
     writer = csv.DictWriter(output, fieldnames=list(record))
@@ -49,7 +51,7 @@ def test_numeric_facts_and_correct_official_question_mapping_for_each_campus():
         row = records[0]
         assert row["overall_score"] == 4.1
         assert row["workload_score"] == 3.5
-        assert row["recommendation_score"] == 4.3
+        assert row["recommendation_score"] == (4.3 if source["recommendation_field"] else None)
         assert row["response_count"] == 40 and row["invited_count"] == 100
         assert row["match_status"] == "matched"
         assert row["source_row_number"] == 2
@@ -143,11 +145,11 @@ def snapshot(tmp_path, monkeypatch):
     return tmp_path, records, manifest
 
 
-def test_round_trip_integrity_with_three_sources(snapshot):
+def test_round_trip_integrity_with_four_sources(snapshot):
     _, original, _ = snapshot
     rows, manifest = load_evaluation_snapshot()
     assert rows == original
-    assert manifest["record_count"] == 3
+    assert manifest["record_count"] == 4
     assert manifest["matched_current_course_count"] == 3
     assert manifest["metrics"]["workload_score"]["higher_means"] == "heavier reported workload, not course difficulty"
 
@@ -224,3 +226,12 @@ def test_checked_in_real_snapshot_has_consistent_counts_scores_and_no_student_co
         assert sum(row[key] is None for row in rows) == manifest["missing_scores"][key]
         assert all(row[key] is None or 1 <= row[key] <= 5 for row in rows)
     assert Path(__file__).resolve().parents[1].joinpath("data/reference/course_evaluations.json").stat().st_size < 100_000_000
+
+
+def test_engineering_recommendation_is_unknown_and_workload_keeps_its_actual_question():
+    source = next(row for row in SOURCES if row["source_id"] == "apsc2013_2024")
+    rows, metadata = normalize_evaluations(_csv(source, {"APSC003": "4.6"}), source, CATALOGUE, "now")
+    assert rows[0]["overall_score"] == 4.1
+    assert rows[0]["workload_score"] == 4.6
+    assert rows[0]["recommendation_score"] is None
+    assert metadata["origin_faculty"] == "APSC / Engineering"

@@ -1,0 +1,2437 @@
+{
+  "verified_at": "2026-10-14",
+  "candidate_count": 302,
+  "accepted_count": 302,
+  "distinct_courses": 166,
+  "sources": [
+    "https://rotmancommerce.utoronto.ca/current-students/choosing-your-courses/course-outlines-archive/",
+    "https://www.economics.utoronto.ca/index.php/index/undergraduate/previousyears",
+    "https://www.economics.utoronto.ca/index.php/index/undergraduate/courses/2/0/2025",
+    "https://www.economics.utoronto.ca/index.php/index/undergraduate/courses/1/0/2025",
+    "https://www.economics.utoronto.ca/index.php/index/undergraduate/courses/2/0/2024",
+    "https://www.economics.utoronto.ca/index.php/index/undergraduate/courses/1/0/2024",
+    "https://www.economics.utoronto.ca/index.php/index/undergraduate/courses/2/0/2023",
+    "https://www.economics.utoronto.ca/index.php/index/undergraduate/courses/1/0/2023",
+    "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354.html",
+    "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY450.html"
+  ],
+  "checks": [
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7241/997905772",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7241/997905772",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7557/997905773",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7557/997905773",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7247/997904464",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7247/997904464",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7254/997904083",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7254/997904083",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7255/997903225",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7255/997903225",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7262/997904085",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7262/997904085",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7269/997904088",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7269/997904088",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7272/997903248",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7272/997903248",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7274/997904090",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7274/997904090",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7277/997902905",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7277/997902905",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7490/997905774",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7490/997905774",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7212/997902365",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7212/997902365",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7495/997905775",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7495/997905775",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7440/997905649",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7440/997905649",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7285/997905677",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7285/997905677",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7550/997905776",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7550/997905776",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7517/997905659",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7517/997905659",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7295/997905769",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7295/997905769",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7214/997905757",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7214/997905757",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7216/997905777",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7216/997905777",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7572/997905778",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7572/997905778",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7434/997905779",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7434/997905779",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7448/997905780",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7448/997905780",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7455/997905664",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7455/997905664",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7297/997905781",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7297/997905781",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7411/997905782",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7411/997905782",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7532/997905783",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7532/997905783",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7220/997905784",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7220/997905784",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7223/997905785",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7223/997905785",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7226/997905787",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7226/997905787",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7234/997905789",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7234/997905789",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7982/997906675",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7982/997906675",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7201/997905670",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7201/997905670",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7576/997905791",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7576/997905791",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7210/997905793",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7210/997905793",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7422/997905794",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7422/997905794",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7195/997905736",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7195/997905736",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7570/997905667",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7570/997905667",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7592/997905668",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7592/997905668",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7565/997905608",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7565/997905608",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7450/997905797",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7450/997905797",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7198/997905843",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7198/997905843",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7416/997905798",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7416/997905798",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7563/997905799",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7563/997905799",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7514/997905800",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7514/997905800",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7519/997906689",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7519/997906689",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7479/997902347",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7479/997902347",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7239/997904079",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7239/997904079",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7478/997904081",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7478/997904081",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7417/997904082",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7417/997904082",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7552/997904093",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7552/997904093",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7494/997904094",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7494/997904094",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7549/997902446",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7549/997902446",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7287/997904136",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7287/997904136",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7289/997904137",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7289/997904137",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7407/997904138",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7407/997904138",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7294/997904139",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7294/997904139",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7445/997904140",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7445/997904140",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7453/997904141",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7453/997904141",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7213/997904142",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7213/997904142",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7215/997904143",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7215/997904143",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7329/997904144",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7329/997904144",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7554/997903957",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7554/997903957",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7454/997902898",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7454/997902898",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7447/997903238",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7447/997903238",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7460/997904145",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7460/997904145",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7408/997904153",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7408/997904153",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7509/997905191",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7509/997905191",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7218/997904146",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7218/997904146",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7415/997903846",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7415/997903846",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7224/997905964",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7224/997905964",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7231/997904151",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7231/997904151",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7441/997904152",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7441/997904152",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7482/997904167",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7482/997904167",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7200/997905192",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7200/997905192",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7205/997904154",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7205/997904154",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7560/997902449",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7560/997902449",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7421/997902384",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7421/997902384",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7197/997903721",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7197/997903721",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7426/997904169",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7426/997904169",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7427/997902355",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7427/997902355",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7556/997905193",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7556/997905193",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7528/997902367",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7528/997902367",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7443/997905194",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7443/997905194",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7396/997904302",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7396/997904302",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7492/997905188",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7492/997905188",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7564/997902380",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7564/997902380",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7456/997902899",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7456/997902899",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7391/997904292",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7391/997904292",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7574/997905195",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7574/997905195",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7526/997905196",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7526/997905196",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7513/997905197",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7513/997905197",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7249/997901264",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7249/997901264",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7256/997901263",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7256/997901263",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7268/997901290",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7268/997901290",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7273/997901265",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7273/997901265",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7278/997901266",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7278/997901266",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7485/997901274",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7485/997901274",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7548/997901281",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7548/997901281",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/MGT100H1S-Fundamentals-of-Management.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/MGT100H1S-Fundamentals-of-Management.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM100H1S-Introduction-to-Management.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM100H1S-Introduction-to-Management.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM219H1S-Introduction-to-Financial-Accounting.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM219H1S-Introduction-to-Financial-Accounting.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM220H1S-Intermediate-Financial-Accounting-I.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM220H1S-Intermediate-Financial-Accounting-I.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM222H1S-Management-Accounting-I.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM222H1S-Management-Accounting-I.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/LEC5101-Poliwoda.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/LEC5101-Poliwoda.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/LEC0401LEC0501LEC0601-Lee.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/LEC0401LEC0501LEC0601-Lee.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM260H1S-Organizational-Behaviour.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM260H1S-Organizational-Behaviour.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/LEC0101LEC0201LEC0301-Malekian.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/LEC0101LEC0201LEC0301-Malekian.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM315H1S-Taxation-for-Business-Professionals.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM315H1S-Taxation-for-Business-Professionals.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM317H1S-Text-Mining-and-Natural-Language-Processing.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM317H1S-Text-Mining-and-Natural-Language-Processing.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM321H1S-Advanced-Financial-Accounting-Topics.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM321H1S-Advanced-Financial-Accounting-Topics.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM323H1S-Auditing-I.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM323H1S-Auditing-I.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM324H1S-Canadian-Income-Taxation-I.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM324H1S-Canadian-Income-Taxation-I.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM325H1S-Legal-Environment-of-Business-II.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM325H1S-Legal-Environment-of-Business-II.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM326H1S-Data-Analytics-with-Financial-Accounting-Information.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM326H1S-Data-Analytics-with-Financial-Accounting-Information.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM327H1S-Business-Information-Systems.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM327H1S-Business-Information-Systems.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM328H1S-Financial-Distress-and-Insolvency.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM328H1S-Financial-Distress-and-Insolvency.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/03/RSM329H1S-Accounting-for-Finance-Professionals.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/03/RSM329H1S-Accounting-for-Finance-Professionals.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/L0101L0201L5101L5201L5301-Wang.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/L0101L0201L5101L5201L5301-Wang.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM333H1S-Corporate-Finance.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM333H1S-Corporate-Finance.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM336H1S-Investments.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM336H1S-Investments.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM340H1S-The-Opposable-Mind-Approaches-to-Integrative-Thinking.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM340H1S-The-Opposable-Mind-Approaches-to-Integrative-Thinking.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM351H1S-Data-Based-Decision-Making.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM351H1S-Data-Based-Decision-Making.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM352H1S-Marketing-Research.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM352H1S-Marketing-Research.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM353H1S-Consumer-Behaviour.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM353H1S-Consumer-Behaviour.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/LEC0101LEC0201LEC0301-Odziemkowska.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/LEC0101LEC0201LEC0301-Odziemkowska.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM393H1S-Strategic-Case-Analysis.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM393H1S-Strategic-Case-Analysis.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM394H1S-Social-Entrepreneurship.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM394H1S-Social-Entrepreneurship.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM415H1S-Strategic-Decisions-in-Operations.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM415H1S-Strategic-Decisions-in-Operations.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM426H1S-Critical-Thinking-Analysis-and-Decision-Making.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM426H1S-Critical-Thinking-Analysis-and-Decision-Making.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM430H1S-Fixed-Income-Securities.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM430H1S-Fixed-Income-Securities.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM433H1S-Advanced-Corporate-Finance.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM433H1S-Advanced-Corporate-Finance.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM437H1S-International-Finance.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM437H1S-International-Finance.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM438H1S-Mergers-and-Acquisitions.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM438H1S-Mergers-and-Acquisitions.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM454H1S-Sales-and-Distribution-Strategy.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM454H1S-Sales-and-Distribution-Strategy.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM458H1S-Branding-Strategy.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM458H1S-Branding-Strategy.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM459H1S-Business-Design.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM459H1S-Business-Design.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM461H1S-Managerial-Negotiations.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM461H1S-Managerial-Negotiations.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM463H1S-Socially-Intelligent-Manager.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM463H1S-Socially-Intelligent-Manager.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM464H1S-Organization-Theory-and-Its-Applications.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM464H1S-Organization-Theory-and-Its-Applications.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM470H1S-Management-Science-Modelling-with-Spreadsheets.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM470H1S-Management-Science-Modelling-with-Spreadsheets.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM484H1S-Real-Estate-Finance-and-Investment.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM484H1S-Real-Estate-Finance-and-Investment.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM494H1S-Technology-Strategy.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM494H1S-Technology-Strategy.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM495H1S-Management-Consulting.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2025/01/RSM495H1S-Management-Consulting.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6829/997894799",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6829/997894799",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6999/997897965",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6999/997897965",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6844/997897855",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6844/997897855",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6856/997895685",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6856/997895685",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6795/997894745",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6795/997894745",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7074/997897967",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7074/997897967",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7162/997897968",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7162/997897968",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7027/997897971",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7027/997897971",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6879/997897972",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6879/997897972",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7159/997897797",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7159/997897797",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6805/997897974",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6805/997897974",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7149/997897983",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7149/997897983",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7005/997897832",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7005/997897832",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7030/997897979",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7030/997897979",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6783/997897980",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6783/997897980",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7140/997898895",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7140/997898895",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7059/997895827",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7059/997895827",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/MGT100H1F-Fundamentals-of-Management.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/MGT100H1F-Fundamentals-of-Management.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/MGT201H1F-Fundamentals-of-Financial-Accounting.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/MGT201H1F-Fundamentals-of-Financial-Accounting.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/MGT250H1F-Fundamentals-of-Marketing.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/MGT250H1F-Fundamentals-of-Marketing.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM100H1F-Introduction-to-Management.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM100H1F-Introduction-to-Management.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM219H1F-Introduction-to-Financial-Accounting.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM219H1F-Introduction-to-Financial-Accounting.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM220H1F-Intermediate-Financial-Accounting-I.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM220H1F-Intermediate-Financial-Accounting-I.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM221H1F-Intermediate-Financial-Accounting-II.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM221H1F-Intermediate-Financial-Accounting-II.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM222H1F-Management-Accounting-I.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM222H1F-Management-Accounting-I.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L5101-Poliwoda.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L5101-Poliwoda.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM230H1F-Financial-Markets.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM230H1F-Financial-Markets.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101L0201L0301-Knight.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101L0201L0301-Knight.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM260H1F-Organizational-Behaviour.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM260H1F-Organizational-Behaviour.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101-Saunders.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101-Saunders.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM310H1F-One-To-One-Marketing.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM310H1F-One-To-One-Marketing.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM314H1F-ESG-and-Sustainability-Accounting.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM314H1F-ESG-and-Sustainability-Accounting.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM321H1F-Advanced-Financial-Accounting-Topics.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM321H1F-Advanced-Financial-Accounting-Topics.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM323H1F-Auditing-I.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM323H1F-Auditing-I.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM324H1F-Canadian-Income-Taxation-I.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM324H1F-Canadian-Income-Taxation-I.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM326H1F-Data-Analytics-with-Financial-Accounting-Information.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM326H1F-Data-Analytics-with-Financial-Accounting-Information.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/L0101L0201L0301-Yang.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/L0101L0201L0301-Yang.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM333H1F-Corporate-Finance.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM333H1F-Corporate-Finance.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM336H1F-Investments.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM336H1F-Investments.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM338H1F-Applications-of-Machine-Learning-in-Finance.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM338H1F-Applications-of-Machine-Learning-in-Finance.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/L5101L5201.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/L5101L5201.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM352H1F-Marketing-Research.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM352H1F-Marketing-Research.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101-1.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101-1.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM358H1F-Foundations-of-Artificial-Intelligence-for-Management.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM358H1F-Foundations-of-Artificial-Intelligence-for-Management.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM361H1F-Human-Resource-Management.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM361H1F-Human-Resource-Management.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM362H1F-Leading-Across-Differences.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM362H1F-Leading-Across-Differences.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM370H1F-Supply-Chain-Management.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM370H1F-Supply-Chain-Management.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM371H1F-Data-and-Information-Management-for-Business-Analytics.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM371H1F-Data-and-Information-Management-for-Business-Analytics.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM384H1F-Sports-Analytics.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM384H1F-Sports-Analytics.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101L5101-Ciologariu.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101L5101-Ciologariu.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM406H1F-Corporation-360.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM406H1F-Corporation-360.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM413H1F-Digital-and-Social-Media-Marketing.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM413H1F-Digital-and-Social-Media-Marketing.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM417H1F-Supply-Chain-Analytics.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM417H1F-Supply-Chain-Analytics.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM420H1F-Advanced-IT-Audit-and-Data-Analytics.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM420H1F-Advanced-IT-Audit-and-Data-Analytics.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM422H1F-Management-Control.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM422H1F-Management-Control.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM424H1F-Canadian-Income-Taxation-II.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM424H1F-Canadian-Income-Taxation-II.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM426H1F-Critical-Thinking-Analysis-and-Decision-Making.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM426H1F-Critical-Thinking-Analysis-and-Decision-Making.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM429H1F-Financial-Statement-Analysis-and-Valuation-1.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM429H1F-Financial-Statement-Analysis-and-Valuation-1.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM430H1F-Fixed-Income-Securities.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM430H1F-Fixed-Income-Securities.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM433H1F-Advanced-Corporate-Finance.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM433H1F-Advanced-Corporate-Finance.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM434H1F-Financial-Trading-Strategies.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM434H1F-Financial-Trading-Strategies.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM435H1F-Futures-and-Options-Markets.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM435H1F-Futures-and-Options-Markets.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM436H1F-Sustainable-Finance.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM436H1F-Sustainable-Finance.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM439H1F-Private-Equity-and-Entrepreneurial-Finance.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM439H1F-Private-Equity-and-Entrepreneurial-Finance.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM455H1F-Pricing.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM455H1F-Pricing.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM457H1F-Strategic-Marketing-Communication.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM457H1F-Strategic-Marketing-Communication.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM458H1F-Branding-Strategy.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM458H1F-Branding-Strategy.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM459H1F-Business-Design.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM459H1F-Business-Design.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM461H1F-Managerial-Negotiations.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM461H1F-Managerial-Negotiations.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM462H1F-Managing-People-in-the-Context-of-Globalization.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM462H1F-Managing-People-in-the-Context-of-Globalization.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM466H1F-Environmental-and-Social-Responsibility-for-Management.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM466H1F-Environmental-and-Social-Responsibility-for-Management.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM470H1F-Management-Science-Modelling-with-Spreadsheets.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM470H1F-Management-Science-Modelling-with-Spreadsheets.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM483H1F-Real-Estate-Markets.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM483H1F-Real-Estate-Markets.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM493H1F-Entrepreneurship-1.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/07/RSM493H1F-Entrepreneurship-1.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM495H1F-Management-Consulting.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM495H1F-Management-Consulting.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101-2.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/L0101-2.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM497H1F-Sustainability-Strategy.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/08/RSM497H1F-Sustainability-Strategy.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7073/997895688",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7073/997895688",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6952/997894676",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6952/997894676",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6871/997895690",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6871/997895690",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7024/997895825",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7024/997895825",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7153/997894908",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7153/997894908",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7037/997895694",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7037/997895694",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7039/997895695",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7039/997895695",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7088/997897982",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7088/997897982",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6996/997894873",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6996/997894873",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7117/997894872",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7117/997894872",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7006/997894105",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7006/997894105",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7022/997895700",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7022/997895700",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6975/997895826",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6975/997895826",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7122/997895320",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7122/997895320",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7118/997895730",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/7118/997895730",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6970/997895832",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6970/997895832",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/04/RSM435H1F-Futures-and-Options-Markets.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/04/RSM435H1F-Futures-and-Options-Markets.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm221h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm221h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm311h1s-20241-R2023-12-05.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm311h1s-20241-R2023-12-05.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm315h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm315h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm317h1s-20241-R2024-01-09.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm317h1s-20241-R2024-01-09.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm325h1s-20241-R2024-01-09.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm325h1s-20241-R2024-01-09.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm328h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm328h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm338h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm338h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm341h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm341h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm361h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm361h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm362h1s-20241-R2024-01-09.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm362h1s-20241-R2024-01-09.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm418h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm418h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm422h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm422h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm424h1s-20241-R2023-12-05.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm424h1s-20241-R2023-12-05.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm432h1s-20241-R2023-12-11.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm432h1s-20241-R2023-12-11.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm434h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm434h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm437h1s-20241-R2023-12-08.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm437h1s-20241-R2023-12-08.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm439h1s-20241-L0101L0201-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm439h1s-20241-L0101L0201-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm450h1s-20241-R2023-12-04.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/12/rsm450h1s-20241-R2023-12-04.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm456h1s-20241-R2023-12-06.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm456h1s-20241-R2023-12-06.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm466h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm466h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm480h1s-20241-R2023-12-15.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm480h1s-20241-R2023-12-15.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm482h1s-20241-R2024-01-03.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm482h1s-20241-R2024-01-03.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm484h1s-20241R20241-01-07.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm484h1s-20241R20241-01-07.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm490h1s-20241-R2024-01-09.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm490h1s-20241-R2024-01-09.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm493h1s-20241-R2024-01-05.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm493h1s-20241-R2024-01-05.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm494h1s-20241-R2024-01-05.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/01/rsm494h1s-20241-R2024-01-05.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6636/997892411",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6636/997892411",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6690/997889153",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6690/997889153",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6723/997889986",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6723/997889986",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/mgt201h1f-20239R2023-09-08.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/mgt201h1f-20239R2023-09-08.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/mgt250h1f-20239R2023-09-14.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/mgt250h1f-20239R2023-09-14.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm310h1f-20239R2023-08-30.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm310h1f-20239R2023-08-30.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm350h1f-20239L5101R2023-09-07.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm350h1f-20239L5101R2023-09-07.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm358h1f-20239R2023-09-11.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm358h1f-20239R2023-09-11.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm359h1f-20239R2023-08-30.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm359h1f-20239R2023-08-30.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm371h1f-20239R2023-08-30.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm371h1f-20239R2023-08-30.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm384h1f-20239R2023-09-07.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm384h1f-20239R2023-09-07.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm406-202392023-08-29.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm406-202392023-08-29.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm409h1f-20239R2023-09-11.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm409h1f-20239R2023-09-11.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm410h1f-20239R2023-08-29.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/08/rsm410h1f-20239R2023-08-29.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm419h1f-20239R2023-09-01.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm419h1f-20239R2023-09-01.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm429h1f-20239R2023-09-11.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm429h1f-20239R2023-09-11.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm432h1f-20239R2023-09-14.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm432h1f-20239R2023-09-14.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm436h1f-20239R2023-09-06.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm436h1f-20239R2023-09-06.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm455h1f-20239R2023-09-11.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm455h1f-20239R2023-09-11.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm462h1f-20239R2023-09-01.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm462h1f-20239R2023-09-01.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm464h1f-20239R2023-09-01.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm464h1f-20239R2023-09-01.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm468y1y-20239R2023-09-01.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm468y1y-20239R2023-09-01.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm483h1f-20239R2023-09-01.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2023/09/rsm483h1f-20239R2023-09-01.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6566/997887236",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6566/997887236",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6640/997887878",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6640/997887878",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6614/997887880",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6614/997887880",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6665/997886200",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6665/997886200",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6714/997884188",
+      "status": 200,
+      "content_type": "application/pdf",
+      "final_url": "https://www.economics.utoronto.ca/index.php/index/teaching/downloadCourseOutline/6714/997884188",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM468Y1Y-Managing-in-Diverse-Economies.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://rotmancommerce.utoronto.ca/current-students/wp-content/uploads/sites/3/2024/09/RSM468Y1Y-Managing-in-Diverse-Economies.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/351midterm-makeup.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/351midterm-makeup.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/354midterm_rev.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/354midterm_rev.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/354midterm.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/354midterm.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/351final.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/351final.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/354final.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/354final.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/354final_1.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354_files/354final_1.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY450_files/450midterm.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY450_files/450midterm.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    },
+    {
+      "url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY450_files/450final.pdf",
+      "status": 206,
+      "content_type": "application/pdf",
+      "final_url": "https://www.physics.utoronto.ca/~poppitz/poppitz/PHY450_files/450final.pdf",
+      "pdf_signature": true,
+      "accepted": true
+    }
+  ],
+  "method": "Official index links, exact catalogue codes, at most two outline periods per course, public HTTP 200/206 and PDF signature. First 1024 bytes inspected transiently; no document content saved."
+}

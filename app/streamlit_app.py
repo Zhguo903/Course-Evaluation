@@ -198,6 +198,115 @@ SOURCE_STATUS_LABELS = {
     "login_required": "需登录的外部入口，未导入记录",
     "licence_required": "需授权，未导入记录",
 }
+RESOURCE_TYPE_LABELS = {
+    "practice_problems": "练习 / 例题",
+    "tutorial_questions": "辅导课练习",
+    "worked_examples": "例题讲解",
+    "practice_exam": "模拟试卷",
+    "past_exam": "历年试卷",
+    "lecture_notes": "讲义",
+    "course_materials": "课程资料",
+    "syllabus": "教学大纲",
+    "course_site": "课程网站",
+    "learning_support": "学习支持",
+    "exam_portal": "往年试卷入口",
+    "student_guide": "学生指南",
+    "solutions": "解答资料",
+}
+PRACTICE_TYPES = {"practice_problems", "tutorial_questions", "worked_examples", "practice_exam", "past_exam"}
+RESOURCE_TYPE_ORDER = {
+    "practice_problems": 0,
+    "tutorial_questions": 0,
+    "worked_examples": 0,
+    "practice_exam": 1,
+    "past_exam": 2,
+    "lecture_notes": 3,
+    "course_materials": 4,
+    "syllabus": 5,
+    "course_site": 6,
+}
+
+
+def ordered_resources(frame: pd.DataFrame) -> pd.DataFrame:
+    """Order by intended use and source period, without grading resource quality."""
+    if frame.empty:
+        return frame.copy()
+
+    def latest_year(value: object) -> int:
+        years = re.findall(r"(?<!\d)((?:19|20)\d{2})(?!\d)", text_value(value))
+        return max(map(int, years)) if years else 0
+
+    result = frame.copy()
+    result["_resource_order"] = (
+        result.get("resource_type", pd.Series("", index=result.index)).map(RESOURCE_TYPE_ORDER).fillna(7)
+    )
+    result["_resource_year"] = result.get("academic_period", pd.Series("", index=result.index)).map(
+        latest_year
+    )
+    fields, ascending = ["_resource_order", "_resource_year"], [True, False]
+    if "title" in result:
+        fields.append("title")
+        ascending.append(True)
+    return result.sort_values(fields, ascending=ascending, kind="stable").drop(
+        columns=["_resource_order", "_resource_year"]
+    )
+
+
+def filter_resources(frame: pd.DataFrame, types: list[str], title_query: str) -> pd.DataFrame:
+    selected = frame.copy()
+    if selected.empty:
+        return selected
+    if types:
+        selected = selected.loc[selected["resource_type"].isin(types)]
+    if title_query.strip():
+        selected = selected.loc[
+            selected["title"].fillna("").str.contains(title_query.strip(), case=False, regex=False)
+        ]
+    return ordered_resources(selected)
+
+
+def clear_resource_filters() -> None:
+    st.session_state["resource_type_filter"] = []
+    st.session_state["resource_title_query"] = ""
+
+
+def render_data_coverage(catalogue: pd.DataFrame, resources: pd.DataFrame) -> None:
+    with st.expander("数据覆盖 / Imported course coverage"):
+        st.caption("按全部目录中的校区与完整课程代码统计课程数；历史报告条数和资料条数不计作课程数。")
+        base = catalogue.drop_duplicates(["campus", "course_code"]).copy()
+        for field, target in [
+            ("historical_evaluation_count", "_has_history"),
+            ("resource_count", "_has_resources"),
+        ]:
+            base[target] = (
+                pd.to_numeric(base[field], errors="coerce").fillna(0).gt(0) if field in base else None
+            )
+        practice_keys = set()
+        if not resources.empty and {"campus", "course_code", "resource_type"}.issubset(resources.columns):
+            practice = resources.loc[resources["resource_type"].isin(PRACTICE_TYPES)]
+            practice_keys = set(zip(practice["campus"], practice["course_code"]))
+        base["_has_practice"] = [
+            (campus, code) in practice_keys for campus, code in zip(base["campus"], base["course_code"])
+        ]
+        rows = []
+        for campus, group in base.groupby("campus", sort=True):
+            rows.append(
+                {
+                    "校区": campus,
+                    "目录课程数": len(group),
+                    "有历史评价的课程": int(group["_has_history"].sum())
+                    if "historical_evaluation_count" in base
+                    else None,
+                    "有专属资料的课程": int(group["_has_resources"].sum())
+                    if "resource_count" in base
+                    else None,
+                    "有练习 / 试卷的课程": int(group["_has_practice"].sum()),
+                }
+            )
+        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
+        st.caption(
+            "练习 / 试卷覆盖只统计准确关联的例题、辅导练习、模拟或历年试卷；通用入口不计入。空白表示索引尚未提供该项统计。"
+        )
 
 
 def render_student_reviews(frame: pd.DataFrame) -> None:
@@ -337,19 +446,12 @@ def render_resource_cards(frame: pd.DataFrame, empty_message: str) -> None:
             access = ACCESS_LABELS.get(text_value(resource.get("access_requirement")), "访问条件未列出")
             provider = text_value(resource.get("provider"))
             kind = text_value(resource.get("resource_type"))
-            kind = {
-                "lecture_notes": "讲义",
-                "course_site": "课程网站",
-                "syllabus": "教学大纲",
-                "learning_support": "学习支持",
-                "exam_portal": "往年试卷入口",
-                "student_guide": "学生指南",
-            }.get(kind, kind)
+            kind = RESOURCE_TYPE_LABELS.get(kind, kind)
             campus = text_value(resource.get("campus"))
             st.caption(" · ".join(part for part in [provider, campus, kind, access] if part))
             period = text_value(resource.get("academic_period"))
             if period:
-                years = [int(year) for year in re.findall(r"\b20\d{2}\b", period)]
+                years = [int(year) for year in re.findall(r"(?<!\d)((?:19|20)\d{2})(?!\d)", period)]
                 historical = bool(years) and max(years) < pd.Timestamp.now(tz="America/Toronto").year
                 prefix = "历史资料 · " if historical else ""
                 st.caption(f"{prefix}资料对应学期/年份：{period}；请核对当前课程要求。")
@@ -682,12 +784,63 @@ with feedback_tab:
                 relevant = resources[resources["campus"].fillna("").isin([feedback_campus, "All"])]
                 specific = relevant[relevant["course_code"].fillna("").eq(feedback_code)]
                 general = relevant[relevant["course_code"].fillna("").eq("")]
+            resource_context = (feedback_campus, feedback_code)
+            if st.session_state.get("resource_course_context") != resource_context:
+                clear_resource_filters()
+                st.session_state["resource_course_context"] = resource_context
+            available_types = sorted(
+                set(pd.concat([specific, general]).get("resource_type", pd.Series(dtype=str)).dropna()),
+                key=lambda kind: (RESOURCE_TYPE_ORDER.get(kind, 7), RESOURCE_TYPE_LABELS.get(kind, kind)),
+            )
+            type_column, title_column = st.columns([1, 2])
+            with type_column:
+                resource_types = st.multiselect(
+                    "资料类型（留空表示全部）",
+                    available_types,
+                    key="resource_type_filter",
+                    format_func=lambda kind: RESOURCE_TYPE_LABELS.get(kind, kind),
+                )
+            with title_column:
+                resource_title = st.text_input(
+                    "搜索资料标题",
+                    placeholder="例如：practice、calculus、2019",
+                    key="resource_title_query",
+                )
+            if resource_types or resource_title:
+                st.button("清空资料筛选", key="clear_resource_filters", on_click=clear_resource_filters)
+            st.caption(
+                "先展示练习、模拟与历年试卷，再展示讲义等资料；同类型按资料年份从新到旧排列。顺序不代表质量评分。"
+            )
+            specific_filtered = filter_resources(specific, resource_types, resource_title)
+            general_filtered = filter_resources(general, resource_types, resource_title)
             st.markdown("**本课程相关资料**")
-            render_resource_cards(specific, "这门课尚无已导入的课程专属学习资料入口。")
+            if not specific.empty:
+                st.caption(
+                    f"本课共 {len(specific):,} 条专属资料，当前匹配 {len(specific_filtered):,} 条，最多展示 20 条。"
+                )
+                download_csv(
+                    ordered_resources(specific),
+                    "下载本课完整学习资料 CSV",
+                    f"{feedback_code}_learning_resources.csv",
+                    "resource_csv",
+                )
+            resource_empty = (
+                "没有符合资料筛选的本课条目。请清空资料类型或标题关键词后重试。"
+                if not specific.empty
+                else "这门课尚无已导入的课程专属学习资料入口。"
+            )
+            render_resource_cards(specific_filtered.head(20), resource_empty)
             st.markdown("**通用入口与未关联资料**")
             st.caption("这些条目没有关联到当前课程；其中的历史课程资料不表示课程等价或当前适用。")
-            render_resource_cards(general, "当前校区尚无已登记的通用资料入口。")
+            general_empty = (
+                "没有符合资料筛选的通用入口。请清空资料类型或标题关键词后重试。"
+                if not general.empty
+                else "当前校区尚无已登记的通用资料入口。"
+            )
+            render_resource_cards(general_filtered.head(20), general_empty)
     render_feedback_sources(tables.get("feedback_sources", pd.DataFrame()))
+
+render_data_coverage(courses, tables.get("resources", pd.DataFrame()))
 
 with st.expander("数据来源与更新时间 / Sources & freshness"):
     st.write("课程要求来自各校区官方目录，开课记录来自官方课表快照。页面保留原文、来源链接与采集时间。")

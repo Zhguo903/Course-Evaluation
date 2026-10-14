@@ -1,6 +1,7 @@
 """Exercise the official-only finder with a small, isolated real catalog sample."""
 
 import json
+import io
 from pathlib import Path
 
 import duckdb
@@ -8,6 +9,7 @@ import pandas as pd
 import pytest
 import streamlit as st
 from streamlit.testing.v1 import AppTest
+from streamlit.runtime.memory_media_file_storage import MemoryMediaFileStorage
 
 from src import config, finder
 from src.catalog import load_catalog
@@ -57,7 +59,22 @@ def finder_data(tmp_path_factory, feedback_snapshot):
         ]
         .iloc[0]["course_code"]
     )
-    extra_codes = ["CSC110Y1", "CSC165H1", "MAT223H1", "CSCA08H3", "RSM430H1", missing_score]
+    resource_counts = (
+        feedback_snapshot["resources"]
+        .loc[feedback_snapshot["resources"]["course_code"].fillna("").ne("")]
+        .groupby("course_code")
+        .size()
+    )
+    most_resources_code = resource_counts.idxmax()
+    extra_codes = [
+        "CSC110Y1",
+        "CSC165H1",
+        "MAT223H1",
+        "CSCA08H3",
+        "RSM430H1",
+        missing_score,
+        most_resources_code,
+    ]
     extras = records.loc[records["course_code"].isin(extra_codes)]
     sample = pd.concat([sample, multi.head(1), extras], ignore_index=True).drop_duplicates("course_code")
     sample["offering_status"] = "unknown"
@@ -410,3 +427,154 @@ def test_optional_feedback_and_resource_filters_use_associated_records(feedback_
     reviews = set(feedback_data["reviews"]["course_code"])
     historical = set(feedback_data["evaluations"]["course_code"]) - {""}
     assert set(course_table(app)["课程代码 / Code"]).issubset(reviews | historical)
+
+
+def most_resources_course(feedback_data):
+    resources = feedback_data["resources"]
+    specific = resources.loc[resources["course_code"].fillna("").ne("")]
+    return specific.groupby("course_code").size().idxmax()
+
+
+def displayed_resource_urls(app):
+    return [item.proto.url for item in app.get("link_button") if item.proto.label == "打开学习资料入口 ↗"]
+
+
+def test_resource_type_and_literal_title_filters_use_real_course_links(feedback_data):
+    code = most_resources_course(feedback_data)
+    resources = feedback_data["resources"]
+    actual = resources.loc[resources["course_code"].eq(code)]
+    resource = actual.iloc[0]
+    app = dashboard()
+    app.text_input(key="course_query").set_value(code).run()
+    assert not app.exception
+    assert app.multiselect(key="resource_type_filter").value == []
+    app.multiselect(key="resource_type_filter").set_value([resource["resource_type"]]).run()
+    app.text_input(key="resource_title_query").set_value(resource["title"]).run()
+    assert not app.exception
+    expected = actual.loc[
+        actual["resource_type"].eq(resource["resource_type"])
+        & actual["title"].str.contains(resource["title"], case=False, regex=False)
+    ]
+    # Generic portals do not match the full title of this real course resource.
+    assert set(displayed_resource_urls(app)) == set(expected["url"])
+    assert resource["url"] in displayed_resource_urls(app)
+    assert any("顺序不代表质量评分" in item.value for item in app.caption)
+
+
+def test_empty_resource_search_has_clear_action_and_retains_full_export(feedback_data):
+    code = most_resources_course(feedback_data)
+    app = dashboard()
+    app.text_input(key="course_query").set_value(code).run()
+    app.text_input(key="resource_title_query").set_value("no-such-public-resource-903").run()
+    assert not app.exception
+    assert displayed_resource_urls(app) == []
+    assert any("没有符合资料筛选的本课条目" in item.value for item in app.info)
+    assert any(button.proto.label == "下载本课完整学习资料 CSV" for button in app.get("download_button"))
+    app.button(key="clear_resource_filters").click().run()
+    assert not app.exception
+    assert app.text_input(key="resource_title_query").value == ""
+    assert app.multiselect(key="resource_type_filter").value == []
+    assert displayed_resource_urls(app)
+
+
+def capture_resource_downloads(monkeypatch):
+    captured = {}
+    original = MemoryMediaFileStorage.load_and_get_id
+
+    def capture(self, path_or_data, mimetype, kind, filename=None):
+        if filename and filename.endswith("_learning_resources.csv"):
+            captured[filename] = path_or_data
+        return original(self, path_or_data, mimetype, kind, filename)
+
+    monkeypatch.setattr(MemoryMediaFileStorage, "load_and_get_id", capture)
+    return captured
+
+
+def test_full_resource_csv_contains_all_actual_course_metadata_even_when_display_is_filtered(
+    feedback_data, monkeypatch
+):
+    captured = capture_resource_downloads(monkeypatch)
+    code = most_resources_course(feedback_data)
+    actual = feedback_data["resources"].loc[feedback_data["resources"]["course_code"].eq(code)]
+    app = dashboard()
+    app.text_input(key="course_query").set_value(code).run()
+    app.text_input(key="resource_title_query").set_value("no-such-public-resource-903").run()
+    assert not app.exception
+    exported = pd.read_csv(io.BytesIO(captured[f"{code}_learning_resources.csv"]))
+    assert len(exported) == len(actual)
+    assert set(exported["resource_id"]) == set(actual["resource_id"])
+    assert set(exported["url"]) == set(actual["url"])
+    assert exported["course_code"].eq(code).all()
+    assert set(exported["campus"]) == set(actual["campus"])
+    assert not any(column.startswith("_resource_") for column in exported)
+
+
+def test_resource_display_limit_preserves_all_rows_in_download(feedback_data):
+    code = most_resources_course(feedback_data)
+    resources = feedback_data["resources"]
+    actual = resources.loc[resources["course_code"].eq(code)]
+    campus = actual.iloc[0]["campus"]
+    generic = resources.loc[
+        resources["course_code"].fillna("").eq("") & resources["campus"].isin([campus, "All"])
+    ]
+    app = dashboard()
+    app.text_input(key="course_query").set_value(code).run()
+    assert not app.exception
+    assert len(displayed_resource_urls(app)) == min(20, len(actual)) + min(20, len(generic))
+    assert any(f"本课共 {len(actual):,} 条专属资料" in item.value for item in app.caption)
+    assert any("最多展示 20 条" in item.value for item in app.caption)
+    assert any(button.proto.label == "下载本课完整学习资料 CSV" for button in app.get("download_button"))
+
+
+def test_resource_filters_reset_for_a_different_course(feedback_data):
+    app = dashboard()
+    app.text_input(key="resource_title_query").set_value("selected-resource-keyword").run()
+    first = app.selectbox(key="feedback_course").value
+    other = next(
+        option.split(" · ")[0]
+        for option in app.selectbox(key="feedback_course").options
+        if not option.startswith(first)
+    )
+    app.selectbox(key="feedback_course").set_value(other).run()
+    assert not app.exception
+    assert app.text_input(key="resource_title_query").value == ""
+    assert app.multiselect(key="resource_type_filter").value == []
+
+
+def test_twenty_card_limit_with_repeated_verified_rows_only_in_an_isolated_ui_fixture(
+    feedback_data, monkeypatch
+):
+    code = most_resources_course(feedback_data)
+    actual = feedback_data["resources"].loc[feedback_data["resources"]["course_code"].eq(code)]
+    # Repeat already verified metadata solely to stress the card limit. No new
+    # URLs, periods or course associations are invented; no fixture is published.
+    stress = pd.concat([actual] * 25, ignore_index=True).head(25)
+    feedback_data["resources"] = stress
+    captured = capture_resource_downloads(monkeypatch)
+    st.cache_data.clear()
+    app = dashboard()
+    app.text_input(key="course_query").set_value(code).run()
+    assert not app.exception
+    assert len(displayed_resource_urls(app)) == 20
+    exported = pd.read_csv(io.BytesIO(captured[f"{code}_learning_resources.csv"]))
+    assert len(exported) == 25
+    assert exported["course_code"].eq(code).all()
+    assert set(exported["url"]).issubset(set(actual["url"]))
+
+
+def test_coverage_expander_counts_courses_per_campus_not_reports_or_resources(feedback_data, finder_data):
+    app = dashboard()
+    coverage = next(frame.value for frame in app.dataframe if "目录课程数" in frame.value)
+    catalogue = finder_data["courses"]
+    assert coverage["目录课程数"].sum() == len(catalogue.drop_duplicates(["campus", "course_code"]))
+    for _, row in coverage.iterrows():
+        campus_codes = set(catalogue.loc[catalogue["campus"].eq(row["校区"]), "course_code"])
+        evaluations = feedback_data["evaluations"]
+        expected = evaluations.loc[evaluations["campus"].eq(row["校区"]), "course_code"]
+        assert row["有历史评价的课程"] == len(campus_codes.intersection(expected))
+        resources = feedback_data["resources"]
+        expected_resources = resources.loc[resources["campus"].eq(row["校区"]), "course_code"]
+        assert row["有专属资料的课程"] == len(campus_codes.intersection(expected_resources))
+    app.multiselect(key="campus_filter").set_value(["Mississauga"]).run()
+    unchanged = next(frame.value for frame in app.dataframe if "目录课程数" in frame.value)
+    pd.testing.assert_frame_equal(coverage, unchanged)

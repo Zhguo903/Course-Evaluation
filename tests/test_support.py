@@ -40,7 +40,8 @@ def test_changed_rating_or_missing_source_cannot_publish_as_verified_feedback():
 def test_campus_mapping_and_https_links_are_required():
     data, _ = load_support_snapshot()
     changed = deepcopy(data)
-    changed["resources"][0]["campus"] = "Scarborough"
+    specific = next(row for row in changed["resources"] if row["course_code"])
+    specific["campus"] = "Scarborough" if specific["campus"] != "Scarborough" else "St. George"
     with pytest.raises(ValueError, match="mismatch"):
         validate_support(changed)
     changed = deepcopy(data)

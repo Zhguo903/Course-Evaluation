@@ -9,15 +9,15 @@
     },
     "resources": {
       "file": "course_resources.json",
-      "count": 21,
-      "sha256": "8a55740687a09e601891d06ef63506bc5d18e4cd7ab76b49f3323383fb9aeab7"
+      "count": 752,
+      "sha256": "bc7e714eb572847c99977becc78f5ca9a01725208b9905780155b131bf05347c"
     },
     "feedback_sources": {
       "file": "feedback_sources.json",
-      "count": 6,
-      "sha256": "b39b2163da0e4dc2298d6e57b248855fcbdb8061b209a710a2dcd352b5978ba9"
+      "count": 7,
+      "sha256": "590ac2c1fe5cc05b79f1b1d05281409c878e365e29f77177b5476302932e061c"
     }
   },
   "review_policy": "Public self-reported individual opinions. Student identity is not verified. No averaging or quality ranking.",
-  "resource_policy": "Verified metadata and original links only; no redistributed course materials or exam contents."
+  "resource_policy": "Links and metadata only. No course, textbook, answer or exam document contents are mirrored; authenticated portals remain links."
 }

@@ -17,8 +17,8 @@ from src.evaluations import REFERENCE_DIR, fetch_evaluation_sources, import_eval
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     source = parser.add_mutually_exclusive_group(required=True)
-    source.add_argument("--source-dir", type=Path, help="Directory containing the three public source CSV files")
-    source.add_argument("--fetch", action="store_true", help="Explicitly download the three public CSVs to temporary storage")
+    source.add_argument("--source-dir", type=Path, help="Directory containing the four public source CSV files")
+    source.add_argument("--fetch", action="store_true", help="Explicitly download the four public CSVs to temporary storage")
     parser.add_argument("--output-dir", type=Path, default=REFERENCE_DIR)
     parser.add_argument("--timeout", type=float, default=60)
     args = parser.parse_args()

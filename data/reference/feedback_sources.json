@@ -40,6 +40,16 @@
     "limitations": "第三方公开整理的历史问卷数值，非校方当前 API；同一班级可能有多位教师报告，不代表当前课程教学情况。"
   },
   {
+    "source_id": "apsc2013_2024",
+    "title": "公开整理的 Engineering 历史课程评价",
+    "source_type": "historical_evaluation_dataset",
+    "status": "imported",
+    "access": "public",
+    "covered_period": "2013–2024",
+    "source_url": "https://drive.google.com/file/d/1wMut9mPuEKMDdS_PXhVvN-94061w2sTe/view",
+    "limitations": "源文件名fas.csv，实际Division为APSC/Engineering。只有104份报告能精确关联当前目录的14门课程，其余5795份保留未匹配。没有推荐题，推荐值为空；不是当前官方评价API，未逐条复核校方原始报告。"
+  },
+  {
     "source_id": "official_course_evaluations",
     "title": "官方 Course Evaluations / Quercus",
     "source_type": "official_evaluation_portal",

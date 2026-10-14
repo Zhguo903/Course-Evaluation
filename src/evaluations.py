@@ -40,6 +40,10 @@ SOURCES = (
     {"source_id": "utsc2014_2024", "filename": "scarborough.csv", "campus": "Scarborough",
      "file_id": "1pGV_LFagFQikou8n0xkumVQ_VyyRTIo7", "responses_field": "Number of Responses",
      "overall_field": "INS6", "workload_field": "UTSC2", "recommendation_field": "UTSC3"},
+    {"source_id": "apsc2013_2024", "filename": "fas.csv", "campus": "St. George",
+     "origin_faculty": "APSC / Engineering", "course_label_field": "Course Name",
+     "file_id": "1wMut9mPuEKMDdS_PXhVvN-94061w2sTe", "responses_field": "Number Responses",
+     "overall_field": "INS6", "workload_field": "APSC003", "recommendation_field": None},
 )
 LIMITATIONS = [
     "Third-party public copy of historical university survey aggregates; not individually revalidated behind UTORid.",
@@ -52,6 +56,8 @@ LIMITATIONS = [
     "Some historical courses no longer appear in the current catalogue; unmatched records must not be assigned by course name.",
     "Source CSVs contain instructor surnames but no individual student responses or free-text student comments; surnames are excluded here.",
     "Source-derived department and lecture aggregation files are not imported; their zero-filled and response-ratio calculations are not reused.",
+    "The Engineering source overlaps the selected undergraduate catalogue for only a small subset of courses; most Engineering records remain unmatched.",
+    "Engineering has no matching course-recommendation survey item in this source; recommendation scores remain unknown.",
 ]
 
 
@@ -97,10 +103,11 @@ def normalize_evaluations(
     """Read a public source CSV without copying names or narrative review text."""
     digest = hashlib.sha256(content).hexdigest()
     reader = csv.DictReader(io.StringIO(content.decode("utf-8-sig")))
+    label_field = source.get("course_label_field", "Course")
     required = {
-        "Course Code", "Course", "Year", "Term", "Number Invited", source["responses_field"],
+        "Course Code", label_field, "Year", "Term", "Number Invited", source["responses_field"],
         source["overall_field"], source["workload_field"], source["recommendation_field"],
-    }
+    } - {None}
     if not required.issubset(reader.fieldnames or []):
         raise ValueError(f"Evaluation CSV schema changed for {source['source_id']}")
     catalogue_keys = {(row["campus"], row["course_code"]) for row in catalogue}
@@ -109,10 +116,10 @@ def normalize_evaluations(
         year, term = int(raw["Year"]), raw["Term"].strip()
         if not 2000 <= year <= 2100 or term not in {"Fall", "Winter", "Summer"}:
             raise ValueError("Invalid historical evaluation year/term")
-        code, basis = _resolve_code(raw["Course Code"], raw["Course"], source["campus"], catalogue_keys)
-        section_match = re.search(r"\b((?:LEC|TUT|PRA|LAB|SEM)\s*\d+)\s*$", raw["Course"])
+        code, basis = _resolve_code(raw["Course Code"], raw[label_field], source["campus"], catalogue_keys)
+        section_match = re.search(r"\b((?:LEC|TUT|PRA|LAB|SEM)\s*\d+)\s*$", raw[label_field])
         section = re.sub(r"\s+", "", section_match.group(1)) if section_match else ""
-        cohort_identity = f"{source['campus']}|{year}|{term}|{raw['Course'].strip()}"
+        cohort_identity = f"{source['campus']}|{year}|{term}|{raw[label_field].strip()}"
         response_count, invited_count = _count(raw[source["responses_field"]]), _count(raw["Number Invited"])
         quality_flags = []
         if invited_count is None:
@@ -129,7 +136,7 @@ def normalize_evaluations(
             "cohort_id": hashlib.sha256(cohort_identity.encode()).hexdigest()[:20],
             "overall_score": _score(raw[source["overall_field"]]),
             "workload_score": _score(raw[source["workload_field"]]),
-            "recommendation_score": _score(raw[source["recommendation_field"]]),
+            "recommendation_score": _score(raw[source["recommendation_field"]]) if source["recommendation_field"] else None,
             "response_count": response_count, "invited_count": invited_count,
             "source_id": source["source_id"], "source_row_number": source_row_number,
             "source_url": _source_url(source), "source_retrieved_at": retrieved_at,

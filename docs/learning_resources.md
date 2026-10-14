@@ -1,33 +1,54 @@
 # 学习资源与维护
 
-当前整理 21 条资源：15 条关联当前官方目录中的 11 门课程，另 6 条为校区通用入口或历史资料，覆盖三个校区。来源核验日期为 2026-10-13。这是精选链接目录，尚未覆盖全部课程；同一课程可以关联不同资料，同一份讲义也可能服务多门课。
+截至 2026-10-14，索引共有 **752 条资源，748 个唯一 URL**：746 条精确关联当前官方目录的 **575 门课程**，另 6 条通用或未关联历史入口。它是持续扩充的精选索引，尚未覆盖全部课程；一门课可有多期资料，一个文件也可由官方明确关联多门课。[各校区课程覆盖统计](data_coverage.md)。
 
-数据库保存标题、完整课程代码、校区、资源类型、学期、发布者、访问要求、核验日期、权利说明及原始链接，不复制教材、文章、作业答案或考试全文。用户应在原站阅读，并以当期课程公告为准。资料缺失不表示该课没有学习资源。
+| 类型 | 条目数 |
+| --- | ---: |
+| 教学大纲 | 672 |
+| 讲义 | 18 |
+| 课程资料页 | 16 |
+| 课程网站 | 17 |
+| 学生指南 | 10 |
+| 练习／例题入口 | 4 |
+| 模拟试卷 | 3 |
+| 历年试卷 | 8 |
+| 通用试卷入口／学习支持 | 4 |
 
-## 主要来源
+多数新增资料是公开大纲。明确作为练习或试卷分类的 15 条链接涉及 8 门课程；其余课程网站内也可能有习题，但没有逐项核验的内容不会冒充单独试题记录。
 
-- [CSC110／CSC111 官方讲义](https://www.teach.cs.toronto.edu/~csc110y/fall/notes/)
-- [CSC148 官方讲义](https://www.teach.cs.toronto.edu/~csc148h/notes/)
-- [UTM CSC108 历史课程站](https://mcs.utm.utoronto.ca/~108s21/)
-- [UTM CSSC 学生指南示例](https://cssc.utm.utoronto.ca/resources/csc108/)
-- [MAT223 开放教材](https://siefkenj.github.io/IBLLinearAlgebra/)
-- [UTSC 课程入口](https://cms-pcrs.utsc.utoronto.ca/)
-- [UTSC 辅导学习小组](https://www.utsc.utoronto.ca/ctl/facilitated-study-groups-program)
-- [图书馆历年考试入口说明](https://guides.library.utoronto.ca/tspace/aboutpastexams)
+页面可按资料类型与标题筛选，每课最多展示 20 条，并始终提供本课完整资料 CSV；优先展示练习、模拟与旧卷，同类型按资料年份排列。顺序不代表质量评分。
 
-CSSC 的 CSC108、CSC148、MAT102 三篇指南是具名学生观点与学习建议，不是官方注册规则，也不是代表全体学生的数值评价。MAT223 教材明确采用 CC BY-SA 4.0；本项目仍只保存链接。其他资料未确认开放许可时，不因公开可读而默认允许复制。
+## 本次实际核验的来源
 
-历史 syllabus 的成绩分配、前置课和教学安排不代表当期政策。旧 MAT137Y1 不在当前目录，其资料作为历史入口保留，课程代码字段为空，不自动映射到 MAT137H5 或替代课程。图书馆考试实际内容需要有效 UTORid，使用范围受原站限制；项目只存入口，不登录抓取或再分发试卷。辅导小组也须核对当期安排，不向所有课程批量关联。
+- [Rotman 历年大纲](https://rotmancommerce.utoronto.ca/current-students/choosing-your-courses/course-outlines-archive/)及[经济系课程档案](https://www.economics.utoronto.ca/index.php/index/undergraduate/previousyears)：每课选少量最近学期与代表教学班。[商科、经济及物理批次](resource_expansion_business_physics.md)。
+- [CS 大纲索引](https://web.cs.toronto.edu/undergraduate/courses/outlines)、数学／统计教师公开课程页：大纲、练习、模拟题与材料入口。[St. George 批次](resource_expansion_sg.md)。
+- [UTSC Biology](https://www.utsc.utoronto.ca/biosci/course-syllabi)、[Chemistry](https://www.utsc.utoronto.ca/physsci/chemistry-course-syllabi)、[Psychology 档案](https://www.utsc.utoronto.ca/psych/syllabus-archive)及环境、食品、物理等官方列表：每门课选择最新可公开读取的一份大纲。[UTM／UTSC 批次](resource_expansion_utm_utsc.md)。
+- UTM [Alvaro Nosedal 教学页](https://mcs.utm.utoronto.ca/~nosedal/teaching.html)、[Pierre Desrochers 课程页](https://geog.utm.utoronto.ca/desrochers/)与 [CSSC 学生指南](https://cssc.utm.utoronto.ca/resources/)。学生指南属于具名观点与建议，不作为全体学生评价。
+- [PHY354](https://www.physics.utoronto.ca/~poppitz/poppitz/PHY354.html)与[PHY450](https://www.physics.utoronto.ca/~poppitz/poppitz/PHY450.html)教师发布的旧试卷；准确年份未列出时保持未知。
+
+数据库保存标题、完整代码、校区、类型、学期、发布者、访问条件、核验日期、权利说明和原始链接。资料内容在原站阅读；项目不镜像教材、题目、解答或试卷全文。公开访问不自动等于开放许可。CS 大纲索引要求仅供参考、不分发或再利用大纲信息，本项目仅保存课程、期次与原站链接。
+
+旧材料的成绩分配、教学计划和先修要求不能作为当前政策。经济系秋冬档案的整体标题虽为 Winter，具体资料已按 F/S/Y 分为实际秋、冬或全年；夏季 F/S 保留为夏季分段。旧 MAT137Y1 与 MAT235Y1 不自动改配到类似代码或其他校区。图书馆试卷内容仍可能需 UTORid，入口会明确标注，不登录抓取。
 
 ## 扩展与更新
 
-从官方教师课程站、CSSC 的课程页及公开源码、图书馆资源说明逐步扩展。维护者先打开原始来源，核对完整代码与校区、标题、学期、访问要求和权利范围；失效链接应删除或标明，不凭搜索摘要认定可用。没有当前代码对应关系的旧资料保持未关联。
-
-人工核验后编辑 `data/reference/course_resources.json`，再显式更新校验清单并重建数据库：
+批次脚本必须显式运行才会联网。沿官方实际索引提取链接，核对完整课程代码、校区、期次与来源；PDF 检查 HTTP/MIME 和文件签名，无法读取、空 HTML、错误代码或不明校区的目标排除并保留审计。SG 补充脚本还需可选的 `pypdf` 包，以核对 PDF 自身课程标识；它不是页面运行依赖。
 
 ```bash
-python scripts/verify_support.py --refresh-manifest
+python scripts/discover_business_physics_resources.py
+# SG 复核额外需要：pip install pypdf
+python scripts/discover_sg_resources.py
+python scripts/discover_sg_resources.py --append-extra
+python scripts/discover_sg_resources.py --audit-existing
+python scripts/discover_utm_utsc_resources.py
+python scripts/merge_resources.py \
+  --input data/reference/resources_business_physics_expansion.json \
+  --input data/reference/resources_sg_expansion.json \
+  --input data/reference/resources_utm_utsc_expansion.json
+python scripts/verify_support.py
 python run_pipeline.py
 ```
 
-刷新 hash 只是确认文件版本，不代替来源核验。保留核验日期与限制说明，检查通过后再发布；应用启动仅读取快照，不自动抓取网站或绕过登录。
+合并先核验已发布支持快照哈希，不能顺便重新认证无关学生评价或来源变动；再按校区、完整代码及无 fragment 的 URL 去重并验证，记录批次哈希、唯一课程／URL 数及分类统计。验证失败或通常写入异常时保留已发布文件。多个文件逐个替换，有并发读取或进程崩溃时严格 loader 会拒绝不一致版本，不静默接受。
+
+有意修改个人评价或来源登记后，先核对来源，再独立使用 `python scripts/verify_support.py --refresh-manifest` 更新支持哈希。刷新 hash 本身不代替来源核验。正常应用启动和离线 pipeline 不自动抓取网站。

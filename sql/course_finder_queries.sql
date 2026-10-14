@@ -56,3 +56,22 @@ WHERE campus IN ('St. George', 'All')
 SELECT campus, match_status, COUNT(*) AS report_count
 FROM dwd_course_evaluations
 GROUP BY campus, match_status;
+
+-- Coverage counts distinct current courses, not report or resource rows.
+SELECT campus, COUNT(*) AS catalogue_courses,
+       COUNT(*) FILTER (WHERE historical_evaluation_count > 0) AS courses_with_history,
+       COUNT(*) FILTER (WHERE student_review_count > 0) AS courses_with_personal_opinions,
+       COUNT(*) FILTER (WHERE resource_count > 0) AS courses_with_resources
+FROM ads_course_finder
+GROUP BY campus
+ORDER BY campus;
+
+-- Explicit practice/exam links only; general portals do not imply course coverage.
+SELECT campus, resource_type, COUNT(*) AS resource_entries,
+       COUNT(DISTINCT course_code) AS current_courses
+FROM dwd_course_resources
+WHERE course_code <> ''
+  AND resource_type IN ('practice_problems', 'practice_exam', 'past_exam',
+                        'tutorial_questions', 'worked_examples')
+GROUP BY campus, resource_type
+ORDER BY campus, resource_type;

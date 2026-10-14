@@ -63,7 +63,7 @@ Empty requirements mean not listed, not confirmed absence. Missing credit is not
 
 `ads_data_quality_report` contains `check_name`, `status`, `detail` and `check_time`. Publication is blocked if any required check fails. Timetable integrity is checked by its strict snapshot loader before database publication.
 
-## Student feedback and resources · v3.1
+## Student feedback and resources · v3.2
 
 `dwd_course_evaluations` contains **historical aggregate reports**, including records that cannot be assigned to the current catalogue. It does not contain individual student answers or free-text survey comments.
 
@@ -92,3 +92,9 @@ Missing scores/counts remain NULL. The three measures must not be blended into a
 `ads_feedback_sources` stores `source_id`, `title`, `source_type`, `status`, `access`, `covered_period`, `source_url` and `limitations`. An external link or a login/licence requirement does not count as imported feedback.
 
 `ads_course_finder` adds `student_review_count`, `historical_evaluation_count`, `resource_count`, `evaluation_year_min` and `evaluation_year_max`. Counts include only exact campus/course associations; resource counts exclude unassigned/global portals. They describe availability, not quality or confidence. Source manifests now include the support and historical-evaluation snapshots.
+
+Resource types include `practice_problems`, `practice_exam`, `past_exam`, `lecture_notes`, `course_materials`, `syllabus`, `course_site`, `student_guide`, `exam_portal` and `learning_support`. Types describe the linked page/document, not its quality or assessment relevance. A course website can contain exercises without being counted as a separately verified practice document.
+
+The resource page provides literal title and type filters, displays at most 20 matching specific links, and exports the complete course metadata regardless of those local filters. Its coverage table always uses the full catalogue and distinct `(campus, course_code)` associations. General/global portals do not increase course coverage; shared documents can have multiple explicit course associations, while `resource_manifest.json` separately reports unique URLs. A `past_exam` without a known year retains that uncertainty.
+
+Curated expansion batches are merged with `scripts/merge_resources.py`. Deduplication uses campus, complete course identifier and URL without fragments; it retains the newest verified metadata and canonical stable IDs. Course/campus validation precedes publication. Resource and support manifests contain hashes, per-type and per-campus counts, unique-course/URL counts and batch provenance. Failed validation preserves the published snapshots.

@@ -25,7 +25,7 @@ The pipeline runs quality checks, creates a fresh temporary DuckDB and atomicall
 
 See [data dictionary](data_dictionary.md), [matching rules](matching_rules.md), [timetable provenance](timetable_sources.md) and [query examples](../sql/course_finder_queries.sql).
 
-## Feedback and learning resources · v3.1
+## Feedback and learning resources · v3.2
 
 Four additional tables extend the database to ten:
 

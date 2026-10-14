@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.2.0 · 2026-10-14 · Public course materials expansion
+
+- Expand learning-resource metadata from 21 to 752 entries (748 unique URLs), including 746 exact associations covering 575 current courses across the three campuses.
+- Index 672 syllabi, 18 lecture-note links, 16 material pages, 17 course sites, 10 student guides, 4 practice links, 3 practice exams, 8 past exams and 4 shared-support/exam portals; retain source, period and access limitations without mirroring content.
+- Add 5,899 Engineering historical reports; 104 reports give 14 previously uncovered current courses evaluations. Totals: 70,453 reports, 54,196 matched to 6,505 courses, 16,257 unmatched. Missing Engineering recommendation items remain NULL.
+- Add resource type/title filters, a 20-card display limit, complete per-course CSV export and distinct course coverage by campus.
+- Correct Economics Fall/Winter archive term labels using F/S/Y; exclude broken, ambiguous and mismatched historical links.
+- Add explicit metadata discovery commands, batch audit reports, hash-checked deduplication and rollback tests for resource publication.
+
+
 ## v3.1.0 · Student feedback and learning resources
 
 - Import 64,554 third-party historical survey reports, of which 54,092 match 6,491 current catalogue courses; retain 10,462 unmatched reports without fuzzy associations.
