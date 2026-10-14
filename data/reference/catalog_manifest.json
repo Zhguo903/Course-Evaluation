@@ -1,162 +1,1596 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "complete": true,
   "source_retrieved_at": "2026-10-13",
-  "course_count": 200,
+  "course_count": 10037,
   "campus_coverage": {
-    "St. George": 80,
-    "Mississauga": 60,
-    "Scarborough": 60
+    "St. George": 5368,
+    "Mississauga": 2491,
+    "Scarborough": 2178
   },
-  "scope": "Curated sample across 8 subjects and 3 campuses; not the complete university catalogue",
+  "scope": "All courses in the unfiltered St. George Arts & Science, UTM and UTSC official undergraduate calendars. Other St. George faculties and graduate calendars are outside scope.",
   "metadata_source": "official_calendar",
-  "catalog_sha256": "944fecfde69906a88ba21ac4af4771ebce8ec254054bccfeba4489019a45948a",
+  "catalog_sha256": "40b1e0e2426def6a0f6be5e3bf705cb54d39d81a37b4c6321ffb396e932c1b0b",
   "missing_requirements": "Empty official field means not listed, not automatically no requirement",
   "requirements": "Original calendar text, whitespace normalized; no eligibility inference",
-  "review_data": "Excluded; student reviews and instructors in the demo remain synthetic",
+  "offering_status": "Calendar inclusion does not establish current offering; see the separately sourced timetable snapshot",
+  "department_mapping": {
+    "official_section_courses": 10015,
+    "prefix_fallback_courses": 22,
+    "prefix_fallback_codes": [
+      "EAS192H1",
+      "EAS213H1",
+      "EAS214H1",
+      "EAS215H1",
+      "EAS222H1",
+      "EAS313H1",
+      "EAS316H1",
+      "EAS403H1",
+      "EAS422H1",
+      "EAS445H1",
+      "EAS470H1",
+      "FRE299H1",
+      "FRE299Y1",
+      "FRE398H0",
+      "FRE398Y0",
+      "FRE399H1",
+      "FRE399Y1",
+      "FRE490Y1",
+      "FRE491H1",
+      "FRE492H1",
+      "SLA340H1",
+      "SLA377H1"
+    ],
+    "meaning": "Official calendar academic-area labels, possibly multiple per course; fallback is explicitly labeled course subject prefix, not an administrative department"
+  },
+  "excluded_course_headers": [],
+  "synthetic_records": 0,
   "sources": [
     {
-      "key": "sg-statistics",
-      "url": "https://artsci.calendar.utoronto.ca/section/Statistical-Sciences",
-      "selected_courses": 10,
-      "html_sha256": "f8bf86730f51c4ee7779f8d41330c14777869af83a5a3da6dcde3d15597f0c78"
+      "campus": "St. George",
+      "source_url": "https://artsci.calendar.utoronto.ca/print/view/pdf/course_search/print_page/debug/",
+      "search_url": "https://artsci.calendar.utoronto.ca/search-courses",
+      "last_page_url": "https://artsci.calendar.utoronto.ca/search-courses?page=178",
+      "export_sha256": "861f7fa87d09fcf6e0c8eafaed4e09fa4829dc03c2fe3d9d377992ca93db9bd1",
+      "course_count": 5368,
+      "pagination": {
+        "verified": true,
+        "last_page_index": 178,
+        "page_size": 30,
+        "last_page_count": 28,
+        "expected_course_count": 5368,
+        "export_course_count": 5368,
+        "first_last_sequences_match": true,
+        "first_course": "ABP100Y1",
+        "last_course": "WRR414H1",
+        "first_page_sha256": "2bd93bf0b79f269833bdbb474fb01fa98627f6545430387cc543c4a156efc7fb",
+        "last_page_sha256": "5695e1ae13f329a0b42431fee3e1fb6ef39bc1a9ec3d13c9f7483a3e8d7fc0b5"
+      }
     },
     {
-      "key": "sg-computer-science",
-      "url": "https://artsci.calendar.utoronto.ca/section/Computer-Science",
-      "selected_courses": 10,
-      "html_sha256": "0dd7a91f075c4ba5ff7665dab3fcb106d4fe913e5318d6662b155d5b8b177daf"
+      "campus": "Mississauga",
+      "source_url": "https://utm.calendar.utoronto.ca/print/view/pdf/search_courses/print_page/debug/",
+      "search_url": "https://utm.calendar.utoronto.ca/course-search",
+      "last_page_url": "https://utm.calendar.utoronto.ca/course-search?page=83",
+      "export_sha256": "708720bd062a8b31c79b78067d69d28989a79eb0fcc03a81393d5c78bb7d688b",
+      "course_count": 2491,
+      "pagination": {
+        "verified": true,
+        "last_page_index": 83,
+        "page_size": 30,
+        "last_page_count": 1,
+        "expected_course_count": 2491,
+        "export_course_count": 2491,
+        "first_last_sequences_match": true,
+        "first_course": "ANT101H5",
+        "last_course": "WRI499Y5",
+        "first_page_sha256": "b3f1c8b66efd488a7776ff8079a96129e18ac61e062d9bc1c039633d0cf9beb8",
+        "last_page_sha256": "798f3c2c2616791364b46adeaf35f3c7b92836457f9d6e4b4d4663a7a6b724d3"
+      }
     },
     {
-      "key": "sg-economics",
-      "url": "https://artsci.calendar.utoronto.ca/section/Economics",
-      "selected_courses": 10,
-      "html_sha256": "9af478aa2bc8fef7bad268d7de45a4b1860d99c7e37d47b65cb41a112fa39646"
+      "campus": "Scarborough",
+      "source_url": "https://utsc.calendar.utoronto.ca/print/view/pdf/search_courses/print_page/debug/",
+      "search_url": "https://utsc.calendar.utoronto.ca/search-courses",
+      "last_page_url": "https://utsc.calendar.utoronto.ca/search-courses?page=72",
+      "export_sha256": "e7b4e12be25c7a573f3ec8e194f476485912dceeada628f884753218e384a068",
+      "course_count": 2178,
+      "pagination": {
+        "verified": true,
+        "last_page_index": 72,
+        "page_size": 30,
+        "last_page_count": 18,
+        "expected_course_count": 2178,
+        "export_course_count": 2178,
+        "first_last_sequences_match": true,
+        "first_course": "ACMB10H3",
+        "last_course": "WSTD46H3",
+        "first_page_sha256": "045ec7c88624b1b8a3233ddd67f9c865c354c2ae3d6e9a03c882710e2e3d8f55",
+        "last_page_sha256": "cef927efe18bca2df06a8c8e0b1212f8a6d01273867b51f4805e91abe0b76a8e"
+      }
+    }
+  ],
+  "subject_section_sources": [
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/life-sciences",
+      "status": "not_found_404"
     },
     {
-      "key": "sg-mathematics",
-      "url": "https://artsci.calendar.utoronto.ca/section/Mathematics",
-      "selected_courses": 10,
-      "html_sha256": "40c4b11af8081a97accefa8bc6149db388fd6deab28214e2cd0aa241750baf0b"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Geography-and-Planning",
+      "status": "retrieved",
+      "section_title": "Geography and Planning",
+      "listed_course_count": 143,
+      "html_sha256": "3c1637645b811032706ba784ef0471816f3c587a447b467eb6a9c1acb2201210"
     },
     {
-      "key": "sg-biology",
-      "url": "https://artsci.calendar.utoronto.ca/section/Cell-and-Systems-Biology",
-      "selected_courses": 10,
-      "html_sha256": "8e4b2dca9d63557ff4c72c8d4df3734e402283aa54f0e7399a2b42bf1fa34dbc"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Nutritional-Sciences",
+      "status": "retrieved",
+      "section_title": "Nutritional Sciences",
+      "listed_course_count": 19,
+      "html_sha256": "9da6b6230e9cc34fe81d113ff63d6a83bfd76e409380d616fa4f5e41d23b03e9"
     },
     {
-      "key": "sg-psychology",
-      "url": "https://artsci.calendar.utoronto.ca/section/Psychology",
-      "selected_courses": 10,
-      "html_sha256": "ac4f9b3927a345b09bbca0e8ef4bc5b0be915941944626392fcc669a7c12c37f"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Anthropology",
+      "status": "retrieved",
+      "section_title": "Anthropology",
+      "listed_course_count": 134,
+      "html_sha256": "7c04870a167163fbd6dd674faa024f680682da6bf56f5fa86276aa47598d9076"
     },
     {
-      "key": "sg-english",
-      "url": "https://artsci.calendar.utoronto.ca/section/English",
-      "selected_courses": 10,
-      "html_sha256": "157d486ef6e5ee855487f5fe2c1c2c4febfa6a0fcb589c1a510da232289acf72"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Political-Science",
+      "status": "retrieved",
+      "section_title": "Political Science",
+      "listed_course_count": 168,
+      "html_sha256": "32b9b3b2b4516fba874785de5ca39e0f3cc25df81a8210b9d313e7b49f62ed6b"
     },
     {
-      "key": "sg-history",
-      "url": "https://artsci.calendar.utoronto.ca/section/History",
-      "selected_courses": 10,
+      "source_url": "https://artsci.calendar.utoronto.ca/section/History",
+      "status": "retrieved",
+      "section_title": "History",
+      "listed_course_count": 252,
       "html_sha256": "b1136d865c4b38cf163c1ca8f7c15c8e758d7ef30e21f1a35d90068de31df821"
     },
     {
-      "key": "utm-statistics",
-      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Statistics%2C+Applied",
-      "selected_courses": 8,
-      "html_sha256": "efdfb757ee2bd390826fc9fb5063f137f399c1215b5734107afef366e6c1fa94"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Immunology",
+      "status": "retrieved",
+      "section_title": "Immunology",
+      "listed_course_count": 20,
+      "html_sha256": "0a23b22c7c752e8831db5bb5056564c4147ce1895c911da7c8528dbea81ae70c"
     },
     {
-      "key": "utm-computer-science",
-      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Computer+Science",
-      "selected_courses": 8,
-      "html_sha256": "ce1b8c9b6d069c40370e993e9f3ea0c114479b379dc5c4ffc9bfd4ef6ed02c2a"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Philosophy",
+      "status": "retrieved",
+      "section_title": "Philosophy",
+      "listed_course_count": 158,
+      "html_sha256": "45b191811d87cf3e2e46167cc15abd216f33874aac5a49d07e69d7d80744cfd2"
     },
     {
-      "key": "utm-economics",
-      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Economics",
-      "selected_courses": 8,
-      "html_sha256": "85fd7f8f594b92bf46a7452f681803becf241dd018c28ebc88166ec812dd854c"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Psychology",
+      "status": "retrieved",
+      "section_title": "Psychology",
+      "listed_course_count": 112,
+      "html_sha256": "ac4f9b3927a345b09bbca0e8ef4bc5b0be915941944626392fcc669a7c12c37f"
     },
     {
-      "key": "utm-mathematics",
-      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Mathematical+Sciences",
-      "selected_courses": 8,
-      "html_sha256": "baf687887ba44aa2b5b41310a645c22f4d2e97ffa610e66cc55f4f6a88bd9556"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/English",
+      "status": "retrieved",
+      "section_title": "English",
+      "listed_course_count": 121,
+      "html_sha256": "157d486ef6e5ee855487f5fe2c1c2c4febfa6a0fcb589c1a510da232289acf72"
     },
     {
-      "key": "utm-biology",
-      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Biology",
-      "selected_courses": 7,
-      "html_sha256": "8b8f1f5761224754ac1967ed26ef17f8ce011faba95db5de1eb8cf03b2f545bc"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Hungarian",
+      "status": "retrieved",
+      "section_title": "Hungarian",
+      "listed_course_count": 4,
+      "html_sha256": "63e2cadf3b2bcbc10413066d3bf745d35ae7e83d91d13fd6165bd56b7bcd716c"
     },
     {
-      "key": "utm-psychology",
-      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=Psychology",
-      "selected_courses": 7,
-      "html_sha256": "88368b55b84bd3e05cf82c9694333106e7ee07915e3fb5d5726eb4348e0579eb"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Criminology-and-Sociolegal-Studies",
+      "status": "retrieved",
+      "section_title": "Centre for Criminology and Sociolegal Studies",
+      "listed_course_count": 56,
+      "html_sha256": "c1bbed7c2e31c0dc5433bae6cf3380a51bbad6d920da6523d7e49a8958a4480b"
     },
     {
-      "key": "utm-english",
-      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=English",
-      "selected_courses": 7,
-      "html_sha256": "21c8f671ef93e0f3490d4edc138e1192af44084c9cad43b1772ef3b6a2722270"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Human-Biology",
+      "status": "retrieved",
+      "section_title": "Human Biology",
+      "listed_course_count": 72,
+      "html_sha256": "18afdc717aa1dcc7fcbdd80ab2455a3f621b9eddc53afbe4c1c66ba3ebab8d3d"
     },
     {
-      "key": "utm-history",
-      "url": "https://utm.calendar.utoronto.ca/course-search?field_sections_value=History",
-      "selected_courses": 7,
-      "html_sha256": "a85346bf4f52a111ac405bf84c315ab503d2c6f647cf15e503bf1c883b315c6d"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Forest-Conservation-and-Forest-Biomaterials-Science",
+      "status": "retrieved",
+      "section_title": "Forest Conservation and Forest Biomaterials Science",
+      "listed_course_count": 25,
+      "html_sha256": "ca55950e6334a0d456c3e0c0f631945646660556489458d2db75d36c78a41495"
     },
     {
-      "key": "utsc-statistics",
-      "url": "https://utsc.calendar.utoronto.ca/section/Statistics",
-      "selected_courses": 8,
-      "html_sha256": "0f1ccd843ad6847460eb0a5512a7f75a891080662f9ae9cf3bb2a2fe627bbce7"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Academic-Bridging-Program",
+      "status": "retrieved",
+      "section_title": "Academic Bridging Program",
+      "listed_course_count": 10,
+      "html_sha256": "1cc35d9f030a4a6500ca3fe7699c749521075648027dfb044ac39c6a84068a82"
     },
     {
-      "key": "utsc-computer-science",
-      "url": "https://utsc.calendar.utoronto.ca/section/Computer-Science",
-      "selected_courses": 8,
-      "html_sha256": "f2b11e077ba973fbbc0095d2713e610ff6aafd3581dbe9706bdf6a8ac0b8bc61"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Actuarial-Science",
+      "status": "retrieved",
+      "section_title": "Actuarial Science",
+      "listed_course_count": 27,
+      "html_sha256": "e34383502ed651cc2f25b1f93f347d0db6dbb9c0c1c6b12fc2526bfd8cfd8435"
     },
     {
-      "key": "utsc-economics",
-      "url": "https://utsc.calendar.utoronto.ca/section/Economics-for-Management-Studies",
-      "selected_courses": 8,
-      "html_sha256": "a4a5e543d71f2af72bb30449e4727a1e5b2768a52da1f3bf34e7e11171985b9f"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/American-Studies",
+      "status": "retrieved",
+      "section_title": "American Studies",
+      "listed_course_count": 27,
+      "html_sha256": "cf3befaa6d83d5cf4e5eb0b3b6f9efb26e87b89c6917fca87999762fa36ab169"
     },
     {
-      "key": "utsc-mathematics",
-      "url": "https://utsc.calendar.utoronto.ca/section/Mathematics",
-      "selected_courses": 8,
-      "html_sha256": "d8a895ba83a3e50b6d8148b31b4bc5d3aa3767245d42baee366c8e9affbdb879"
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Anatomy",
+      "status": "retrieved",
+      "section_title": "Anatomy",
+      "listed_course_count": 8,
+      "html_sha256": "c84733ff5a01bbda3f8bd2bf123896f4268937f5ae2268ea00a6758146f62412"
     },
     {
-      "key": "utsc-biology",
-      "url": "https://utsc.calendar.utoronto.ca/section/Biological-Sciences",
-      "selected_courses": 7,
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Archaeology",
+      "status": "retrieved",
+      "section_title": "Archaeology",
+      "listed_course_count": 18,
+      "html_sha256": "a6c2dc46da367dfed4d43b06b003a2296cabef4d6190d8c1a5a5636a2fcdebce"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Architecture-and-Visual-Studies",
+      "status": "retrieved",
+      "section_title": "Architecture and Visual Studies",
+      "listed_course_count": 3,
+      "html_sha256": "5cc5f6cb70490195686b29e581319974444fdf7fc7aebdd5cfb700b22f298441"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Art-History",
+      "status": "retrieved",
+      "section_title": "Art History",
+      "listed_course_count": 136,
+      "html_sha256": "5e7949d89a678a8cc8b25df7529b7ab1d9dc430ed5d86604a65f0e470d973dbc"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/ASIP",
+      "status": "retrieved",
+      "section_title": "Arts & Science Internship Program",
+      "listed_course_count": 17,
+      "html_sha256": "5d4ad3d6387b4ceb8db21d6e6e03c5a7ec0f98646c34775d68800dedd0ab5a7c"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Astronomy-and-Astrophysics",
+      "status": "retrieved",
+      "section_title": "Astronomy and Astrophysics",
+      "listed_course_count": 26,
+      "html_sha256": "639f44d2f4778d5ee7b6eaf8e601aa3877cd26ed5742843e079affccaeac5e7a"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Biochemistry",
+      "status": "retrieved",
+      "section_title": "Biochemistry",
+      "listed_course_count": 34,
+      "html_sha256": "a849b76db36660f63cdde4257bcd338bafff4459babe2b2e7765138a9691db14"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Estonian",
+      "status": "retrieved",
+      "section_title": "Estonian",
+      "listed_course_count": 0,
+      "html_sha256": "ca0e4f81e553adffe4be0ba510a662151b04f39c682eacc0b715e36f3c86d315"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Business-Fundamentals",
+      "status": "retrieved",
+      "section_title": "Business Fundamentals",
+      "listed_course_count": 4,
+      "html_sha256": "71d7e9a62b206502a930b77c87a017c5ee6610470e4f500fc2e4d8790345d7ee"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Canadian-Institute-for-Theoretical-Astrophysics",
+      "status": "retrieved",
+      "section_title": "Canadian Institute for Theoretical Astrophysics",
+      "listed_course_count": 9,
+      "html_sha256": "f678fb4c946f51237cdcff7badc8405829a43cf178e0ee0b385383c7eace7c69"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Cell-and-Systems-Biology",
+      "status": "retrieved",
+      "section_title": "Cell and Systems Biology",
+      "listed_course_count": 74,
+      "html_sha256": "8e4b2dca9d63557ff4c72c8d4df3734e402283aa54f0e7399a2b42bf1fa34dbc"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Centre-for-Entrepreneurship",
+      "status": "retrieved",
+      "section_title": "Centre for Entrepreneurship",
+      "listed_course_count": 4,
+      "html_sha256": "152fa91d62f16f1245e18bec99e7b480b4b891e0853f90b4d4d2416b33d340c1"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Centre-for-Medieval-Studies",
+      "status": "retrieved",
+      "section_title": "Centre for Medieval Studies",
+      "listed_course_count": 6,
+      "html_sha256": "122791b4ec094ae5d909a6c81496665baa2eac094d9178a1a4cd0fa25a075d9c"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Chemistry",
+      "status": "retrieved",
+      "section_title": "Chemistry",
+      "listed_course_count": 82,
+      "html_sha256": "8eddc2e41034e74a56017ddb9d7f31cfe547103da2abb72a3e29fe34cc9f0c06"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Cinema-Studies-Institute",
+      "status": "retrieved",
+      "section_title": "Cinema Studies Institute",
+      "listed_course_count": 80,
+      "html_sha256": "554a47506ad8473eaccff338c149cf409478df998d13b42c300992cf43813268"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Rotman-Commerce",
+      "status": "retrieved",
+      "section_title": "Rotman Commerce",
+      "listed_course_count": 139,
+      "html_sha256": "3c782f7f19a556fb5f544ca99805ba58f8c99304c83059c005d33b7e787d3271"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Computer-Science",
+      "status": "retrieved",
+      "section_title": "Computer Science",
+      "listed_course_count": 86,
+      "html_sha256": "534bb3a7fef24d38092c2c5f0e4fa9b9c94ff50fc70f6f770b9a1178be6a2524"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Contemporary-Asian-Studies",
+      "status": "retrieved",
+      "section_title": "Dr. David Chu Program In Contemporary Asian Studies",
+      "listed_course_count": 41,
+      "html_sha256": "12eea734c2b92dd2e5aada864d2b625ab3043cf43d244998c07bf8d6597129a6"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Diaspora-and-Transnational-Studies",
+      "status": "retrieved",
+      "section_title": "Diaspora and Transnational Studies",
+      "listed_course_count": 30,
+      "html_sha256": "9b7ac092c6fc2b0ababf55048001fdc11757e6242f87431e563f91acb90d7fb9"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Drama%2C-Theatre-and-Performance-Studies",
+      "status": "retrieved",
+      "section_title": "Centre for Drama, Theatre and Performance Studies",
+      "listed_course_count": 64,
+      "html_sha256": "f32c25557ac748b50f412706633171cd440107798b90f17a5f4adec55a802b6f"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Earth-Sciences",
+      "status": "retrieved",
+      "section_title": "Earth Sciences",
+      "listed_course_count": 60,
+      "html_sha256": "56e5edea5fc6472d42846acdba91a3bd74b585c165af788dbb69325de03f06e8"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Ecology-and-Evolutionary-Biology",
+      "status": "retrieved",
+      "section_title": "Ecology and Evolutionary Biology",
+      "listed_course_count": 71,
+      "html_sha256": "700038d07994e74b5b3dd95a5bf58a2d90026ee1b3afc396c9b745fc0babfdde"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Economics",
+      "status": "retrieved",
+      "section_title": "Economics",
+      "listed_course_count": 115,
+      "html_sha256": "9af478aa2bc8fef7bad268d7de45a4b1860d99c7e37d47b65cb41a112fa39646"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Centre-for-Ethics",
+      "status": "retrieved",
+      "section_title": "Centre for Ethics",
+      "listed_course_count": 6,
+      "html_sha256": "c46375dc908998266fb559567ba93c0b7790a1ac426c872935e2ceb7203b95b3"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Mathematics",
+      "status": "retrieved",
+      "section_title": "Mathematics",
+      "listed_course_count": 104,
+      "html_sha256": "40c4b11af8081a97accefa8bc6149db388fd6deab28214e2cd0aa241750baf0b"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/History-and-Philosophy-of-Science-and-Technology",
+      "status": "retrieved",
+      "section_title": "History and Philosophy of Science and Technology",
+      "listed_course_count": 71,
+      "html_sha256": "8d1c53eec5818966c48f17c6ff33c06c1bd919a5c7b4b35ec4a04ef03d03e4f1"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Finnish",
+      "status": "retrieved",
+      "section_title": "Finnish",
+      "listed_course_count": 0,
+      "html_sha256": "23eb18268b85d83f919df71c9953fede08f823f4a45c9862bbd3ca7ac6e3a6fa"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Latin-American-Studies",
+      "status": "retrieved",
+      "section_title": "Latin American Studies",
+      "listed_course_count": 16,
+      "html_sha256": "840d7a5d1b7c8d6b79b4d11b3936affa9619597ce551ffd2feb07df4fe07c252"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/German",
+      "status": "retrieved",
+      "section_title": "German",
+      "listed_course_count": 61,
+      "html_sha256": "d2428c23f84145efab02839d90b53a7da49f62d464afad14de7dd6862a19502a"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Laboratory-Medicine-and-Pathobiology",
+      "status": "retrieved",
+      "section_title": "Laboratory Medicine and Pathobiology",
+      "listed_course_count": 19,
+      "html_sha256": "b5a9e4f65bf38cc9084d6a6fbf30de7dcfd315ba477085e71352afbf94075afd"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Indigenous-Studies",
+      "status": "retrieved",
+      "section_title": "Indigenous Studies",
+      "listed_course_count": 57,
+      "html_sha256": "9fa9440dd0a3971692b228b3c2c01d9ef366126bde623f1541c7d2b176a832b0"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Industrial-Relations-and-Human-Resources",
+      "status": "retrieved",
+      "section_title": "Centre for Industrial Relations and Human Resources",
+      "listed_course_count": 39,
+      "html_sha256": "a8fd6f06791721d8796f1fd55b0734534174afdd6fdfa3c036b335778df62a37"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Italian",
+      "status": "retrieved",
+      "section_title": "Italian",
+      "listed_course_count": 76,
+      "html_sha256": "03578c5930fb0431f920251c2463343cf7939e84548490c8078f50a8d8b21b36"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Centre-for-Jewish-Studies",
+      "status": "retrieved",
+      "section_title": "Centre for Jewish Studies",
+      "listed_course_count": 33,
+      "html_sha256": "84d4b2602bb6ad7988142ac44da9e26dde08cce9ab1443c00229d2123107e2be"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Linguistics",
+      "status": "retrieved",
+      "section_title": "Linguistics",
+      "listed_course_count": 73,
+      "html_sha256": "a4ccba7433beb31d61bca382afef06a7911cd40dfcba28c1f71d257ba18d5f4a"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Materials-Science",
+      "status": "retrieved",
+      "section_title": "Materials Science",
+      "listed_course_count": 12,
+      "html_sha256": "12bfed47632e6cf482c00b4d6a004ce1452d4909f6eb9ee193ceeb4a80791792"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Molecular-Genetics-and-Microbiology",
+      "status": "retrieved",
+      "section_title": "Molecular Genetics and Microbiology",
+      "listed_course_count": 27,
+      "html_sha256": "bea0cba19e64870bca6b2af29ab9076bbaa0aae9eeb9cb63b506261be86cf860"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Music",
+      "status": "retrieved",
+      "section_title": "Music",
+      "listed_course_count": 51,
+      "html_sha256": "4be8e6d46141f54b366425ed9098233270d23de3eaf0b5095f991c485267f6ca"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Peace%2C-Conflict-and-Justice",
+      "status": "retrieved",
+      "section_title": "Peace, Conflict and Justice",
+      "listed_course_count": 0,
+      "html_sha256": "7ee461bb1bebe8fa94460c6af9eb8eeac6605ba8ce5c4ce1ebb82ad0a057302f"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Pharmacology-and-Toxicology",
+      "status": "retrieved",
+      "section_title": "Pharmacology and Toxicology",
+      "listed_course_count": 37,
+      "html_sha256": "08e5783d7af4df080caa580a0e0314b325d2ff47876a1e9fd66149945749c279"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Physics",
+      "status": "retrieved",
+      "section_title": "Physics",
+      "listed_course_count": 73,
+      "html_sha256": "a7566e20a88185b7a135ada7f5cc170b66ba8a0c61aff49be483f819febf2e86"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Physiology",
+      "status": "retrieved",
+      "section_title": "Physiology",
+      "listed_course_count": 40,
+      "html_sha256": "40546e04af4445636befcb5c7441988083444b36290abfce992f0b1ffaf6dfa9"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Planetary-Science",
+      "status": "retrieved",
+      "section_title": "Planetary Science",
+      "listed_course_count": 2,
+      "html_sha256": "63d1b3ad9a0edcc354221155b3b02bb0d18f1c9ebb112028e1951fd604a98d52"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Portuguese",
+      "status": "retrieved",
+      "section_title": "Portuguese",
+      "listed_course_count": 30,
+      "html_sha256": "a0f52f71a70619b47e65f975f123a6bfea5e8fbbf4933b2eae4af5c96f8eabd0"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Public-Policy",
+      "status": "retrieved",
+      "section_title": "Public Policy",
+      "listed_course_count": 0,
+      "html_sha256": "3e951aa2b054dc5f8af1da057cf0e39c730cba474135d540881d75a5085dccf4"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Religion",
+      "status": "retrieved",
+      "section_title": "Religion",
+      "listed_course_count": 204,
+      "html_sha256": "52d3d3898c8b31e46054dbb9d33e98c2eeb10daedda741a7efdd7a0e8f9c0a6f"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Sexual-Diversity-Studies",
+      "status": "retrieved",
+      "section_title": "Mark S. Bonham Centre for Sexual Diversity Studies",
+      "listed_course_count": 33,
+      "html_sha256": "800e86842372762a3edd2b4918f912390760e49e75016eed1573cc6cee80a1e9"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/South-Asian-Studies",
+      "status": "retrieved",
+      "section_title": "South Asian Studies",
+      "listed_course_count": 22,
+      "html_sha256": "102b0c0bfe1985899cf775b45e912750c2a04e429b64d9876c63b0daa1719534"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Sociology",
+      "status": "retrieved",
+      "section_title": "Sociology",
+      "listed_course_count": 131,
+      "html_sha256": "911d489d895f0b2aa3f15da1742e35847fc870eaf9b0409aa2a72e59e6654d6b"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Spanish",
+      "status": "retrieved",
+      "section_title": "Spanish",
+      "listed_course_count": 68,
+      "html_sha256": "f032adc9edb10830437c32a30e8243a69dbe6b08366d9c60d9ed756d10e205ba"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Statistical-Sciences",
+      "status": "retrieved",
+      "section_title": "Statistical Sciences",
+      "listed_course_count": 54,
+      "html_sha256": "f8bf86730f51c4ee7779f8d41330c14777869af83a5a3da6dcde3d15597f0c78"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Women-and-Gender-Studies",
+      "status": "retrieved",
+      "section_title": "Women and Gender Studies",
+      "listed_course_count": 56,
+      "html_sha256": "8c7a0ab8137d236455cba6de1d5deba058b395b06b52e57d3130b2360806132b"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Yiddish-Studies",
+      "status": "retrieved",
+      "section_title": "Yiddish Studies",
+      "listed_course_count": 7,
+      "html_sha256": "3053c53c7beb4955569bab001b1bf430eb6c58fbf1aeb2960fe948ec0773aeea"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/geography-and-planning",
+      "status": "retrieved",
+      "section_title": "geography and planning",
+      "listed_course_count": 143,
+      "html_sha256": "f81f23cddc474e6af1e3475bbd9819927d01b81f7501b4d589db463532ff2490"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Munk-School-of-Global-Affairs-and-Public-Policy",
+      "status": "retrieved",
+      "section_title": "Munk School of Global Affairs and Public Policy",
+      "listed_course_count": 44,
+      "html_sha256": "45c48181b17e575d150c50881d4ca94882021018b88d919f06f9ac263c494801"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Centre-for-Caribbean-Studies",
+      "status": "retrieved",
+      "section_title": "Centre for Caribbean Studies",
+      "listed_course_count": 30,
+      "html_sha256": "9975161596cd9e80ab4a4e3afd5ecb2eb7a071a9d8dd3477d33b82b2d1647488"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/European-Affairs",
+      "status": "retrieved",
+      "section_title": "European Affairs",
+      "listed_course_count": 33,
+      "html_sha256": "8ca8311f28faf06f2bb1054a1f81cd62ff265975a30d374d4ac469c010fb5700"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/African-Studies",
+      "status": "retrieved",
+      "section_title": "African Studies",
+      "listed_course_count": 41,
+      "html_sha256": "053f1f139f30d0962fd280bcda0d417e6b28a5dea47f357002a12ec355dae54b"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Biology",
+      "status": "retrieved",
+      "section_title": "Biology",
+      "listed_course_count": 10,
+      "html_sha256": "89254a1432a75c85ebdb0e661498888f1fae00d15ce588d0102ece6da2327607"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Classics",
+      "status": "retrieved",
+      "section_title": "Classics",
+      "listed_course_count": 105,
+      "html_sha256": "15dd165f650ab39bfaba4ba32896364a6ee45e642900e135e76c5f861b913521"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Combined-Degree",
+      "status": "retrieved",
+      "section_title": "Combined Degree Programs",
+      "listed_course_count": 0,
+      "html_sha256": "18dc4a51ca11b3090ecec5b21eacf5d3d622b2c0b4f2c5610e23b37dfcded5d0"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Data-Science",
+      "status": "retrieved",
+      "section_title": "Data Science",
+      "listed_course_count": 29,
+      "html_sha256": "8b049a1e64a88329cad8199350e9b5645cbeb7ec72c1911045907deed219902f"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/East-Asian-Studies",
+      "status": "retrieved",
+      "section_title": "East Asian Studies",
+      "listed_course_count": 164,
+      "html_sha256": "741d53f4086b2a66a9dceea7e1686c40fd5cf368e00846188ef2f58daadae610"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/French",
+      "status": "retrieved",
+      "section_title": "French",
+      "listed_course_count": 83,
+      "html_sha256": "01f67f7a414f3dc68d6d7401e834e398605737de0c1c8686dab0213d69378150"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/First-Year-Foundations",
+      "status": "retrieved",
+      "section_title": "First-Year Foundations",
+      "listed_course_count": 306,
+      "html_sha256": "736e94ff9519f78d56ded5a303ef401981b82a9ab9ef70a9ef3aaf33fd937141"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Innis-College",
+      "status": "retrieved",
+      "section_title": "Innis College",
+      "listed_course_count": 36,
+      "html_sha256": "3d3adb3ea8a2d8e20cd78aa07f611dbd1dc805e5a0643f112fee6c31f796efc6"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/New-College",
+      "status": "retrieved",
+      "section_title": "New College",
+      "listed_course_count": 87,
+      "html_sha256": "5bb7bb70d3baf47c76eb51d30c4352f87855d8ed0d9ffca829b7fef047618fef"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Near-and-Middle-Eastern-Civilizations",
+      "status": "retrieved",
+      "section_title": "Near and Middle Eastern Civilizations",
+      "listed_course_count": 209,
+      "html_sha256": "3ecc8cfc19e47f2d06d710ec794422ca065eccde4e57784ae672d14f474a611a"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/School-of-the-Environment",
+      "status": "retrieved",
+      "section_title": "School of the Environment",
+      "listed_course_count": 74,
+      "html_sha256": "8c60b15d79b3a7f832ce6cab54641311dfadeca0aff83d9472307cb47e76096b"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Slavic-and-East-European-Languages-and-Cultures",
+      "status": "retrieved",
+      "section_title": "Slavic and East European Languages and Cultures",
+      "listed_course_count": 161,
+      "html_sha256": "bcfb3675ac86e9b4bce21fbe7d8eb10f97ba03c2a2801348552b0d008db55470"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/St.-Michael%27s-College",
+      "status": "retrieved",
+      "section_title": "St. Michael's College",
+      "listed_course_count": 192,
+      "html_sha256": "067ce98c2fc5c72ba82db80c7e2e5a43c3203b92d8996c57da79910e62a4ea61"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Trinity-College",
+      "status": "retrieved",
+      "section_title": "Trinity College",
+      "listed_course_count": 63,
+      "html_sha256": "0280290a87265816d25dfb7e2643b98dfb4b82ac70dcaac38054ff2997bf91b4"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/University-College",
+      "status": "retrieved",
+      "section_title": "University College",
+      "listed_course_count": 106,
+      "html_sha256": "1e178a1654ca7d1f7652e32f8fda8a720d03181b555e68b91a91cb1039d1ab31"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Victoria-College",
+      "status": "retrieved",
+      "section_title": "Victoria College",
+      "listed_course_count": 212,
+      "html_sha256": "95e86dfc3612a0aca29215a88ac90f8ab8f61491a650f31a4cda1cd9077519a3"
+    },
+    {
+      "source_url": "https://artsci.calendar.utoronto.ca/section/Woodsworth-College",
+      "status": "retrieved",
+      "section_title": "Woodsworth College",
+      "listed_course_count": 25,
+      "html_sha256": "3d0639c65bd1196951245f94df37af9337c8e7d121391f089cf4e51bcd71f5b7"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Art",
+      "status": "retrieved",
+      "section_title": "Art",
+      "listed_course_count": 118,
+      "html_sha256": "762906905ab1ad0c7361c6d3e4d2faad6689a96ad79bed76e1a5289652deeb93"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Combined-Degree-Programs",
+      "status": "retrieved",
+      "section_title": "Combined Degree Programs",
+      "listed_course_count": 0,
+      "html_sha256": "aa883cfcc059159793cdc42b8817a99c347e80dc75ba6a045bbe14d8a0e041a1"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Co~op-Internship-Program",
+      "status": "retrieved",
+      "section_title": "Co-op Internship Program",
+      "listed_course_count": 0,
+      "html_sha256": "c4655b5ed1074026c3073ceb872011a1ee9aab53349b359777bbeb95f2b05ca5"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Astronomy",
+      "status": "retrieved",
+      "section_title": "Astronomy",
+      "listed_course_count": 14,
+      "html_sha256": "83bebfa490558da40faa88d602187206e78435e1ba1fc91dbb8f2b0e40c2538d"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Biomedical-Communications",
+      "status": "retrieved",
+      "section_title": "Biomedical Communications",
+      "listed_course_count": 12,
+      "html_sha256": "ea3b3eb63d201389ee25bfaf17f36c14cae1ee3c986fc7d9a7592f79f5b321b7"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Biology",
+      "status": "retrieved",
+      "section_title": "Biology",
+      "listed_course_count": 94,
+      "html_sha256": "605b5cb087b760af425192133d73a956cfc2472134e9079493bcda8f5552d2fa"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Anthropology",
+      "status": "retrieved",
+      "section_title": "Anthropology",
+      "listed_course_count": 114,
+      "html_sha256": "abb13c97cfbceb4b4c309b006218d56dd6e67de869be79ba23e8eeddde353033"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Commerce",
+      "status": "retrieved",
+      "section_title": "Commerce",
+      "listed_course_count": 0,
+      "html_sha256": "e883d28e7628976b27da444b78cc14d56155b7acf5b14de79ddd26b6114137a5"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Canadian-Studies",
+      "status": "retrieved",
+      "section_title": "Canadian Studies",
+      "listed_course_count": 0,
+      "html_sha256": "75962692ef2b77c93f81598f7b86ec9268e3b89729cd3203b50726ccfe632e93"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Chemistry",
+      "status": "retrieved",
+      "section_title": "Chemistry",
+      "listed_course_count": 47,
+      "html_sha256": "1aae771d7fc79101ae0e74515024b4861b62977d021ebca92e502b99724660dc"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Classical-Civilization",
+      "status": "retrieved",
+      "section_title": "Classical Civilization",
+      "listed_course_count": 54,
+      "html_sha256": "05d7bd9f4818f0fc7f9d4e328ba64c4c4153a6922196c890e9bc0f5675e806d2"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Computer-Science",
+      "status": "retrieved",
+      "section_title": "Computer Science",
+      "listed_course_count": 69,
+      "html_sha256": "7485ffb1ccf8102d324c3b35db8a3bacd20c98d14f20d2bb263a88677bd7a9ab"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Cinema-Studies",
+      "status": "retrieved",
+      "section_title": "Cinema Studies",
+      "listed_course_count": 39,
+      "html_sha256": "8aa4bb198310bc32c7869d38f825dec287b6793864ff528f0343aa8623f898e7"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Education-Studies",
+      "status": "retrieved",
+      "section_title": "Education Studies",
+      "listed_course_count": 17,
+      "html_sha256": "6d90a355b6fba54ea07500591036d8de4d166b247733d323cb6faaaf213c9754"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Exceptionality-in-Human-Learning",
+      "status": "retrieved",
+      "section_title": "Exceptionality in Human Learning",
+      "listed_course_count": 0,
+      "html_sha256": "bf2c429d7c565c0578329b65f35e88398127f5db4338326efec46c84366f196d"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Earth-Science",
+      "status": "retrieved",
+      "section_title": "Earth Science",
+      "listed_course_count": 33,
+      "html_sha256": "f5a3f98571c6e7bf5e6a33b7fda155dcf21434662257abcd9ea4967dcb3dbd50"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Economics",
+      "status": "retrieved",
+      "section_title": "Economics",
+      "listed_course_count": 71,
+      "html_sha256": "609111feef30969990d2d3f548a2366040035bd8016cdbbe17888377b412d0cd"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/English",
+      "status": "retrieved",
+      "section_title": "English",
+      "listed_course_count": 163,
+      "html_sha256": "db56f4efe3530565b3f70e5b0443d55f1d79b1cd4d54f0a2563be66caded32c5"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/French",
+      "status": "retrieved",
+      "section_title": "French",
+      "listed_course_count": 78,
+      "html_sha256": "2c32f2fa6ad9c376fde12a43d83fc4082c89d9b2b85f18e5eaa3dde4070547c3"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/History",
+      "status": "retrieved",
+      "section_title": "History",
+      "listed_course_count": 116,
+      "html_sha256": "f39ff25f7ffdbb00b55a608869da16cb2967d4339f71fc11234c5e6a42c0157f"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/History-of-Religions",
+      "status": "retrieved",
+      "section_title": "History of Religions",
+      "listed_course_count": 103,
+      "html_sha256": "2eb48d40cb45ddc10d4fdc1be3452b0443dcfb49a58f5a17a5d9896ee2d5b926"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Language-Studies",
+      "status": "retrieved",
+      "section_title": "Language Studies",
+      "listed_course_count": 9,
+      "html_sha256": "cea0f0322bf14b9ac688c82f7e30df070cd71cf4a32099efe2d51a212e71f8ff"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Linguistics",
+      "status": "retrieved",
+      "section_title": "Linguistics",
+      "listed_course_count": 75,
+      "html_sha256": "229cce9c0842ecd49ee18263b70a22fe392ad9ef34f6605c5113f957e70b39f0"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Italian",
+      "status": "retrieved",
+      "section_title": "Italian",
+      "listed_course_count": 60,
+      "html_sha256": "a04d32ed0a56c960c4aee995ac0b5355e460df3dd20511ba21af9db7a2823553"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Management",
+      "status": "retrieved",
+      "section_title": "Management",
+      "listed_course_count": 95,
+      "html_sha256": "d311d4521e4e6b59f3572822a8d32e73b49a8c9fb4c374c4a68463324d1bcf7f"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Neuroscience",
+      "status": "retrieved",
+      "section_title": "Neuroscience",
+      "listed_course_count": 0,
+      "html_sha256": "481efc9fdbedaadf146da46a98f0f54b8ed1015f6c8d5ed2e57521b4c5a04e04"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Philosophy",
+      "status": "retrieved",
+      "section_title": "Philosophy",
+      "listed_course_count": 89,
+      "html_sha256": "fe0325716bd9de73111d006ba5e50005e5ac82c617d26f13bad20863fac252ec"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Physics",
+      "status": "retrieved",
+      "section_title": "Physics",
+      "listed_course_count": 32,
+      "html_sha256": "6d3c37e08a222357c053869166c40c6b2793f79df4c36145345115c2c09312da"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Political-Science",
+      "status": "retrieved",
+      "section_title": "Political Science",
+      "listed_course_count": 97,
+      "html_sha256": "1f6fb6ca6173280c6e117819c340be4426cfd386f6fdc19fe6ab1b339ff1e92a"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Psychology",
+      "status": "retrieved",
+      "section_title": "Psychology",
+      "listed_course_count": 89,
+      "html_sha256": "a635f3fac73680da7d7e860ef18abf910fff5b1a88312c5a1bee7f62acb6ad94"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/South-Asian-Humanities",
+      "status": "retrieved",
+      "section_title": "South Asian Humanities",
+      "listed_course_count": 2,
+      "html_sha256": "a27d91efa507aefddbfb807f1f98c4dec20772d86f77fb78d0697936de0e487d"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Women%2C-Gender-and-Sexuality-Studies",
+      "status": "retrieved",
+      "section_title": "Women, Gender and Sexuality Studies",
+      "listed_course_count": 51,
+      "html_sha256": "53110166591984db406a2bc80c19c5ceae4e65a13b68794ad915dc871a86cadc"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Sociology",
+      "status": "retrieved",
+      "section_title": "Sociology",
+      "listed_course_count": 172,
+      "html_sha256": "a89bb591b886940db9fa6aec3b513db77fbde3c6bd5ade7c26ab5f4bf37e0a29"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Statistics%2C-Applied",
+      "status": "retrieved",
+      "section_title": "Statistics, Applied",
+      "listed_course_count": 31,
+      "html_sha256": "9872f57495397208494ee0c4823fb5487c42921872cdfc1e358b0113628e59cf"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Management-and-Innovation",
+      "status": "retrieved",
+      "section_title": "Management and Innovation",
+      "listed_course_count": 10,
+      "html_sha256": "212b8a90b3ebd001d5b868e7b9840af1cad8281b55b4fa806228bda1d41a8cfa"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Communication%2C-Culture%2C-Information-and-Technology",
+      "status": "retrieved",
+      "section_title": "Communication, Culture, Information and Technology",
+      "listed_course_count": 158,
+      "html_sha256": "63806c1a002b7fdc89c3733929610a754ff776bac254c9c2a3ce8d43917f6d8e"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Arabic",
+      "status": "retrieved",
+      "section_title": "Arabic",
+      "listed_course_count": 10,
+      "html_sha256": "0fa2d168ea8f955fc80021cd534ba8fad6a2481b2ad29196cf7ecd96f231f229"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Bioinformatics",
+      "status": "retrieved",
+      "section_title": "Bioinformatics",
+      "listed_course_count": 0,
+      "html_sha256": "a7621c104370fa5dd9819b358581940fcb09b528ea946b9f2ef54fe1d484c1c3"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Business%2C-Science-and-Entrepreneurship",
+      "status": "retrieved",
+      "section_title": "Business, Science and Entrepreneurship",
+      "listed_course_count": 0,
+      "html_sha256": "b2cac5272a0047c8887c2f9e853e512fed1c41f2ad8680551fd3579ad779b2e4"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Chinese",
+      "status": "retrieved",
+      "section_title": "Chinese",
+      "listed_course_count": 21,
+      "html_sha256": "6fac6d62ef3a5742331625e8e2eaf01868fbb0654e0ea0ce1a8493dfb08560d2"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Criminology%2C-Law-and-Society",
+      "status": "retrieved",
+      "section_title": "Criminology, Law and Society",
+      "listed_course_count": 0,
+      "html_sha256": "7c8c5fd4d86563c12784ac748d956a7e7c5f818358d72dc5a0f4288eb16e7ffc"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Diaspora-and-Transnational-Studies",
+      "status": "retrieved",
+      "section_title": "Diaspora and Transnational Studies",
+      "listed_course_count": 4,
+      "html_sha256": "dd584dc90847a69c1543553d1c61170b08be1462d125f316188edbde4cf34121"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Environmental-Management",
+      "status": "retrieved",
+      "section_title": "Environmental Management",
+      "listed_course_count": 29,
+      "html_sha256": "e1b80e80a33d530d26b973c2d6dd29ea4c50ebbc06779332d3ac7f1834fbdb14"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Environmental-Science",
+      "status": "retrieved",
+      "section_title": "Environmental Science",
+      "listed_course_count": 29,
+      "html_sha256": "f8bb8f43533dda400fb79d27cee3f78da83b41fd4fa6532d2e0d06edf76106b3"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Geography",
+      "status": "retrieved",
+      "section_title": "Geography",
+      "listed_course_count": 83,
+      "html_sha256": "0eb3c19532de01e5b2a893a910f154ab4f82b0f505ad93fb727db9584499a8d4"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/German",
+      "status": "retrieved",
+      "section_title": "German",
+      "listed_course_count": 20,
+      "html_sha256": "cd129afdee7cbd3f6bbcae23cfcc197846c803c22309c2f1ac8ae757e446c3c8"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Greek",
+      "status": "retrieved",
+      "section_title": "Greek",
+      "listed_course_count": 4,
+      "html_sha256": "96a2ac64f969da3fde3b94af220c277c18c4b379c99ea78d1e1d5e7c05aace71"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Hindi",
+      "status": "retrieved",
+      "section_title": "Hindi",
+      "listed_course_count": 7,
+      "html_sha256": "0361e536b3ce5436981b1da436cb1aa6fb91b63a7aeb3ccbeee90800d9a6541e"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/International-Affairs",
+      "status": "retrieved",
+      "section_title": "International Affairs",
+      "listed_course_count": 0,
+      "html_sha256": "e80bd0595042cfee953318de8149027084f5e181f425edd7ad61f88e152eb1d7"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Language-Teaching-and-Learning",
+      "status": "retrieved",
+      "section_title": "Language Teaching and Learning",
+      "listed_course_count": 31,
+      "html_sha256": "be32c53fbf00a12bead406f2a999a7f998989cd4de8748c8690b5037417c384e"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Latin",
+      "status": "retrieved",
+      "section_title": "Latin",
+      "listed_course_count": 4,
+      "html_sha256": "1b49ac7e7b1d3e60fa8c1753e6cc4855cbe91d0a6e920b7e85af353f7ba5020f"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Latin-American-and-Caribbean-Studies",
+      "status": "retrieved",
+      "section_title": "Latin American and Caribbean Studies",
+      "listed_course_count": 0,
+      "html_sha256": "f8b3ca786146716b7cc04b45d8ccc412af252757b07b799e79a9217a16c18c22"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Mathematical-Sciences",
+      "status": "retrieved",
+      "section_title": "Mathematical Sciences",
+      "listed_course_count": 59,
+      "html_sha256": "02e46688a02975cd43de49040d7fdb42e217c75415001eaeab5ac8502f7fcc4d"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Persian",
+      "status": "retrieved",
+      "section_title": "Persian",
+      "listed_course_count": 4,
+      "html_sha256": "354fafbba46bdca4db7be33894a2596b45d8c0e4fa9428d80d1034b98e7ae11d"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Spanish",
+      "status": "retrieved",
+      "section_title": "Spanish",
+      "listed_course_count": 15,
+      "html_sha256": "5bd8d09ef6e4bcad1763b24360e81ea0c80e4e4ac8cfd021cd78b049c96ae8f6"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Visual-Culture-and-Communication",
+      "status": "retrieved",
+      "section_title": "Visual Culture and Communication",
+      "listed_course_count": 34,
+      "html_sha256": "65de3ea1b4c7644cbbdd6f3c338856569e7d68eb786bcc5e40e9822758744d51"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/GeoSpatial-Data-Science",
+      "status": "retrieved",
+      "section_title": "GeoSpatial Data Science",
+      "listed_course_count": 19,
+      "html_sha256": "12a2d104d260bfbdd2e37a0b26ebb7f522c76cc15b9cb70119c9e143bb86b6b8"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Forensic-Sciences",
+      "status": "retrieved",
+      "section_title": "Forensic Sciences",
+      "listed_course_count": 49,
+      "html_sha256": "f7cd6d0019dd5303d83c65d49a009b637dc4eccfa273e3f160c7206cbf14686e"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Study-of-University-Pedagogy",
+      "status": "retrieved",
+      "section_title": "Study of University Pedagogy",
+      "listed_course_count": 42,
+      "html_sha256": "5b166075a664e44f228cbecb4e426a8c11a6a0646e3d81c8b0ad62d82b787e47"
+    },
+    {
+      "source_url": "https://utm.calendar.utoronto.ca/section/Theatre%2C-Drama-and-Performance-Studies",
+      "status": "retrieved",
+      "section_title": "Theatre, Drama and Performance Studies",
+      "listed_course_count": 50,
+      "html_sha256": "8d4db92890944c42cde673fb997df5e1b4157b283b8080faf9587abb1928d9aa"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/African-Studies",
+      "status": "retrieved",
+      "section_title": "African Studies",
+      "listed_course_count": 18,
+      "html_sha256": "80606ce90e57784f622809d73ac2873ae80cbb07eb746ee29e776313fb36005d"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Anthropology",
+      "status": "retrieved",
+      "section_title": "Anthropology",
+      "listed_course_count": 100,
+      "html_sha256": "e5239ed7a4f4072bea9858e695adeb1ec29e12f5ff93fcbdf4053e1461c080a1"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Art-History-and-Visual-Culture",
+      "status": "retrieved",
+      "section_title": "Art History and Visual Culture",
+      "listed_course_count": 30,
+      "html_sha256": "9fc010b763a71671e25b08f7ccd0da515de265ed5dd16304675b5a7e010eec50"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Arts-and-Science-Co~op",
+      "status": "retrieved",
+      "section_title": "Arts and Science Co-op",
+      "listed_course_count": 15,
+      "html_sha256": "76a87cbe07ea7264888f171ffb1dac4abdc326497d76ffb6b56e293816217353"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Arts%2C-Culture-and-Media",
+      "status": "retrieved",
+      "section_title": "Arts, Culture and Media",
+      "listed_course_count": 10,
+      "html_sha256": "0afed3d2bc71ef427b7c53fd09ad6464e4b685c07a217c3bbf5cdc892f41865e"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Arts-Management",
+      "status": "retrieved",
+      "section_title": "Arts Management",
+      "listed_course_count": 18,
+      "html_sha256": "ed8db9d9e3e32774ac1e8ca7424d11f28677f4fda0efa944317f285d080a748b"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Astronomy",
+      "status": "retrieved",
+      "section_title": "Astronomy",
+      "listed_course_count": 6,
+      "html_sha256": "dd288bf5cca4c8866f07316082ecd28092febd51b3d9c124b256bb711d0f7bdc"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Biological-Sciences",
+      "status": "retrieved",
+      "section_title": "Biological Sciences",
+      "listed_course_count": 99,
       "html_sha256": "175f35b0d212aeecf1b370861d7d7c01f50e172ee21fd9177a2939439ff2e8fa"
     },
     {
-      "key": "utsc-psychology",
-      "url": "https://utsc.calendar.utoronto.ca/section/Psychology",
-      "selected_courses": 7,
-      "html_sha256": "b11beb14010ad3ab418ffe2e19253415b467c77bee10efbec38da0d337cd606e"
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Chemistry",
+      "status": "retrieved",
+      "section_title": "Chemistry",
+      "listed_course_count": 34,
+      "html_sha256": "adbae22cbf7a9da51537853c70b6526f339b78b5ebb1268762d728548b932393"
     },
     {
-      "key": "utsc-english",
-      "url": "https://utsc.calendar.utoronto.ca/section/English",
-      "selected_courses": 7,
+      "source_url": "https://utsc.calendar.utoronto.ca/section/City-Studies",
+      "status": "retrieved",
+      "section_title": "City Studies",
+      "listed_course_count": 29,
+      "html_sha256": "524e0adaa8d262c1c886dd0f664412c4702d970e73a97177a6ed8515b0c87591"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Classical-Studies",
+      "status": "retrieved",
+      "section_title": "Classical Studies",
+      "listed_course_count": 20,
+      "html_sha256": "91d4685a3fdced0567a6d1e3bd4a91d8f66679f758868de1d4de94e04f14e302"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Computer-Science",
+      "status": "retrieved",
+      "section_title": "Computer Science",
+      "listed_course_count": 41,
+      "html_sha256": "e695ff8b89db65e19b925b40a0cc8c1b35889d577158f96c7919399bf7c21eae"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Concurrent-Teacher-Education",
+      "status": "retrieved",
+      "section_title": "Concurrent Teacher Education",
+      "listed_course_count": 0,
+      "html_sha256": "6cb7a6b17494ef5a103ea1f2f861da568afed2bb918245d8244014bb761c3ae0"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Curatorial-Studies",
+      "status": "retrieved",
+      "section_title": "Curatorial Studies",
+      "listed_course_count": 5,
+      "html_sha256": "d308ba71b9f202add3806cc7ca45d0387db78a690c0194f446796feb32a302ec"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Diaspora-and-Transnational-Studies",
+      "status": "retrieved",
+      "section_title": "Diaspora and Transnational Studies",
+      "listed_course_count": 0,
+      "html_sha256": "29de31c71ea9f53f1669b61bc1529badd00a5786a3599e32cfa8c5e874f92ba4"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Economics-for-Management-Studies",
+      "status": "retrieved",
+      "section_title": "Economics for Management Studies",
+      "listed_course_count": 52,
+      "html_sha256": "a4a5e543d71f2af72bb30449e4727a1e5b2768a52da1f3bf34e7e11171985b9f"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Environmental-Science",
+      "status": "retrieved",
+      "section_title": "Environmental Science",
+      "listed_course_count": 56,
+      "html_sha256": "e45f15257e76094c9c364bb9fe90dfc6a94e71d49b78420b9531248ec4255635"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Environmental-Studies",
+      "status": "retrieved",
+      "section_title": "Environmental Studies",
+      "listed_course_count": 16,
+      "html_sha256": "f15a6d2a2002b11e7b6b6df406f340235bdae2f76dfb6901ebe0fc1012100de1"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Food-Studies",
+      "status": "retrieved",
+      "section_title": "Food Studies",
+      "listed_course_count": 22,
+      "html_sha256": "71c10a71c504168d79704e1fc766f1e379bb80b1da9f7b3713508817fdcba3fe"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/French",
+      "status": "retrieved",
+      "section_title": "French",
+      "listed_course_count": 59,
+      "html_sha256": "b04ba66d1451fbf148c57589ad7c9aea2aaedfd73dd72eab12c49eef2615fca1"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Geography",
+      "status": "retrieved",
+      "section_title": "Geography",
+      "listed_course_count": 55,
+      "html_sha256": "b6d0c79d85a9fbb0e0e3a464b44ec007651a95787897c18cd05df0acf04d9a86"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Global-Asia-Studies",
+      "status": "retrieved",
+      "section_title": "Global Asia Studies",
+      "listed_course_count": 44,
+      "html_sha256": "e8f3e8cd9cb793f5dc1cdb1d16ec8d87c0c1bbbfe3c191a183f784f0e1c9caf3"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Historical-and-Cultural-Studies",
+      "status": "retrieved",
+      "section_title": "Historical and Cultural Studies",
+      "listed_course_count": 6,
+      "html_sha256": "26b611dc199a525e83e61598f60ed6ba6579833daee6b18e3aae953fc636c32d"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/History",
+      "status": "retrieved",
+      "section_title": "History",
+      "listed_course_count": 120,
+      "html_sha256": "e73facfbc52a882d251357c0d0cbeda434def92641c1f14daa9710cb4c462f93"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/International-Development-Studies",
+      "status": "retrieved",
+      "section_title": "International Development Studies",
+      "listed_course_count": 44,
+      "html_sha256": "f6368149eb5853014a69e93f06e3864f590e5371a5e1e5a434d182addb723f28"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/International-Development-Studies-%28IDS%29-Co~op",
+      "status": "retrieved",
+      "section_title": "International Development Studies (IDS) Co-op",
+      "listed_course_count": 4,
+      "html_sha256": "81633ef987018592e2062ff0bf5d757ac736c51fa659d5b1926112884041d48a"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Journalism",
+      "status": "retrieved",
+      "section_title": "Journalism",
+      "listed_course_count": 29,
+      "html_sha256": "14fed75f26b504d1dc0043c66565b7f303c11a8aded2503cb33940a2b04d2139"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Languages",
+      "status": "retrieved",
+      "section_title": "Languages",
+      "listed_course_count": 58,
+      "html_sha256": "b5d58d52a029497ce53e95f677dadc253e3f6d42738a5569779aac2bcde22e7e"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Linguistics",
+      "status": "retrieved",
+      "section_title": "Linguistics",
+      "listed_course_count": 48,
+      "html_sha256": "233e773c79f1522431b5208346c843b3ee646e0d4db1cbda22bf8bfaec8df3c8"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Management-Co~op",
+      "status": "retrieved",
+      "section_title": "Management Co-op",
+      "listed_course_count": 13,
+      "html_sha256": "b6e0821013d3b2e74989cc30ad4921e071533493f648c6f97726df0b8c5b07a9"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Mathematics",
+      "status": "retrieved",
+      "section_title": "Mathematics",
+      "listed_course_count": 47,
+      "html_sha256": "d8a895ba83a3e50b6d8148b31b4bc5d3aa3767245d42baee366c8e9affbdb879"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Neuroscience",
+      "status": "retrieved",
+      "section_title": "Neuroscience",
+      "listed_course_count": 14,
+      "html_sha256": "05e5f3fa191106450cf773446dd78eeba495aaca05cba219c4ad7ee76a40cb73"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/New-Media-Studies",
+      "status": "retrieved",
+      "section_title": "New Media Studies",
+      "listed_course_count": 11,
+      "html_sha256": "f10f38914f8645d16102e6a0c91b12b958b99ebfe84a79062568ac27a593c6c4"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Paramedicine",
+      "status": "retrieved",
+      "section_title": "Paramedicine",
+      "listed_course_count": 13,
+      "html_sha256": "f44297c4368e987f3f8af62e4d39b91e05357d1c817cc9d240c19e13e45fefaf"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Philosophy",
+      "status": "retrieved",
+      "section_title": "Philosophy",
+      "listed_course_count": 82,
+      "html_sha256": "cb599836020022075ae5aa8aad8e91e43f3278029cb32807a9780f7cd61e0508"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Physical-Sciences",
+      "status": "retrieved",
+      "section_title": "Physical Sciences",
+      "listed_course_count": 4,
+      "html_sha256": "8cfd2a13b034333d57a49c76ccbd6a757acf10628b9b6b816775fa25d50f06c2"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Physics-and-Astrophysics",
+      "status": "retrieved",
+      "section_title": "Physics and Astrophysics",
+      "listed_course_count": 26,
+      "html_sha256": "fa88e7333515682404abe1c4ff847b8420ae0f268d94e52d989f2a6c9d774959"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Political-Science",
+      "status": "retrieved",
+      "section_title": "Political Science",
+      "listed_course_count": 90,
+      "html_sha256": "8c1725c370a9831d4c169860cfffdc4dd382e6a23c0960b765446b43007515d0"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Public-Policy",
+      "status": "retrieved",
+      "section_title": "Public Policy",
+      "listed_course_count": 28,
+      "html_sha256": "255968a6c047ca45a35416549964c8fa1bfd4a8f6b07f02917c83dbf65f64a46"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Religion",
+      "status": "retrieved",
+      "section_title": "Religion",
+      "listed_course_count": 15,
+      "html_sha256": "c9cf45aa5464604dd7fb685219c5bc6a9388f67089b999e0c08cc1fbbbe8a099"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Sociology",
+      "status": "retrieved",
+      "section_title": "Sociology",
+      "listed_course_count": 79,
+      "html_sha256": "a5d938a76288db422fa792ef00182c4641993affc8f9fae29349ebe37c02670a"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Studio-Art",
+      "status": "retrieved",
+      "section_title": "Studio Art",
+      "listed_course_count": 44,
+      "html_sha256": "737c6248ba4b17ded88052d0873ab2924cccb35ee856bfeed66505b2b4b02fda"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Centre-for-Teaching-and-Learning",
+      "status": "retrieved",
+      "section_title": "Centre for Teaching and Learning",
+      "listed_course_count": 5,
+      "html_sha256": "2b0363ee08381aa2e857249d4fb2a352a2ad3f7890de6c9c3a08f07dc313f5da"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Theatre-and-Performance",
+      "status": "retrieved",
+      "section_title": "Theatre and Performance",
+      "listed_course_count": 32,
+      "html_sha256": "7c167f6c0656b055299124027eaec455654a02abc445a06c1efc16a676b4aefc"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Women%27s-and-Gender-Studies",
+      "status": "retrieved",
+      "section_title": "Women's and Gender Studies",
+      "listed_course_count": 40,
+      "html_sha256": "30c1890e4495f6f6eb6af95a6ebee0823451457d64a012cdba2d4cbe4b5787bf"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Global-Leadership",
+      "status": "retrieved",
+      "section_title": "Global Leadership",
+      "listed_course_count": 1,
+      "html_sha256": "f5ff60f8f9fa54a135ffe9b5932b680f57bb95cfc7d46ff5c2d3615c6a40a531"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Music-Industry-and-Technology",
+      "status": "retrieved",
+      "section_title": "Music Industry and Technology",
+      "listed_course_count": 23,
+      "html_sha256": "797c75fcc28d317b0fb07b4b668ad466f18ff446031faec7e2f56b5474cdc594"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Public-Law",
+      "status": "retrieved",
+      "section_title": "Public Law",
+      "listed_course_count": 22,
+      "html_sha256": "dd47d55c7ca15ff21ae631cfa93469c966dc26cfb57f00b3926b02fb90edfac8"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Music",
+      "status": "retrieved",
+      "section_title": "Music",
+      "listed_course_count": 52,
+      "html_sha256": "234e43c2c2f8e28e230f1e22bbfeff7b36782e8af68c26850169bca0cae21e6b"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Health-and-Society",
+      "status": "retrieved",
+      "section_title": "Health and Society",
+      "listed_course_count": 91,
+      "html_sha256": "c3ae08d857c19a80dccfeb2bf3f070b01e8390c1aab6d52f8e8e2ccea6885907"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Climate-Change-Studies",
+      "status": "retrieved",
+      "section_title": "Climate Change Studies",
+      "listed_course_count": 28,
+      "html_sha256": "009359ad008eec14b34a37c9abad18d1c9d06c33bab23b4663aa57933517106f"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Media-and-Communication-Studies",
+      "status": "retrieved",
+      "section_title": "Media and Communication Studies",
+      "listed_course_count": 48,
+      "html_sha256": "2852446f94b9d3ce53b1b83ed0c6300ab13bff9972a7380a0b06c248b8de7b9e"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Combined-Degree-Programs",
+      "status": "retrieved",
+      "section_title": "Combined Degree Programs",
+      "listed_course_count": 0,
+      "html_sha256": "eb117fadeb7ff1b71aabd6835a18d23af26472f3c3f5c968585e5c1a2ced9ab3"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Certificates",
+      "status": "retrieved",
+      "section_title": "Certificates",
+      "listed_course_count": 0,
+      "html_sha256": "2ab901d2f686ba6ebccaabe94f3bd2a94c18dd0cf5195b9a4818ca79ac1a9176"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Double-Degree-Programs",
+      "status": "retrieved",
+      "section_title": "Double Degree Programs",
+      "listed_course_count": 0,
+      "html_sha256": "f37344cfa40448dcd1d68e34a1a040959a95dfab4e8ae8a730f1daf423d5a2f4"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/English",
+      "status": "retrieved",
+      "section_title": "English",
+      "listed_course_count": 166,
       "html_sha256": "3574893bc9ce8f425d6b88c916d02e3ae67e7005d4968f3fac31033be9aeb412"
     },
     {
-      "key": "utsc-history",
-      "url": "https://utsc.calendar.utoronto.ca/section/History",
-      "selected_courses": 7,
-      "html_sha256": "e73facfbc52a882d251357c0d0cbeda434def92641c1f14daa9710cb4c462f93"
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Joint-Programs",
+      "status": "retrieved",
+      "section_title": "Joint Programs",
+      "listed_course_count": 0,
+      "html_sha256": "59de096e10888861e92dafba7fd0e660362712ee0647c1aed75baf8d09b641d0"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Management",
+      "status": "retrieved",
+      "section_title": "Management",
+      "listed_course_count": 115,
+      "html_sha256": "eeb1ca4bc01a92a42d3faf21858e1312f0d826a942025822666000f136a50d58"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Psychology",
+      "status": "retrieved",
+      "section_title": "Psychology",
+      "listed_course_count": 93,
+      "html_sha256": "b11beb14010ad3ab418ffe2e19253415b467c77bee10efbec38da0d337cd606e"
+    },
+    {
+      "source_url": "https://utsc.calendar.utoronto.ca/section/Statistics",
+      "status": "retrieved",
+      "section_title": "Statistics",
+      "listed_course_count": 32,
+      "html_sha256": "0f1ccd843ad6847460eb0a5512a7f75a891080662f9ae9cf3bb2a2fe627bbce7"
     }
   ]
 }

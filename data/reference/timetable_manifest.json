@@ -1,0 +1,206 @@
+{
+  "schema_version": 1,
+  "source_name": "University of Toronto official Timetable Builder",
+  "source_url": "https://ttb.utoronto.ca/",
+  "api_base": "https://api.easi.utoronto.ca/ttb",
+  "reference_url": "https://api.easi.utoronto.ca/ttb/reference-data",
+  "retrieved_at": "2026-10-13T22:46:06-04:00",
+  "timezone": "America/Toronto",
+  "complete": true,
+  "scope": "Faculty of Arts and Science (St. George), UTM, UTSC; currently published sessions",
+  "sessions": [
+    {
+      "session_code": "20269",
+      "label": "Fall 2026 (F)",
+      "group": "FallWinter-20269-20271"
+    },
+    {
+      "session_code": "20271",
+      "label": "Winter 2027  (S)",
+      "group": "FallWinter-20269-20271"
+    },
+    {
+      "session_code": "20269-20271",
+      "label": "Fall-Winter 2026-2027 (Y)",
+      "group": "FallWinter-20269-20271"
+    }
+  ],
+  "coverage": [
+    {
+      "campus": "St. George",
+      "division": "ARTSC",
+      "session_code": "20269",
+      "label": "Fall 2026 (F)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 1673,
+      "official_total": 1673,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20269"
+      ]
+    },
+    {
+      "campus": "St. George",
+      "division": "ARTSC",
+      "session_code": "20271",
+      "label": "Winter 2027  (S)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 1708,
+      "official_total": 1708,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20271"
+      ]
+    },
+    {
+      "campus": "St. George",
+      "division": "ARTSC",
+      "session_code": "20269-20271",
+      "label": "Fall-Winter 2026-2027 (Y)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 391,
+      "official_total": 391,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20269-20271"
+      ]
+    },
+    {
+      "campus": "Mississauga",
+      "division": "ERIN",
+      "session_code": "20269",
+      "label": "Fall 2026 (F)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 775,
+      "official_total": 775,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20269"
+      ]
+    },
+    {
+      "campus": "Mississauga",
+      "division": "ERIN",
+      "session_code": "20271",
+      "label": "Winter 2027  (S)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 803,
+      "official_total": 803,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20271"
+      ]
+    },
+    {
+      "campus": "Mississauga",
+      "division": "ERIN",
+      "session_code": "20269-20271",
+      "label": "Fall-Winter 2026-2027 (Y)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 114,
+      "official_total": 114,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20269-20271"
+      ]
+    },
+    {
+      "campus": "Scarborough",
+      "division": "SCAR",
+      "session_code": "20269",
+      "label": "Fall 2026 (F)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 777,
+      "official_total": 777,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20269"
+      ]
+    },
+    {
+      "campus": "Scarborough",
+      "division": "SCAR",
+      "session_code": "20271",
+      "label": "Winter 2027  (S)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 817,
+      "official_total": 817,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20271"
+      ]
+    },
+    {
+      "campus": "Scarborough",
+      "division": "SCAR",
+      "session_code": "20269-20271",
+      "label": "Fall-Winter 2026-2027 (Y)",
+      "group": "FallWinter-20269-20271",
+      "complete": true,
+      "retrieved_at": "2026-10-13T22:46:06-04:00",
+      "offering_count": 35,
+      "official_total": 35,
+      "source_url": "https://api.easi.utoronto.ca/ttb/getCourses",
+      "count_source_url": "https://api.easi.utoronto.ca/ttb/getPageableCourses",
+      "query_sessions": [
+        "20269-20271"
+      ]
+    }
+  ],
+  "division_totals": [
+    {
+      "division": "ARTSC",
+      "campus": "St. George",
+      "official_total": 3772
+    },
+    {
+      "division": "ERIN",
+      "campus": "Mississauga",
+      "official_total": 1692
+    },
+    {
+      "division": "SCAR",
+      "campus": "Scarborough",
+      "official_total": 1629
+    }
+  ],
+  "offering_count": 7093,
+  "unique_course_count": 6093,
+  "status_counts": {
+    "offered": 6968,
+    "cancelled": 125
+  },
+  "verification": "Unpaginated getCourses response counts equal combined and per-session getPageableCourses totals",
+  "limitations": [
+    "Published timetable snapshot, not a guarantee of future delivery or registration eligibility.",
+    "Closed or full enrolment is still offered; section cancellations are preserved separately.",
+    "not_found means absent from a fully retrieved published session; incomplete coverage means unknown.",
+    "Y offerings count for both constituent terms when filtering. No private ACORN data or credentials used.",
+    "Source created/modified timestamps are preserved verbatim; their timezone is not inferred."
+  ],
+  "offerings_sha256": "ab13ce1ef476d34aaa54ce545ac1a4df2bb71bd2fa593cee451d456f6c458364"
+}

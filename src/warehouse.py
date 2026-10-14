@@ -1,216 +1,103 @@
-"""DuckDB warehouse builder for ODS, DWD, DWS, and ADS layers."""
+"""Publish a pure official-data course finder database atomically."""
 
 from __future__ import annotations
+
+import json
+import os
+import tempfile
+from pathlib import Path
 
 import duckdb
 import pandas as pd
 
-try:
-    from src.config import (
-        DUCKDB_PATH,
-        PROCESSED_DATA_DIR,
-        PROCESSED_FILES,
-        RAW_DATA_DIR,
-        RAW_FILES,
-        SQL_DIR,
-        ensure_directories,
+from src.catalog import CATALOG_PATH, load_catalog
+from src.config import CATALOG_MANIFEST_PATH, DUCKDB_PATH
+from src.data_quality import assert_quality, run_data_quality_checks
+from src.timetable import annotate_offerings, load_timetable_snapshot
+
+
+def _frame(records: list[dict], columns: list[str] | None = None) -> pd.DataFrame:
+    normalized = [
+        {
+            key: json.dumps(value, ensure_ascii=False) if isinstance(value, (dict, list)) else value
+            for key, value in row.items()
+        }
+        for row in records
+    ]
+    return pd.DataFrame(normalized) if normalized else pd.DataFrame(columns=columns or ["empty"])
+
+
+def build_warehouse(
+    *,
+    courses: list[dict] | None = None,
+    catalog_manifest: dict | None = None,
+    offerings: list[dict] | None = None,
+    timetable_manifest: dict | None = None,
+    db_path: str | Path | None = None,
+) -> pd.DataFrame:
+    """Validate first; failed builds preserve the previous published file."""
+    default_catalog = courses is None
+    courses = load_catalog() if courses is None else courses
+    catalog_manifest = (
+        json.loads(CATALOG_MANIFEST_PATH.read_text()) if catalog_manifest is None else catalog_manifest
     )
-    from src.data_quality import assert_quality, main as run_quality_report
-    from src.nlp_tags import DATA_KEYWORDS, WORKLOAD_KEYWORDS, mention_ratio
-    from src.utils import log_step
-except ImportError:  # pragma: no cover
-    from config import (
-        DUCKDB_PATH,
-        PROCESSED_DATA_DIR,
-        PROCESSED_FILES,
-        RAW_DATA_DIR,
-        RAW_FILES,
-        SQL_DIR,
-        ensure_directories,
+    quality = run_data_quality_checks(
+        courses, catalog_manifest, CATALOG_PATH.read_bytes() if default_catalog else None
     )
-    from data_quality import assert_quality, main as run_quality_report
-    from nlp_tags import DATA_KEYWORDS, WORKLOAD_KEYWORDS, mention_ratio
-    from utils import log_step
-
-
-def init_duckdb() -> duckdb.DuckDBPyConnection:
-    """Create or connect to the local DuckDB warehouse."""
-    ensure_directories()
-    return duckdb.connect(str(DUCKDB_PATH))
-
-
-def _create_table_from_csv(conn: duckdb.DuckDBPyConnection, table_name: str, csv_path) -> None:
-    """Replace a DuckDB table with data loaded from a CSV file."""
-    conn.execute(f"CREATE OR REPLACE TABLE {table_name} AS SELECT * FROM read_csv_auto(?)", [str(csv_path)])
-
-
-def build_ods_layer(conn: duckdb.DuckDBPyConnection) -> None:
-    """Build ODS tables directly from raw CSV files."""
-    log_step("Building ODS layer")
-    table_map = {
-        "ods_courses_raw": RAW_FILES["courses"],
-        "ods_instructors_raw": RAW_FILES["instructors"],
-        "ods_semesters_raw": RAW_FILES["semesters"],
-        "ods_course_offerings_raw": RAW_FILES["offerings"],
-        "ods_reviews_raw": RAW_FILES["reviews"],
-    }
-    for table_name, filename in table_map.items():
-        _create_table_from_csv(conn, table_name, RAW_DATA_DIR / filename)
-
-
-def build_dwd_layer(conn: duckdb.DuckDBPyConnection) -> None:
-    """Build DWD clean tables from processed CSV files."""
-    log_step("Building DWD layer")
-    table_map = {
-        "dwd_courses_clean": PROCESSED_FILES["courses"],
-        "dwd_instructors_clean": PROCESSED_FILES["instructors"],
-        "dwd_semesters_clean": PROCESSED_FILES["semesters"],
-        "dwd_course_offerings_clean": PROCESSED_FILES["offerings"],
-        "dwd_reviews_clean": PROCESSED_FILES["reviews"],
-    }
-    for table_name, filename in table_map.items():
-        _create_table_from_csv(conn, table_name, PROCESSED_DATA_DIR / filename)
-
-
-def build_dws_layer(conn: duckdb.DuckDBPyConnection) -> None:
-    """Build DWS subject summary tables for courses, instructors, and departments."""
-    log_step("Building DWS layer")
-    conn.execute(
-        """
-        CREATE OR REPLACE TABLE dws_course_summary AS
-        WITH review_metrics AS (
-            SELECT
-                course_id,
-                COUNT(review_id) AS review_count,
-                ROUND(AVG(rating), 3) AS avg_rating,
-                ROUND(AVG(difficulty), 3) AS avg_difficulty,
-                ROUND(AVG(workload), 3) AS avg_workload,
-                ROUND(AVG(usefulness), 3) AS avg_usefulness,
-                ROUND(AVG(CASE WHEN rating >= 4 THEN 1 ELSE 0 END), 3) AS positive_review_ratio,
-                ROUND(AVG(CASE WHEN rating <= 2 THEN 1 ELSE 0 END), 3) AS negative_review_ratio
-            FROM dwd_reviews_clean
-            GROUP BY course_id
+    assert_quality(quality)
+    if offerings is None or timetable_manifest is None:
+        offerings, timetable_manifest = load_timetable_snapshot()
+    enriched = annotate_offerings(courses, offerings=offerings, manifest=timetable_manifest)
+    coverage = timetable_manifest.get("coverage", [])
+    sessions = sorted({str(row["session_code"]) for row in coverage if row.get("session_code")})
+    status_maps = {row["course_code"]: {} for row in courses}
+    for session in sessions:
+        annotated = annotate_offerings(
+            courses, offerings=offerings, manifest=timetable_manifest, session=session
         )
-        SELECT c.*, COALESCE(m.review_count, 0) AS review_count,
-               m.avg_rating, m.avg_difficulty, m.avg_workload, m.avg_usefulness,
-               m.positive_review_ratio, m.negative_review_ratio
-        FROM dwd_courses_clean c
-        LEFT JOIN review_metrics m ON c.course_id = m.course_id
-        """
+        for row in annotated:
+            status_maps[row["course_code"]][session] = row["offering_status"]
+    for row in enriched:
+        row["offering_status_by_session"] = json.dumps(status_maps[row["course_code"]], ensure_ascii=False)
+        row["checked_sessions"] = json.dumps(sessions)
+        row["timetable_retrieved_at"] = row.get("timetable_checked_at", "")
+    destination = Path(db_path or DUCKDB_PATH)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    handle, temporary_name = tempfile.mkstemp(
+        prefix=".course-finder-", suffix=".duckdb", dir=destination.parent
     )
-    conn.execute(
-        """
-        CREATE OR REPLACE TABLE dws_instructor_summary AS
-        SELECT
-            i.instructor_id,
-            i.instructor_name,
-            i.department,
-            COUNT(r.review_id) AS review_count,
-            ROUND(AVG(r.rating), 3) AS avg_rating,
-            ROUND(AVG(r.difficulty), 3) AS avg_difficulty,
-            ROUND(AVG(r.workload), 3) AS avg_workload
-        FROM dwd_instructors_clean i
-        LEFT JOIN dwd_reviews_clean r ON i.instructor_id = r.instructor_id
-        GROUP BY i.instructor_id, i.instructor_name, i.department
-        """
-    )
-    conn.execute(
-        """
-        CREATE OR REPLACE TABLE dws_department_summary AS
-        SELECT
-            c.department,
-            COUNT(DISTINCT c.course_id) AS course_count,
-            COUNT(r.review_id) AS review_count,
-            ROUND(AVG(r.rating), 3) AS avg_rating,
-            ROUND(AVG(r.difficulty), 3) AS avg_difficulty,
-            ROUND(AVG(r.workload), 3) AS avg_workload,
-            ROUND(AVG(r.usefulness), 3) AS avg_usefulness
-        FROM dwd_courses_clean c
-        LEFT JOIN dwd_reviews_clean r ON c.course_id = r.course_id
-        GROUP BY c.department
-        """
-    )
-
-
-def _text_features(reviews: pd.DataFrame) -> pd.DataFrame:
-    """Review mention proportions shared by the SQL warehouse and CSV fallback."""
-    rows = []
-    for course_id, group in reviews.groupby("course_id"):
-        texts = group["review_text"].tolist()
-        rows.append(
-            {
-                "course_id": course_id,
-                "data_keyword_ratio": mention_ratio(texts, DATA_KEYWORDS),
-                "workload_negative_ratio": mention_ratio(texts, WORKLOAD_KEYWORDS),
-            }
-        )
-    result = pd.DataFrame(rows, columns=["course_id", "data_keyword_ratio", "workload_negative_ratio"])
-    if result.empty:
-        # Keep the join key compatible with integer course ids for an empty review table.
-        result = result.astype(
-            {
-                "course_id": reviews["course_id"].dtype,
-                "data_keyword_ratio": "float64",
-                "workload_negative_ratio": "float64",
-            }
-        )
-    return result
-
-
-def _ads_statements() -> list[str]:
-    """Use the versioned SQL as the single definition of application metrics."""
-    return (SQL_DIR / "04_create_ads_tables.sql").read_text().split(";")
-
-
-def build_course_profile(summary: pd.DataFrame, reviews: pd.DataFrame) -> pd.DataFrame:
-    """Apply the exact warehouse scoring SQL to a CSV-derived course summary."""
-    with duckdb.connect(":memory:") as conn:
-        conn.register("dws_course_summary", summary)
-        conn.register("dwd_reviews_clean", reviews)
-        conn.register("dws_course_text_features", _text_features(reviews))
-        conn.execute(_ads_statements()[0])
-        return conn.execute("SELECT * FROM ads_course_profile ORDER BY course_code").df()
-
-
-def build_ads_layer(conn: duckdb.DuckDBPyConnection) -> None:
-    """Build course profiles with volume-aware ratings and bounded 1–5 scores."""
-    log_step("Building ADS layer")
-    reviews = conn.execute("SELECT course_id, review_text FROM dwd_reviews_clean").df()
-    conn.register("_course_text_features", _text_features(reviews))
+    os.close(handle)
+    temporary = Path(temporary_name)
+    temporary.unlink()
     try:
-        conn.execute(
-            "CREATE OR REPLACE TABLE dws_course_text_features AS SELECT * FROM _course_text_features"
-        )
+        with duckdb.connect(str(temporary)) as conn:
+            for name, frame in [
+                ("dwd_catalog_courses", _frame(courses)),
+                (
+                    "dwd_timetable_offerings",
+                    _frame(offerings, ["course_code", "session_code", "campus", "status"]),
+                ),
+                ("ads_course_finder", _frame(enriched)),
+                (
+                    "ads_timetable_coverage",
+                    _frame(coverage, ["campus", "session_code", "label", "complete", "retrieved_at"]),
+                ),
+                ("ads_data_quality_report", quality),
+                (
+                    "ads_source_manifests",
+                    _frame(
+                        [
+                            {"source": "catalogue", "manifest": catalog_manifest},
+                            {"source": "timetable", "manifest": timetable_manifest},
+                        ]
+                    ),
+                ),
+            ]:
+                conn.register("source_frame", frame)
+                conn.execute(f"CREATE TABLE {name} AS SELECT * FROM source_frame")
+                conn.unregister("source_frame")
+        os.replace(temporary, destination)
     finally:
-        conn.unregister("_course_text_features")
-    _create_table_from_csv(conn, "dws_course_tags", PROCESSED_DATA_DIR / PROCESSED_FILES["course_tags"])
-    statements = _ads_statements()
-    conn.execute(statements[0])
-    conn.execute(statements[1])
-    quality_path = PROCESSED_DATA_DIR / PROCESSED_FILES["data_quality"]
-    if not quality_path.exists():
-        run_quality_report()
-    _create_table_from_csv(conn, "ads_data_quality_report", quality_path)
-
-
-def build_warehouse() -> None:
-    """Validate before opening the DB and publish all tables in one transaction."""
-    assert_quality(run_quality_report())
-    conn = init_duckdb()
-    try:
-        conn.execute("BEGIN TRANSACTION")
-        build_ods_layer(conn)
-        build_dwd_layer(conn)
-        build_dws_layer(conn)
-        build_ads_layer(conn)
-        conn.execute("COMMIT")
-        log_step(f"DuckDB warehouse saved to {DUCKDB_PATH}")
-    except Exception:
-        conn.execute("ROLLBACK")
-        raise
-    finally:
-        conn.close()
-
-
-if __name__ == "__main__":
-    build_warehouse()
+        temporary.unlink(missing_ok=True)
+        temporary.with_suffix(temporary.suffix + ".wal").unlink(missing_ok=True)
+    return quality

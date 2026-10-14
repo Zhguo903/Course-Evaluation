@@ -1,159 +1,71 @@
-"""Warehouse score definitions, snapshot consistency, and empty-course regressions."""
+"""Atomic pure official-data publication preserves requirements and removes old tables."""
 
 import duckdb
 import pandas as pd
 import pytest
-from pandas.testing import assert_frame_equal
 
-from src import recommender, warehouse
-
-
-@pytest.fixture
-def warehouse_input():
-    courses = pd.DataFrame(
-        {
-            "course_id": [1, 2, 3],
-            "course_code": ["A", "B", "C"],
-            "course_name": ["Alpha", "Beta", "Gamma"],
-            "department": ["Statistics"] * 3,
-            "course_level": [100, 200, 300],
-        }
-    )
-    reviews = pd.DataFrame(
-        {
-            "review_id": [1, 2, 3],
-            "course_id": [1, 2, 2],
-            "instructor_id": [1, 1, 1],
-            "rating": [5.0, 3.0, 3.0],
-            "difficulty": [2.0] * 3,
-            "workload": [2.0] * 3,
-            "usefulness": [4.0] * 3,
-            "review_text": ["not heavy workload; Python project", "workload is manageable", "useful"],
-        }
-    )
-    return courses, reviews
+from src.data_quality import DataQualityError
+from src.finder import load_finder_data
+from src.warehouse import build_warehouse
 
 
-def _dws(conn, courses, reviews):
-    conn.register("dwd_courses_clean", courses)
-    conn.register("dwd_reviews_clean", reviews)
-    conn.register(
-        "dwd_instructors_clean",
-        pd.DataFrame({"instructor_id": [1], "instructor_name": ["Teacher"], "department": ["Statistics"]}),
-    )
-    warehouse.build_dws_layer(conn)
-    return conn.execute("SELECT * FROM dws_course_summary ORDER BY course_code").df()
-
-
-def test_scores_are_bounded_smoothed_and_unreviewed_are_null(warehouse_input):
-    courses, reviews = warehouse_input
-    with duckdb.connect(":memory:") as conn:
-        summary = _dws(conn, courses, reviews)
-    profile = warehouse.build_course_profile(summary, reviews)
-    assert profile.loc[0, "smoothed_rating"] == pytest.approx((5 + 10 * 11 / 3) / 11)
-    assert profile.loc[0, "confidence"] == pytest.approx(1 / 11)
-    assert profile.loc[2, "review_count"] == 0
-    assert pd.isna(profile.loc[2, "avg_rating"])
-    assert pd.isna(profile.loc[2, "recommend_score"])
-    assert pd.isna(profile.loc[2, "gpa_friendly_score"])
-    assert pd.isna(profile.loc[2, "positive_review_ratio"])
-    assert profile.loc[0, "workload_negative_ratio"] == 0
-    for name in ["gpa_friendly_score", "course_value_score", "workload_risk_score", "recommend_score"]:
-        assert profile.loc[:1, name].between(1, 5).all()
-    assert recommender.recommend_courses(recommendation_table=profile)["course_code"].tolist() == ["A", "B"]
-
-
-def test_csv_fallback_and_warehouse_use_identical_formulas(warehouse_input, tmp_path, monkeypatch):
-    courses, reviews = warehouse_input
-    courses.to_csv(tmp_path / warehouse.PROCESSED_FILES["courses"], index=False)
-    reviews.to_csv(tmp_path / warehouse.PROCESSED_FILES["reviews"], index=False)
-    monkeypatch.setattr(recommender, "DUCKDB_PATH", tmp_path / "absent.duckdb")
-    monkeypatch.setattr(recommender, "PROCESSED_DATA_DIR", tmp_path)
-    fallback = recommender._load_course_profile()
-    with duckdb.connect(":memory:") as conn:
-        summary = _dws(conn, courses, reviews)
-    expected = warehouse.build_course_profile(summary, reviews)
-    assert_frame_equal(fallback[expected.columns], expected, check_dtype=False)
-
-
-def test_all_courses_unreviewed_is_safe(warehouse_input):
-    courses, reviews = warehouse_input
-    reviews = reviews.iloc[:0]
-    with duckdb.connect(":memory:") as conn:
-        summary = _dws(conn, courses, reviews)
-    profile = warehouse.build_course_profile(summary, reviews)
-    assert profile["smoothed_rating"].eq(3).all()
-    assert profile["confidence"].eq(0).all()
-    assert recommender.recommend_courses(recommendation_table=profile).empty
-
-
-def test_warehouse_failure_rolls_back_published_tables(tmp_path, monkeypatch):
-    path = tmp_path / "published.duckdb"
+def test_only_official_tables_are_published(tmp_path, official_sample, sample_manifest):
+    path = tmp_path / "finder.duckdb"
     with duckdb.connect(str(path)) as conn:
-        conn.execute("CREATE TABLE stable AS SELECT 1 AS version")
-    monkeypatch.setattr(warehouse, "run_quality_report", lambda: pd.DataFrame())
-    monkeypatch.setattr(warehouse, "assert_quality", lambda report: None)
-    monkeypatch.setattr(warehouse, "init_duckdb", lambda: duckdb.connect(str(path)))
-    monkeypatch.setattr(
-        warehouse, "build_ods_layer", lambda conn: conn.execute("UPDATE stable SET version=2")
+        conn.execute("CREATE TABLE dwd_reviews_clean AS SELECT 'old simulated text' AS review_text")
+    build_warehouse(
+        courses=official_sample,
+        catalog_manifest=sample_manifest,
+        offerings=[],
+        timetable_manifest={"coverage": [], "sessions": []},
+        db_path=path,
     )
-    monkeypatch.setattr(
-        warehouse, "build_dwd_layer", lambda conn: (_ for _ in ()).throw(RuntimeError("bad CSV"))
-    )
-    with pytest.raises(RuntimeError, match="bad CSV"):
-        warehouse.build_warehouse()
+    data = load_finder_data(path)
+    assert len(data["courses"]) == 3
+    assert data["courses"].offering_status.eq("unknown").all()
+    assert data["quality"].status.eq("PASS").all()
     with duckdb.connect(str(path)) as conn:
-        assert conn.execute("SELECT version FROM stable").fetchone()[0] == 1
+        tables = [row[0] for row in conn.execute("SHOW TABLES").fetchall()]
+    assert "dwd_reviews_clean" not in tables
+    assert "ads_course_finder" in tables
+    actual = data["courses"].set_index("course_code")
+    for row in official_sample:
+        assert actual.loc[row["course_code"], "prerequisite"] == row["prerequisite"]
 
 
-def test_failed_gate_never_opens_the_warehouse(monkeypatch):
-    monkeypatch.setattr(warehouse, "run_quality_report", lambda: pd.DataFrame())
-    monkeypatch.setattr(
-        warehouse, "assert_quality", lambda report: (_ for _ in ()).throw(ValueError("quality failed"))
-    )
-    monkeypatch.setattr(warehouse, "init_duckdb", lambda: pytest.fail("warehouse opened before gate"))
-    with pytest.raises(ValueError, match="quality failed"):
-        warehouse.build_warehouse()
+def test_failed_validation_keeps_previous_database(tmp_path, official_sample, sample_manifest):
+    path = tmp_path / "finder.duckdb"
+    with duckdb.connect(str(path)) as conn:
+        conn.execute("CREATE TABLE original AS SELECT 42 AS value")
+    sample_manifest["complete"] = False
+    with pytest.raises(DataQualityError):
+        build_warehouse(
+            courses=official_sample,
+            catalog_manifest=sample_manifest,
+            offerings=[],
+            timetable_manifest={"coverage": []},
+            db_path=path,
+        )
+    with duckdb.connect(str(path)) as conn:
+        assert conn.execute("SELECT value FROM original").fetchone()[0] == 42
 
 
-def test_recommendation_tags_are_read_from_committed_database(warehouse_input, tmp_path, monkeypatch):
-    courses, reviews = warehouse_input
-    db_path = tmp_path / "snapshot.duckdb"
-    tag_path = tmp_path / warehouse.PROCESSED_FILES["course_tags"]
-    pd.DataFrame(
-        {"course_id": [1, 2, 3], "tags": ["Project Based", "", ""], "keywords": ["python", "useful", ""]}
-    ).to_csv(tag_path, index=False)
-    pd.DataFrame({"status": ["PASS"]}).to_csv(
-        tmp_path / warehouse.PROCESSED_FILES["data_quality"], index=False
-    )
-    monkeypatch.setattr(warehouse, "PROCESSED_DATA_DIR", tmp_path)
-    with duckdb.connect(str(db_path)) as conn:
-        _dws(conn, courses, reviews)
-        warehouse.build_ads_layer(conn)
-    # A later failed run may already have replaced CSV artifacts; published tags stay consistent.
-    tag_path.unlink()
-    monkeypatch.setattr(recommender, "DUCKDB_PATH", db_path)
-    monkeypatch.setattr(recommender, "PROCESSED_DATA_DIR", tmp_path)
-    table = recommender.build_recommendation_table()
-    assert table.loc[table["course_id"] == 1, "tags"].item() == "Project Based"
-    assert table["course_level"].tolist() == [100, 200, 300]
+def test_build_error_keeps_previous_database(tmp_path, official_sample, sample_manifest, monkeypatch):
+    path = tmp_path / "finder.duckdb"
+    with duckdb.connect(str(path)) as conn:
+        conn.execute("CREATE TABLE original AS SELECT 42 AS value")
+    monkeypatch.setattr(pd.DataFrame, "to_csv", lambda *args, **kwargs: None)
+    from src import warehouse
 
-
-def test_official_requirements_survive_warehouse_and_ranking(warehouse_input):
-    courses, reviews = warehouse_input
-    courses = courses.copy()
-    courses["campus"] = "St. George"
-    courses["requirement_system"] = "artsci_breadth"
-    courses["breadth_categories"] = "[5]"
-    courses["requirement_categories"] = '["The Physical and Mathematical Universes (5)"]'
-    courses["prerequisite"] = "(MAT135H1 and MAT136H1) or MAT137Y1; minimum grade 70%"
-    courses["corequisite"] = "STA237H1"
-    courses["source_url"] = "https://artsci.calendar.utoronto.ca/course/sta303h1"
-    with duckdb.connect(":memory:") as conn:
-        summary = _dws(conn, courses, reviews)
-    profile = warehouse.build_course_profile(summary, reviews)
-    result = recommender.recommend_courses(recommendation_table=profile)
-    assert result.prerequisite.eq(courses.prerequisite.iloc[0]).all()
-    assert result.breadth_categories.eq("[5]").all()
-    assert result.source_url.eq(courses.source_url.iloc[0]).all()
-    assert result.corequisite.eq("STA237H1").all()
+    monkeypatch.setattr(warehouse, "_frame", lambda *args: (_ for _ in ()).throw(RuntimeError("frame error")))
+    with pytest.raises(RuntimeError, match="frame error"):
+        build_warehouse(
+            courses=official_sample,
+            catalog_manifest=sample_manifest,
+            offerings=[],
+            timetable_manifest={"coverage": []},
+            db_path=path,
+        )
+    with duckdb.connect(str(path)) as conn:
+        assert conn.execute("SELECT value FROM original").fetchone()[0] == 42
+    assert not list(tmp_path.glob(".course-finder-*"))

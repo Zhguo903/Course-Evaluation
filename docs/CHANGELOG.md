@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.0.0 · 2026-10-13
+
+- Pivot to a fast official-data course finder by campus, level, academic subject and campus-specific breadth/distribution category.
+- Replace the 200-course sample with all 10,037 courses in the St. George Arts & Science, UTM and UTSC undergraduate calendars, with pagination completeness evidence.
+- Integrate 7,093 real official Timetable Builder records; verify combined and per-session totals and distinguish offered, cancelled, not found and unknown states.
+- Remove synthetic teachers, reviews, ratings, GPA/workload predictions and all generation/NLP/recommendation code that depended on them.
+- Add explicit academic-area fallback labels, uncertain-credit handling, term-specific source links, session-labelled CSV export and official requirement comparison.
+- Publish validated snapshots atomically with source hashes, retrieval dates and coverage manifests; preserve the last verified database on build failure.
+- Document usable current and historical data sources, and ship course CSV and DuckDB downloads.
+
+The entries below describe historical releases; their simulated features are absent from v3.
+
 ## v2.1.0 · 2026-10-13
 
 - Replace randomly named course metadata with 200 verified official UofT course records: 80 St. George Arts & Science, 60 UTM and 60 UTSC.

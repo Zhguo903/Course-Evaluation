@@ -1,124 +1,64 @@
-# Data Dictionary
+# Data dictionary · v3
 
-## Raw Tables
+## Catalogue and finder
 
-### courses_raw.csv
-| Field | Description |
-| --- | --- |
-| course_id | Local stable course identifier for the selected official snapshot |
-| course_code | Full official course code, such as STA303H1, CSC108H5 or CSCA08H3 |
-| course_name | Official course title from the relevant campus Calendar |
-| department | Academic department |
-| course_level | Course level, such as 100, 200, 300, or 400 |
-| credit | Course credit value |
-| prerequisite | Official prerequisite wording; retain logical operators, grades and permissions |
-| campus | Campus identified by the official course record, not a simulated offering location |
-
-### instructors_raw.csv
-| Field | Description |
-| --- | --- |
-| instructor_id | Synthetic unique instructor identifier |
-| instructor_name | Fictional instructor name |
-| department | Instructor department |
-
-### semesters_raw.csv
-| Field | Description |
-| --- | --- |
-| semester_id | Synthetic unique semester identifier |
-| year | Academic year |
-| term | Spring or Fall |
-| start_date | Semester start date |
-| end_date | Semester end date |
-
-### course_offerings_raw.csv
-| Field | Description |
-| --- | --- |
-| offering_id | Synthetic unique offering identifier |
-| course_id | Course identifier |
-| instructor_id | Instructor identifier |
-| semester_id | Semester identifier |
-| capacity | Seat capacity |
-| enrolled_count | Number of enrolled students |
-| delivery_mode | In-person, Online, or Hybrid |
-
-### reviews_raw.csv
-| Field | Description |
-| --- | --- |
-| review_id | Synthetic unique review identifier |
-| course_id | Course identifier |
-| instructor_id | Instructor identifier |
-| semester_id | Semester identifier |
-| rating | Overall rating from 1 to 5 |
-| difficulty | Difficulty score from 1 to 5 |
-| workload | Workload score from 1 to 5 |
-| usefulness | Usefulness score from 1 to 5 |
-| review_text | Synthetic English review text |
-| review_date | Review date |
-
-## Processed Tables
-
-Processed tables mirror the raw entities after cleaning:
-
-| Table | Purpose |
-| --- | --- |
-| courses_clean.csv | Standardized course dimension |
-| instructors_clean.csv | Clean instructor dimension |
-| semesters_clean.csv | Clean semester dimension |
-| course_offerings_clean.csv | Clean offering fact table |
-| reviews_clean.csv | Clean review facts with normalized text; invalid scores remain visible to validation |
-| course_tags.csv | Course-level NLP keywords and generated tags |
-| data_quality_report.csv | Rule-level quality check results |
-
-## Warehouse Tables
-
-| Layer | Table | Purpose |
-| --- | --- | --- |
-| ODS | ods_*_raw | Raw source-aligned tables |
-| DWD | dwd_*_clean | Clean detail tables |
-| DWS | dws_course_summary | Course-level metrics |
-| DWS | dws_instructor_summary | Instructor-level metrics |
-| DWS | dws_department_summary | Department-level metrics |
-| DWS | dws_course_text_features | Non-negated review mention proportions |
-| DWS | dws_course_tags | Published course keyword/tag snapshot |
-| ADS | ads_course_profile | Application-ready course profiles, review counts and smoothed scores |
-| ADS | ads_course_recommendation | Sorted recommendation table |
-| ADS | ads_data_quality_report | BI-ready quality report |
-
-## v2 Profile and Recommendation Fields
+`dwd_catalog_courses` contains the verified catalogue; `ads_course_finder` adds offering annotations. Each row represents one campus/course code. JSON arrays/maps are stored as JSON strings in DuckDB and CSV.
 
 | Field | Meaning |
 | --- | --- |
-| review_count | Number of valid reviews; known zero-review courses are excluded from rankings |
-| confidence | n / (n + 10), the weight of a course mean in rating smoothing, not an accuracy probability |
-| smoothed_rating | Review-count weighted blend of the course rating and global review mean |
-| recommend_score | Default 1–5 weighted course-profile ranking score |
-| preference_score | Actual ranking score after explicit preference adjustments; may exceed 5 |
-| recommendation_reason | Explanation aligned with the applied preference contributions |
-| similarity_score | TF-IDF cosine similarity of course content, between 0 and 1 |
+| `course_code`, `course_name` | Official course identifier and title |
+| `campus` | Source calendar affiliation: St. George, Mississauga or Scarborough |
+| `course_level` | 0 / 100 / 200 / 300 / 400; UTSC A–D mapped to 100–400 |
+| `department` | First matched official academic-area label, or explicitly labelled course-prefix fallback; multiple areas are not concatenated here |
+| `subject_areas` | JSON array of all matched official academic-area labels; empty for course-prefix fallback |
+| `department_source` | `official_calendar_section` or `course_prefix` |
+| `department_source_url` | Section URL for the first matched academic-area label; empty for fallback |
+| `credit` | Standard H/Y credit, explicit non-credit zero, or NULL when uncertain |
+| `credit_basis`, `credit_note` | Basis (`course_code_HY`, `explicit_calendar_description` or `not_listed_nonstandard_course`) and qualification for the recorded credit |
+| `requirement_system` | `artsci_breadth`, `utm_distribution`, `utsc_breadth` |
+| `requirement_categories` | JSON array of official category names |
+| `breadth_categories` | St. George BR integers as a JSON array; empty for other systems |
+| `breadth_requirements`, `distribution_requirements` | Original official category field text |
+| `prerequisite`, `prerequisite_status` | Official prerequisite text and `listed` / `not_listed` status |
+| `corequisite`, `exclusion` | Official co-requisite and exclusion conditions |
+| `recommended_preparation` | Official recommended preparation |
+| `enrolment_requirements`, `requirement_notes` | Explicit restrictions and complete original condition sentences, with short dependent context; labelled NOTE blocks and explicit calendar note fields retain their original wording |
+| `description` | Reserved empty field; read the complete description at `source_url` |
+| `source_url`, `source_retrieved_at` | Official course page and catalogue retrieval date |
+| `metadata_source` | `official_calendar` |
+| `offering_status` | `offered`, `cancelled`, `not_found` or `unknown`, across covered sessions |
+| `offering_status_by_session` | JSON map from published session code to independent status |
+| `offered_sessions` | JSON array of sessions with uncancelled offerings; full-year includes constituent terms |
+| `offering_sessions` | JSON array with offering session, label, term, state and official source link |
+| `checked_sessions` | JSON array of published source sessions |
+| `timetable_source_url` | Official timetable source link for the course, when available |
+| `timetable_checked_at`, `timetable_retrieved_at` | Retrieval timestamp; second field is an alias for UI compatibility |
+| `match_reason` | Added to a filtered result/export; explains matched user conditions |
+| `selected_session`, `selected_session_label` | Export context: selected session code (or `all_published`) and UI label |
+| `category_summary` | Compact category display in UI/export; original full labels remain in requirement fields |
 
-## Data Quality Report
+Empty requirements mean not listed, not confirmed absence. Missing credit is not zero. Catalogue affiliation does not guarantee physical delivery location. Status definitions are in [data sources](data_sources.md).
 
-`check_name`, `table_name`, `status`, `failed_count`, `total_count`, `failure_rate`, and UTC `check_time` describe each check. Empty tables have a failing presence check and zero record counts; this avoids inventing a failing record. A row can fail multiple checks, so summed failed_count is a count of rule violations rather than distinct bad records.
+## Official offerings
 
-Required source columns must be present as shown above. Optional course prerequisites may be empty. Text analytics currently supports English comments; the interface is Chinese-first. Numeric scores must lie within 1–5. Dates must parse successfully, semester start must not exceed end, and reviews must fall inside the referenced semester.
-
-## Official Course Metadata (v2.1)
+`dwd_timetable_offerings` retains official timetable records, including codes that are not found in the current catalogue.
 
 | Field | Meaning |
 | --- | --- |
-| requirement_system | artsci_breadth, utm_distribution or utsc_breadth; distinct campus systems |
-| breadth_categories | JSON array of numeric 1–5 IDs for St. George Arts & Science only; [] for other systems |
-| requirement_categories | JSON array of official category labels, interpreted within requirement_system |
-| breadth_requirements | Original Calendar breadth text for St. George or UTSC |
-| distribution_requirements | Original Calendar distribution text for UTM |
-| corequisite | Official concurrent-or-prior course condition wording |
-| exclusion | Official course exclusions; not an automatic prerequisite substitution |
-| recommended_preparation | Recommended preparation, separately from mandatory prerequisites |
-| enrolment_requirements | Explicit enrolment restriction fields where present |
-| requirement_notes | Other course-specific notes/limitations retained from the source |
-| prerequisite_status | listed or not_listed; absence of a field is not a registration guarantee |
-| metadata_source | official_calendar for verified records; neutral/empty for legacy custom inputs |
-| source_url | Official course page URL |
-| source_retrieved_at | Source retrieval date/time |
+| `timetable_id` | Unique official source offering identity |
+| `course_code`, `title`, `campus` | Source course metadata |
+| `division` | `ARTSC`, `ERIN` or `SCAR` |
+| `session_code`, `sessions`, `term_code` | Published session, constituent session array and F/S/Y term |
+| `status` | Normalized course offering state: `offered` or `cancelled` |
+| `sections` | JSON array of actual section status and delivery modes; no real-time seat counts |
+| `source_url`, `timetable_url` | Official individual record and public timetable website |
+| `source_retrieved_at` | Timestamp at snapshot retrieval |
+| `source_created_at`, `source_modified_at` | Source timestamps when supplied |
 
-Course metadata survives DWD, DWS, ADS, preference results and CSV exports. Real course identifiers do not make generated ratings authentic. Generated review rows carry data_source=synthetic_community_inspired and a source_note explaining that no original group messages are ingested.
+## Coverage, manifests and quality
+
+`ads_timetable_coverage` stores campus, division, session, human-readable label, complete flag, source totals, expected totals and retrieval timestamp. Only verified complete coverage supports `not_found`; missing coverage yields `unknown`.
+
+`ads_source_manifests` holds source name and its JSON manifest, including hashes, source URLs, retrieval dates and completeness evidence. The checked-in reference files use the same manifests.
+
+`ads_data_quality_report` contains `check_name`, `status`, `detail` and `check_time`. Publication is blocked if any required check fails. Timetable integrity is checked by its strict snapshot loader before database publication.

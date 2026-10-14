@@ -2,32 +2,26 @@
 
 ## 中文项目介绍
 
-**CourseInsight｜多伦多大学课程探索与可解释选课推荐系统**
+CourseInsight 是面向多伦多大学学生的课程查找工具。项目围绕学生会、校友及课友群中常见的选课需求，整合 St. George Arts & Science、UTM 和 UTSC 的完整官方本科目录与已发布课表，让学生通过校区、课程级别、学科和 BR / Distribution 快速筛选课程，比较修读要求并核对是否开课。
 
-面向多伦多大学学生构建课程信息整合与推荐原型，结合 St. George、UTM 和 UTSC 的官方课程目录，以及参考学生会、校友及课友群常见选课反馈生成的模拟评价，帮助学生更高效地比较感兴趣的课程。整理 200 门真实课程的校区、广度/分布类别、先修及相关注册要求，保留官方来源并区分三校区的分类体系。基于 Python、pandas、DuckDB 与 Streamlit 完成数据清洗、质量校验、分层数仓、课程画像与偏好排序，提供课程筛选、比较、相似检索和结果导出。
+当前版本整理 10,037 门官方课程及 7,093 条真实开课记录，保留来源链接与核验时间，区分三校区分类体系及未知状态。使用 Python、pandas、DuckDB 和 Streamlit 完成来源采集、完整性核验、原子数据发布、条件匹配与交互页面。数据核验于 2026-10-13，不含模拟评价。
 
 ## 个人网站精简版
 
-为多伦多大学学生整合三校区官方课程信息与社区交流主题下的模拟选课反馈。支持按校区和 BR/Distribution 分类探索课程、查阅先修条件，并结合学习负担和内容偏好进行比较与推荐。
+为多伦多大学学生整合三校区 10,037 门官方本科课程与真实课表。支持按校区、Level、Department 和 BR / Distribution 快速找课，查看先修要求、开课状态并对比导出。
 
 ## 简历要点
 
-- 整合 St. George、UTM 和 UTSC 的 200 门官方课程记录，保存广度/分布类别、先修/共修/排除要求及可追溯来源。
-- 设计 ODS–DWD–DWS–ADS 本地数仓，保留复杂课程要求原文，避免跨校区分类误映射。
-- 使用 TF-IDF、比例标签与评分平滑，为 12,000 条模拟评价构建课程画像和可解释偏好排序。
-- 开发支持校区、类别筛选、课程比较及 CSV 导出的 Streamlit 看板，并以质量门禁和自动化测试验证数据流程。
+- 整合三校区完整官方本科目录与课表，构建包含 10,037 门课程和 7,093 条开课记录的可追溯数据集。
+- 通过目录分页核对、课表总数交叉校验、SHA-256 与覆盖范围检查，阻止不完整数据覆盖已核验版本。
+- 使用 DuckDB 与 Streamlit 实现多条件筛选、学期状态、匹配理由、课程对比和 CSV 导出，并通过自动化测试验证关键交互。
 
 ## English description
 
-**CourseInsight | University of Toronto Course Explorer & Explainable Recommendations**
+Built CourseInsight, a course finder for University of Toronto students, using complete official undergraduate catalogues for St. George Arts & Science, UTM and UTSC. Integrated 10,037 catalogue courses and 7,093 timetable records with source links and retrieval dates. Implemented campus, level, academic-subject and breadth/distribution filters, transparent matching reasons, offering status, course comparison and CSV export with Python, pandas, DuckDB and Streamlit.
 
-Built a course-information and recommendation prototype for University of Toronto students. Integrated official course metadata from St. George, UTM and UTSC, including campus-specific breadth/distribution categories, prerequisites, corequisites, exclusions and other enrolment requirements. Used synthetic feedback inspired by student-union, alumni and peer-group discussion themes, as described by the maintainer, to demonstrate course profiles and preference-based rankings. Implemented ETL, validation, a layered DuckDB warehouse and a Streamlit dashboard for course filtering, comparison, similarity search and CSV exports.
+Validated catalogue completeness against official pagination and timetable counts against the official pageable API. Used snapshot hashes, explicit unknown states and atomic database publication to preserve verified data when refreshes fail.
 
-- Integrated 200 official course records with source links and retrieval dates while keeping campus classification systems separate.
-- Preserved complete prerequisite and enrolment condition wording through the analytics warehouse.
-- Developed explainable rankings from 12,000 synthetic reviews using TF-IDF features, rule tags and rating smoothing.
-- Delivered campus-aware exploration and comparison with automated integrity and application checks.
+## 表述边界
 
-## 表述依据
-
-课程元数据来自官方目录，200 门为选取样本。社区信息参考背景由维护者说明；仓库不含原始群聊消息或真实学生评价。教师、开课与评价记录为模拟数据，GPA 友好度与职业相关性为启发式指标；没有真实选课效率或推荐准确率提升的实测数据。
+“全部课程”限于三个已列明的本科目录；数据规模是快照统计，不是推荐准确率或选课效率提升的实测结果。项目需求参考社区交流场景，当前课程事实来自官方来源，不声称群消息或生成评价为真实学生反馈。没有真实成绩、难度或工作量数据时不作相关预测。
