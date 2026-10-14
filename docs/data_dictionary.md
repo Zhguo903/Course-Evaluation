@@ -62,3 +62,33 @@ Empty requirements mean not listed, not confirmed absence. Missing credit is not
 `ads_source_manifests` holds source name and its JSON manifest, including hashes, source URLs, retrieval dates and completeness evidence. The checked-in reference files use the same manifests.
 
 `ads_data_quality_report` contains `check_name`, `status`, `detail` and `check_time`. Publication is blocked if any required check fails. Timetable integrity is checked by its strict snapshot loader before database publication.
+
+## Student feedback and resources · v3.1
+
+`dwd_course_evaluations` contains **historical aggregate reports**, including records that cannot be assigned to the current catalogue. It does not contain individual student answers or free-text survey comments.
+
+| Field | Meaning |
+| --- | --- |
+| `evaluation_id` | Stable identifier from source-file hash and CSV row number |
+| `source_course_code` | Original source identifier, including malformed values for audit |
+| `course_code`, `campus` | Exact current-code/campus association, or empty code when unmatched |
+| `match_status`, `match_basis` | Matched/unmatched and exact-code basis; no title/prefix fuzzy matching |
+| `year`, `term`, `teaching_section` | Historical teaching period and section when identified |
+| `cohort_id` | Source class/year/term identity hash; multiple reports can share a respondent cohort |
+| `overall_score` | Historical overall learning-experience mean on the original 1–5 scale |
+| `workload_score` | Historical relative-workload mean on 1–5; higher means heavier, not harder |
+| `recommendation_score` | Historical willingness-to-recommend mean on 1–5 |
+| `response_count`, `invited_count` | Report-level survey counts; not per-item responses or a unique-student total |
+| `quality_flags` | JSON array retaining source anomalies and possible shared cohorts |
+| `source_id`, `source_row_number`, `source_url`, `source_retrieved_at` | Original public file, row, link and retrieval time |
+| `source_kind` | `third_party_historical_official_evaluations`; not a live official feed |
+
+Missing scores/counts remain NULL. The three measures must not be blended into a universal rating. Full source provenance, scales and irregularities are documented in [feedback sources](feedback_data_sources.md).
+
+`dwd_student_reviews` stores `review_id`, exact `course_code`/`campus`, original `source_course_code`, reviewer/source labels, academic period, publication date when known, retrieval date, original `rating`/`rating_scale_min`/`rating_scale_max`/`rating_dimension`, Chinese `summary`, `code_mapping`, `verification_level` and `limitations`. Current entries are public self-reports from one author, with individual recommendation values on 1–10. No student identity or enrolment status was verified, and no cross-review average is calculated.
+
+`dwd_course_resources` stores `resource_id`, `course_code`, `campus`, `title`, `resource_type`, `url`, `provider`, `source_kind`, `academic_period`, `access_requirement`, `rights_note`, `verified_at`, `source_url` and `limitations`. Empty course code means a general or unassigned historical portal; campus `All` means a shared portal. This never turns into one resource record per catalogue course. Files contain metadata and links, not mirrored teaching materials.
+
+`ads_feedback_sources` stores `source_id`, `title`, `source_type`, `status`, `access`, `covered_period`, `source_url` and `limitations`. An external link or a login/licence requirement does not count as imported feedback.
+
+`ads_course_finder` adds `student_review_count`, `historical_evaluation_count`, `resource_count`, `evaluation_year_min` and `evaluation_year_max`. Counts include only exact campus/course associations; resource counts exclude unassigned/global portals. They describe availability, not quality or confidence. Source manifests now include the support and historical-evaluation snapshots.

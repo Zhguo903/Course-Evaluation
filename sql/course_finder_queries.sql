@@ -31,3 +31,28 @@ ORDER BY campus, session_code, status;
 SELECT * FROM ads_timetable_coverage;
 SELECT source, manifest FROM ads_source_manifests;
 SELECT * FROM ads_data_quality_report;
+
+-- Historical reports: keep campus, period, question meanings and provenance.
+SELECT year, term, teaching_section, overall_score, workload_score,
+       recommendation_score, response_count, invited_count, source_url,
+       source_row_number, quality_flags
+FROM dwd_course_evaluations
+WHERE campus = 'St. George' AND course_code = 'CSC110Y1'
+ORDER BY year DESC, term;
+
+-- Individual opinions retain their own scale; do not blend with survey means.
+SELECT course_code, reviewer_label, academic_period, rating,
+       rating_scale_min, rating_scale_max, rating_dimension, summary, source_url
+FROM dwd_student_reviews
+WHERE course_code = 'CSC110Y1';
+
+-- Resource links are metadata, not redistributed course documents.
+SELECT title, resource_type, academic_period, access_requirement, url
+FROM dwd_course_resources
+WHERE campus IN ('St. George', 'All')
+  AND (course_code = 'CSC110Y1' OR course_code = '');
+
+-- Count reports, not unique respondents; preserve unassigned historical records.
+SELECT campus, match_status, COUNT(*) AS report_count
+FROM dwd_course_evaluations
+GROUP BY campus, match_status;

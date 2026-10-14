@@ -1,0 +1,62 @@
+[
+  {
+    "source_id": "reddit_cs25_course_reflection",
+    "title": "CS ’25 学生公开课程回顾",
+    "source_type": "student_review_collection",
+    "status": "imported",
+    "access": "public",
+    "covered_period": "2020–2025（作者自述修读年度）",
+    "source_url": "https://www.reddit.com/r/UofT/comments/1kjq8ji/rating_and_reviewing_every_course_i_took_at_uoft/",
+    "limitations": "28 条同一账号个人推荐分与中文转述；没有核验作者学籍，未导入个人成绩、教师姓名或评论区信息。"
+  },
+  {
+    "source_id": "artsci2012_2024",
+    "title": "公开整理的 Arts & Science 历史课程评价",
+    "source_type": "historical_evaluation_dataset",
+    "status": "imported",
+    "access": "public",
+    "covered_period": "2012–2024",
+    "source_url": "https://drive.google.com/file/d/1A2yh-XeIeUTrudYHfAHvclj39S_kdlzJ/view",
+    "limitations": "第三方公开整理的历史问卷数值，非校方当前 API；同一班级可能有多位教师报告，不能把回复数加总当唯一学生数。"
+  },
+  {
+    "source_id": "utm2013_2024",
+    "title": "公开整理的 UTM 历史课程评价",
+    "source_type": "historical_evaluation_dataset",
+    "status": "imported",
+    "access": "public",
+    "covered_period": "2013–2024",
+    "source_url": "https://drive.google.com/file/d/1jnrCY8UjQpvqeswR3xXB-9tE4JIcwSp_/view",
+    "limitations": "第三方公开整理的历史问卷数值，非校方当前 API；题目和缺失情况以原文件及来源清单为准。"
+  },
+  {
+    "source_id": "utsc2014_2024",
+    "title": "公开整理的 UTSC 历史课程评价",
+    "source_type": "historical_evaluation_dataset",
+    "status": "imported",
+    "access": "public",
+    "covered_period": "2014–2024",
+    "source_url": "https://drive.google.com/file/d/1pGV_LFagFQikou8n0xkumVQ_VyyRTIo7/view",
+    "limitations": "第三方公开整理的历史问卷数值，非校方当前 API；同一班级可能有多位教师报告，不代表当前课程教学情况。"
+  },
+  {
+    "source_id": "official_course_evaluations",
+    "title": "官方 Course Evaluations / Quercus",
+    "source_type": "official_evaluation_portal",
+    "status": "login_required",
+    "access": "utorid_required",
+    "covered_period": "以登录后官方可见范围为准",
+    "source_url": "https://teaching.utoronto.ca/course-evaluations/for-students/",
+    "limitations": "部分学院分享、教师可选择不分享、少于五份回复的结果不分享。本项目没有登录或导出受限个人报告。"
+  },
+  {
+    "source_id": "uoft_index",
+    "title": "UofT Index 课程评价入口",
+    "source_type": "third_party_evaluation_portal",
+    "status": "licence_required",
+    "access": "public",
+    "covered_period": "依原站页面",
+    "source_url": "https://uoftindex.com/",
+    "limitations": "可公开浏览，但条款禁止未经授权的自动抽取与复制数据集；仅保存外链，未导入其评分。开放 API 在核验时仍标为计划中。"
+  }
+]

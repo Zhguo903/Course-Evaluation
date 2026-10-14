@@ -10,6 +10,7 @@ import duckdb
 import pandas as pd
 
 from src.config import DUCKDB_PATH
+from src.support import REVIEW_COLUMNS, RESOURCE_COLUMNS, SOURCE_COLUMNS
 
 BR_NAMES = {
     1: "Creative and Cultural Representations",
@@ -80,6 +81,22 @@ def load_finder_data(db_path: str | Path | None = None) -> dict[str, pd.DataFram
             "coverage": conn.execute("SELECT * FROM ads_timetable_coverage").df(),
             "quality": conn.execute("SELECT * FROM ads_data_quality_report").df(),
         }
+        tables = {row[0] for row in conn.execute("SHOW TABLES").fetchall()}
+        for key, table, columns in [
+            ("reviews", "dwd_student_reviews", REVIEW_COLUMNS),
+            ("resources", "dwd_course_resources", RESOURCE_COLUMNS),
+            ("feedback_sources", "ads_feedback_sources", SOURCE_COLUMNS),
+            (
+                "evaluations",
+                "dwd_course_evaluations",
+                ["evaluation_id", "course_code", "campus", "year", "term"],
+            ),
+        ]:
+            result[key] = (
+                conn.execute(f"SELECT * FROM {table}").df()
+                if table in tables
+                else pd.DataFrame(columns=columns)
+            )
         conn.execute("COMMIT")
     return result
 

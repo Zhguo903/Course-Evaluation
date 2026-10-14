@@ -59,3 +59,11 @@ St. George / UTM 的数字代码用于 Level，UTSC 的 A / B / C / D 对应 100
 日常运行只读取已核验快照。显式更新使用 `scripts/update_catalog.py` 和 `scripts/update_timetable.py`，再运行 `run_pipeline.py`；出错保留已核验版本。GitHub 发布页提供含来源链接的课程 CSV、DuckDB 和源代码。历史版本含模拟评价，v3 已移除相关数据与算法。
 
 第三方数据库是否适合接入、更新频率和许可情况见 [数据源调研](data_source_research.md)。
+
+## 新增学生评价与学习资料 · v3.1
+
+课程目录与开课仍以官方来源为准。新增的 64,554 条历史调查报告来自公开社区整理的副本，未与 UTORid 后的原始报告逐条复核；54,092 条报告精确关联 6,491 门当前课程，10,462 条保留未匹配。保留原题维度、1–5 量表、年份、回复数和源异常，不预测当前难度或成绩，不计算跨来源综合分。[历史评价来源及字段](feedback_data_sources.md)。
+
+另导入同一位 CS ’25 作者的 28 条公开个人推荐评价，用中文转述并链接原帖，原始个人推荐尺度为 1–10。作者身份及选课情况未独立核验，不能视为多位学生的共识。旧 MAT137、MAT235 代码没有强行对应到当前替代课。[个人评价原帖](https://www.reddit.com/r/UofT/comments/1kjq8ji/rating_and_reviewing_every_course_i_took_at_uoft/)。
+
+21 条学习资源包括 15 条对应 11 门当前课程的链接，以及 6 条通用或未关联历史入口。所有资源带核验日期和访问条件；资料内容与试卷全文不存入仓库。详见 [学习资源说明](learning_resources.md)。

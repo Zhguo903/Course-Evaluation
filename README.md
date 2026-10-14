@@ -2,9 +2,9 @@
 
 帮助多伦多大学学生通过 **校区、课程 Level、Department / 学科和 BR / Distribution** 快速找到符合需求的课程，查看先修与修读要求，并核对已发布课表中的开课状态。
 
-**v3 使用真实官方数据。** 默认展示三个官方本科目录的全部 **10,037 门课程**：St. George Faculty of Arts & Science 5,368 门、UTM 2,491 门、UTSC 2,178 门。另从官方 Timetable Builder 获取 **7,093 条开课记录**，覆盖 Fall 2026、Winter 2027 和 2026–2027 全年课程。数据核验日期为 **2026-10-13（多伦多时间）**。
+**课程目录与课表使用真实官方数据。** 默认展示三个官方本科目录的全部 **10,037 门课程**：St. George Faculty of Arts & Science 5,368 门、UTM 2,491 门、UTSC 2,178 门。另从官方 Timetable Builder 获取 **7,093 条开课记录**，覆盖 Fall 2026、Winter 2027 和 2026–2027 全年课程。数据核验日期为 **2026-10-13（多伦多时间）**。
 
-项目的选课需求来自学生会、校友及课友群中常见的交流场景；当前课程事实均取自官方来源，每条课程保留来源链接。仓库不包含群聊摘录或生成的学生评价，v3 已移除模拟评分、教师、评论、难度、工作量和 GPA 预测。
+项目的选课需求来自学生会、校友及课友群中常见的交流场景；当前课程事实均取自官方来源，每条课程保留来源链接。仓库不包含群聊摘录或生成的学生评价，v3 已移除模拟评分、教师和评论；v3.1 加入有来源标注的历史问卷数值与公开个人评价，不生成难度、工作量或 GPA 预测。
 
 ## 快速开始
 
@@ -28,6 +28,7 @@ streamlit run app/streamlit_app.py
 - 选择已发布学期，查看“已发布开课”“已取消”“已发布课表中未找到”或“尚未核实”。
 - 查看先修、共修、排除课程、建议准备、注册限制、来源链接和核验时间。
 - 对比课程、分页查看结果，并下载当前筛选结果的 CSV。
+- 在“学生评价与学习资料”页查看个人评价、历史问卷报告和学习资料；按“有已导入评价”或“有课程专属资料”筛选。
 
 “推荐”指根据用户条件筛选并解释匹配原因。课程顺序不代表教学质量、容易程度或个人注册资格。
 
@@ -52,6 +53,26 @@ streamlit run app/streamlit_app.py
 
 详见 [数据口径](docs/data_sources.md)、[全网数据源调研](docs/data_source_research.md) 和 [课表接口与校验](docs/timetable_sources.md)。
 
+## 学生评价与学习资料 · v3.1
+
+新增三类可追溯内容，分别保存，不混成一个评分：
+
+| 类型 | 已导入内容 | 如何理解 |
+| --- | --- | --- |
+| 历史问卷报告 | **64,554 条**三校区历史报告，其中 **54,092 条**精确匹配当前目录的 **6,491 门课程** | 公开社区整理的历史官方问卷数值副本，年份因校区而异（2012–2024），未逐条与登录后的校方报告复核 |
+| 公开个人评价 | **28 条**，来自同一位 CS ’25 作者的 2020–2025 课程回顾 | 中文转述、原帖链接和作者的 1–10 个人推荐分；没有核验作者选课身份，不代表学生共识 |
+| 学习资源 | **21 条**，其中 15 条精确关联 11 门当前课程，另 6 条通用或历史入口 | 官方讲义、旧 syllabus、CSSC 学生指南、教材和图书馆／学习支持链接；明确年份和登录要求 |
+
+历史问卷分别展示整体学习体验、工作量、推荐意愿的 **1–5 原量表**。工作量高分表示负担更重，不能改名为课程难度。缺失保持为空，保留源异常；不跨学期、题目或教师报告计算综合分，也不将回复数加总当作独立学生人数。10,462 条无法精确匹配当前代码的历史报告保留在数据库，不错误关联到相似课程。
+
+原始历史文件来自公开 [数据帖](https://www.reddit.com/r/UofT/comments/1ihe5tu/) 中贡献者分享的 [三校区 CSV 文件夹](https://drive.google.com/drive/folders/1Pg7qk7N2PvKaqMsGjw09El9jsWVmHPEB)。仅保留数值事实与来源，不镜像原 CSV 全文、教师名单或受限评价。详细字段、异常及来源性质见 [历史评价说明](docs/feedback_data_sources.md)。
+
+公开个人评价来自 [作者原帖](https://www.reddit.com/r/UofT/comments/1kjq8ji/rating_and_reviewing_every_course_i_took_at_uoft/)。历史 MAT137、MAT235 因代码缺失或变更未自动匹配到当前课程。
+
+[官方评价入口](https://teaching.utoronto.ca/course-evaluations/for-students/) 仍需 UTORid；[UofT Index](https://uoftindex.com/) 仅作为外部查询入口，未抓取其数据库。资料只保存链接与元数据；需要登录的往年试卷入口会明确标注，未复制试卷或教材全文。
+
+发布页另提供完整历史评价 CSV、个人评价 CSV、资料索引 CSV 和含 **10 张表**的 DuckDB。
+
 ## 更新官方数据
 
 ```bash
@@ -64,6 +85,17 @@ python run_pipeline.py
 
 流水线先校验，再构建临时数据库并原子替换已发布文件；失败保留原数据库。运行页面不会触发自动抓取。
 
+历史评价可显式刷新，资料与个人评价由人工核验后维护：
+
+```bash
+python scripts/import_evaluations.py --fetch
+python scripts/verify_support.py
+python run_pipeline.py
+```
+
+修改已核验的个人评价或资料索引后，使用 `python scripts/verify_support.py --refresh-manifest` 更新元数据哈希，再重建数据库。历史评价也支持 `--source-dir` 离线重放；源网址失效、解析或校验失败时不会用生成内容替代。
+
+
 ## 数据结构
 
 ```text
@@ -71,7 +103,12 @@ data/reference/uoft_courses.json          官方课程元数据
 data/reference/catalog_manifest.json     目录来源、完整性与哈希
 data/reference/timetable_offerings.json  官方开课记录
 data/reference/timetable_manifest.json   课表来源、覆盖范围与哈希
-data/warehouse/course_insight.duckdb      本地生成的查询数据库
+data/reference/course_evaluations.json   历史问卷数值及评价 manifest
+data/reference/student_reviews.json     有来源的个人意见与原始尺度
+data/reference/course_resources.json    资料链接与访问条件
+data/reference/feedback_sources.json    评价来源及接入状态
+data/reference/support_manifest.json    评价／资料元数据哈希
+data/warehouse/course_insight.duckdb     本地生成的查询数据库
 src/catalog.py                           官方目录解析与校验
 src/timetable.py                         开课获取、校验与状态标注
 src/finder.py                            条件筛选、搜索与匹配理由
@@ -79,7 +116,7 @@ src/warehouse.py                         原子发布 DuckDB
 app/streamlit_app.py                     找课与对比页面
 ```
 
-数据库含课程目录、开课记录、找课结果、学期覆盖、质量报告和来源清单六张表。字段见 [数据字典](docs/data_dictionary.md)，查询示例见 [SQL](sql/course_finder_queries.sql)，匹配规则见 [说明](docs/matching_rules.md)。
+数据库含课程目录、开课记录、找课结果、学期覆盖、质量报告、来源清单、个人评价、历史评价、资料和评价来源登记十张表。字段见 [数据字典](docs/data_dictionary.md)，查询示例见 [SQL](sql/course_finder_queries.sql)，匹配规则见 [说明](docs/matching_rules.md)。
 
 ## 开发验证
 
@@ -95,3 +132,5 @@ python run_pipeline.py
 ## English overview
 
 CourseInsight helps University of Toronto students find courses by campus, level, academic subject and campus-specific breadth or distribution category. Version 3 uses complete official undergraduate catalogues for St. George Arts & Science, UTM and UTSC: 10,037 courses, supplemented by 7,093 official timetable records retrieved on October 13, 2026. The interface provides transparent matching reasons, published offering status, original requirement text, comparison, CSV export and official source links. Missing or unpublished information remains explicitly unknown. There are no synthetic reviews or inferred difficulty, workload or GPA scores.
+
+Version 3.1 adds 64,554 historical survey reports from a publicly shared third-party copy, 28 attributed individual opinions from one author, and 21 verified resource links. Historical survey values retain their original question meanings and 1–5 scales; individual recommendation ratings retain their 1–10 scale. Reports are never combined into a universal score, and response counts are not presented as unique students. Unmatched historical course codes remain unassigned. Resource content and restricted materials are not mirrored.

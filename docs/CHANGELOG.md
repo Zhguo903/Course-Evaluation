@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.1.0 · Student feedback and learning resources
+
+- Import 64,554 third-party historical survey reports, of which 54,092 match 6,491 current catalogue courses; retain 10,462 unmatched reports without fuzzy associations.
+- Preserve learning-experience, workload and recommendation items on their original 1–5 scales, missing values, source-row provenance and quality flags.
+- Add 28 attributed individual recommendation ratings and Chinese paraphrases from one public CS graduate reflection, with self-report limitations and its original 1–10 scale.
+- Add 21 verified learning resource links, including 15 specific links for 11 current courses, and explicitly labelled general, historical or authenticated portals.
+- Add a feedback/resources page, course-level availability filters, complete per-course historical CSV export and separate source/access registers.
+- Extend the atomic database to 10 tables; validate paired feedback snapshots and publish only factual metadata or numeric facts, without mirrored course materials or synthetic reviews.
+
 ## v3.0.0 · 2026-10-13
 
 - Pivot to a fast official-data course finder by campus, level, academic subject and campus-specific breadth/distribution category.

@@ -9,11 +9,24 @@ import pytest
 import streamlit as st
 from streamlit.testing.v1 import AppTest
 
-from src import config
+from src import config, finder
 from src.catalog import load_catalog
+from src.evaluations import load_evaluation_snapshot
 from src.timetable import annotate_offerings, load_timetable_snapshot
 
 APP = Path(__file__).resolve().parents[1] / "app" / "streamlit_app.py"
+REFERENCE_DIR = APP.parents[1] / "data" / "reference"
+
+
+@pytest.fixture(scope="module")
+def feedback_snapshot():
+    evaluations, _ = load_evaluation_snapshot()
+    return {
+        "reviews": pd.DataFrame(json.loads((REFERENCE_DIR / "student_reviews.json").read_text())),
+        "resources": pd.DataFrame(json.loads((REFERENCE_DIR / "course_resources.json").read_text())),
+        "feedback_sources": pd.DataFrame(json.loads((REFERENCE_DIR / "feedback_sources.json").read_text())),
+        "evaluations": pd.DataFrame(evaluations),
+    }
 
 
 def write_index(db_path, courses, coverage):
@@ -30,13 +43,23 @@ def write_index(db_path, courses, coverage):
 
 
 @pytest.fixture(scope="module")
-def finder_data(tmp_path_factory):
+def finder_data(tmp_path_factory, feedback_snapshot):
     records = pd.DataFrame(load_catalog())
     # These are real official records. Coverage is intentionally unavailable in this
     # fixture, so every offering annotation must remain unknown rather than invented.
     sample = records.groupby("campus", sort=False).head(8)
     multi = records.loc[records["breadth_categories"].map(lambda value: len(json.loads(value)) > 1)]
-    sample = pd.concat([sample, multi.head(1)], ignore_index=True).drop_duplicates("course_code")
+    missing_score = (
+        feedback_snapshot["evaluations"]
+        .loc[
+            feedback_snapshot["evaluations"]["workload_score"].isna()
+            & feedback_snapshot["evaluations"]["course_code"].ne("")
+        ]
+        .iloc[0]["course_code"]
+    )
+    extra_codes = ["CSC110Y1", "CSC165H1", "MAT223H1", "CSCA08H3", "RSM430H1", missing_score]
+    extras = records.loc[records["course_code"].isin(extra_codes)]
+    sample = pd.concat([sample, multi.head(1), extras], ignore_index=True).drop_duplicates("course_code")
     sample["offering_status"] = "unknown"
     sample["offering_status_by_session"] = json.dumps({"20269": "unknown", "20271": "unknown"})
     sample["offered_sessions"] = "[]"
@@ -66,9 +89,34 @@ def finder_data(tmp_path_factory):
         st.cache_data.clear()
 
 
+@pytest.fixture
+def feedback_data(monkeypatch, finder_data, feedback_snapshot):
+    original = finder.load_finder_data
+    injected = {key: value.copy() for key, value in feedback_snapshot.items()}
+
+    def load_with_feedback(db_path=None):
+        loaded = original(db_path=db_path)
+        loaded.update(injected)
+        loaded["courses"] = loaded["courses"].copy()
+        for table, column in [
+            ("reviews", "student_review_count"),
+            ("evaluations", "historical_evaluation_count"),
+            ("resources", "resource_count"),
+        ]:
+            counts = injected[table].groupby("course_code").size()
+            loaded["courses"][column] = loaded["courses"]["course_code"].map(counts).fillna(0).astype(int)
+        return loaded
+
+    monkeypatch.setattr(finder, "load_finder_data", load_with_feedback)
+    st.cache_data.clear()
+    yield injected
+    st.cache_data.clear()
+
+
 def dashboard():
     app = AppTest.from_file(str(APP)).run(timeout=45)
     assert not app.exception, [exception.message for exception in app.exception]
+    assert not any(item.value == "None" for item in app.markdown)
     return app
 
 
@@ -82,7 +130,7 @@ def result_count_is(app, count):
 
 def test_defaults_show_all_official_courses_without_review_controls(finder_data):
     app = dashboard()
-    assert len(app.tabs) == 2
+    assert len(app.tabs) == 3
     assert result_count_is(app, len(finder_data["courses"]))
     assert app.selectbox(key="session_filter").value is None
     assert not app.checkbox(key="only_offered").value
@@ -239,3 +287,126 @@ def test_missing_index_has_explicit_offline_build(monkeypatch, tmp_path):
     app = dashboard()
     assert any("构建官方课程索引" in button.label for button in app.button)
     assert not (tmp_path / "missing.duckdb").exists()
+
+
+def test_feedback_tab_missing_records_is_unknown_not_a_low_score(finder_data):
+    app = dashboard()
+    assert any("尚无已导入的公开学生评价" in item.value for item in app.info)
+    assert any("尚无已导入且能准确关联" in item.value for item in app.info)
+    assert app.selectbox(key="feedback_course").value == app.selectbox(key="detail_course").value
+    assert not app.metric
+
+
+def test_student_review_keeps_actual_scale_source_and_author(feedback_data):
+    review = feedback_data["reviews"].iloc[0]
+    app = dashboard()
+    app.text_input(key="course_query").set_value(review["course_code"]).run()
+    assert not app.exception
+    markdown = "\n".join(item.value for item in app.markdown)
+    captions = "\n".join(item.value for item in app.caption)
+    assert review["summary"] in markdown
+    assert review["reviewer_label"] in markdown
+    assert "作者个人推荐程度" in markdown and "原始尺度 1–10" in markdown
+    assert review["academic_period"] in captions
+    assert "公开自述；未核验作者选课身份" in captions
+    assert review["source_url"] in [item.proto.url for item in app.get("link_button")]
+    assert not app.metric
+
+
+def test_history_shows_recent_fifty_reports_and_its_own_export(feedback_data):
+    app = dashboard()
+    app.text_input(key="course_query").set_value("MAT223H1").run()
+    assert not app.exception
+    history = next(frame.value for frame in app.dataframe if "总体学习体验（1–5）" in frame.value)
+    expected = feedback_data["evaluations"].loc[feedback_data["evaluations"]["course_code"].eq("MAT223H1")]
+    assert len(expected) > 50 and len(history) == 50
+    assert history["历史年份"].is_monotonic_decreasing
+    assert any(f"已导入 {len(expected):,} 条历史报告" in item.value for item in app.markdown)
+    assert any("不能相加当作独立学生人数" in item.value for item in app.caption)
+    assert any("第三方公开整理的历史官方评价结果副本" in item.value for item in app.caption)
+    assert any(item.proto.label == "下载本课完整历史评价 CSV" for item in app.get("download_button"))
+
+
+def test_history_preserves_missing_scores_and_source_anomaly(feedback_data):
+    evaluations = feedback_data["evaluations"]
+    missing = evaluations.loc[evaluations["workload_score"].isna() & evaluations["course_code"].ne("")].head(
+        1
+    )
+    feedback_data["evaluations"] = missing
+    st.cache_data.clear()
+    app = dashboard()
+    app.text_input(key="course_query").set_value(missing.iloc[0]["course_code"]).run()
+    assert not app.exception
+    history = next(frame.value for frame in app.dataframe if "总体学习体验（1–5）" in frame.value)
+    assert history["工作量（1–5，非难度）"].isna().all()
+    feedback_data["evaluations"] = evaluations
+    st.cache_data.clear()
+    app = dashboard()
+    app.text_input(key="course_query").set_value("RSM430H1").run()
+    assert not app.exception
+    assert any("回答数高于受邀数" in item.value for item in app.warning)
+
+
+def test_resources_show_login_history_and_campus_scope(feedback_data):
+    app = dashboard()
+    app.text_input(key="course_query").set_value("CSCA08H3").run()
+    assert not app.exception
+    assert any("需 UTORid 登录" in item.value for item in app.caption)
+    urls = [item.proto.url for item in app.get("link_button")]
+    other_campus = feedback_data["resources"].loc[feedback_data["resources"]["course_code"].eq("CSC110Y1")]
+    assert not set(other_campus["url"]).intersection(urls)
+    app.text_input(key="course_query").set_value("CSC165H1").run()
+    assert not app.exception
+    assert any("历史资料 · 资料对应学期/年份：Fall 2019" in item.value for item in app.caption)
+    sources = next(frame.value for frame in app.dataframe if "接入状态" in frame.value)
+    assert "需登录的外部入口，未导入记录" in set(sources["接入状态"])
+    assert "需授权，未导入记录" in set(sources["接入状态"])
+
+
+def test_feedback_selection_follows_details_then_can_be_independent(feedback_data):
+    app = dashboard()
+    codes = app.selectbox(key="detail_course").options
+    first_code = app.selectbox(key="detail_course").value
+    next_code = next(
+        code for code in app.selectbox(key="feedback_course").options if not code.startswith(first_code)
+    )
+    # Selectbox values are raw course codes even though displayed options contain names.
+    raw_next = next_code.split(" · ")[0]
+    app.selectbox(key="detail_course").set_value(raw_next).run()
+    assert not app.exception
+    assert app.selectbox(key="feedback_course").value == raw_next
+    independent = next(code.split(" · ")[0] for code in codes if not code.startswith(raw_next))
+    app.selectbox(key="feedback_course").set_value(independent).run()
+    assert not app.exception
+    assert app.selectbox(key="feedback_course").value == independent
+    assert app.selectbox(key="detail_course").value == raw_next
+
+
+def test_feedback_links_reject_non_https_urls(feedback_data):
+    course_code = feedback_data["reviews"].iloc[0]["course_code"]
+    feedback_data["reviews"].loc[:, "source_url"] = "javascript:alert(1)"
+    feedback_data["resources"].loc[:, "url"] = "http://example.invalid/"
+    feedback_data["resources"].loc[:, "source_url"] = "https://user:password@example.invalid/"
+    feedback_data["feedback_sources"].loc[:, "source_url"] = "data:text/html,unsafe"
+    st.cache_data.clear()
+    app = dashboard()
+    app.text_input(key="course_query").set_value(course_code).run()
+    assert not app.exception
+    assert not app.get("link_button")
+    sources = next(frame.value for frame in app.dataframe if "接入状态" in frame.value)
+    assert sources["来源入口"].eq("").all()
+
+
+def test_optional_feedback_and_resource_filters_use_associated_records(feedback_data):
+    app = dashboard()
+    app.checkbox(key="only_resources").set_value(True).run()
+    assert not app.exception
+    codes = set(course_table(app)["课程代码 / Code"])
+    assert codes
+    assert codes.issubset(set(feedback_data["resources"]["course_code"]) - {""})
+    app.checkbox(key="only_resources").set_value(False)
+    app.checkbox(key="only_feedback").set_value(True).run()
+    assert not app.exception
+    reviews = set(feedback_data["reviews"]["course_code"])
+    historical = set(feedback_data["evaluations"]["course_code"]) - {""}
+    assert set(course_table(app)["课程代码 / Code"]).issubset(reviews | historical)

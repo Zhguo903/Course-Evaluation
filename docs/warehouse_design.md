@@ -24,3 +24,18 @@ The timetable loader checks paired source files, SHA-256, unique official identi
 The pipeline runs quality checks, creates a fresh temporary DuckDB and atomically replaces the previous database only after success. This also removes obsolete v2 tables. Failed builds preserve the published database and clean temporary files. Offline builds never fetch the network or generate fallback data.
 
 See [data dictionary](data_dictionary.md), [matching rules](matching_rules.md), [timetable provenance](timetable_sources.md) and [query examples](../sql/course_finder_queries.sql).
+
+## Feedback and learning resources · v3.1
+
+Four additional tables extend the database to ten:
+
+- `dwd_course_evaluations`: one historical source report per row; unmatched reports remain unassigned and accessible for audit.
+- `dwd_student_reviews`: one attributed individual opinion per course/source entry, retaining its original dimension and scale.
+- `dwd_course_resources`: one verified course or general-resource link with original access conditions.
+- `ads_feedback_sources`: one feedback provider/dataset with its actual import and access status.
+
+The finder receives availability counts and historical year bounds, not averaged ratings. Student-reported recommendations (1–10) remain separate from historical institutional-question means (1–5). Multiple reports from a single class can share respondents, so survey response counts are not summed as distinct students.
+
+Support metadata is checked against its manifest hashes, exact catalogue associations, source register, rating scales, dates and HTTPS URLs. Historical evaluation loading checks paired files, hashes, source rows, counts, campus and scales; the warehouse also rejects stale current-course associations. Unmatched historical identifiers remain unassigned. Invalid support data aborts publication before replacement, preserving the previous database.
+
+The public-copy source is explicitly attributed and is not represented as a current official evaluation API. Instructor surnames and source course-title columns are excluded. Resource records contain links only; restricted exams or course materials are not mirrored.

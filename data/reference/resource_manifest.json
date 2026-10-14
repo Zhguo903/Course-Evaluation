@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-13",
+  "resource_count": 21,
+  "course_specific_resource_count": 15,
+  "distinct_course_count": 11,
+  "campus_coverage": {
+    "St. George": 9,
+    "Mississauga": 5,
+    "Scarborough": 6,
+    "All": 1
+  },
+  "resource_type_counts": {
+    "lecture_notes": 6,
+    "course_site": 4,
+    "syllabus": 4,
+    "student_guide": 3,
+    "learning_support": 3,
+    "exam_portal": 1
+  },
+  "source_kind_counts": {
+    "official": 17,
+    "open_textbook": 1,
+    "student_organization": 3
+  },
+  "resource_sha256": "8a55740687a09e601891d06ef63506bc5d18e4cd7ab76b49f3323383fb9aeab7",
+  "scope": "Curated verified course resource links and separately labelled global/historical portals; not comprehensive coverage or a numeric course-review dataset.",
+  "content_policy": "Metadata and links only. No textbooks, articles, assignment solutions, exam documents or authenticated materials are mirrored.",
+  "sources": [
+    "https://cms-pcrs.utsc.utoronto.ca/",
+    "https://cssc.utm.utoronto.ca/resources/csc108/",
+    "https://cssc.utm.utoronto.ca/resources/csc148/",
+    "https://cssc.utm.utoronto.ca/resources/mat102/",
+    "https://guides.library.utoronto.ca/tspace/aboutpastexams",
+    "https://mcs.utm.utoronto.ca/~108s21/",
+    "https://utsc.library.utoronto.ca/course-reserves-short-term-loan",
+    "https://www.math.toronto.edu/nhoell/MAT223/",
+    "https://www.math.toronto.edu/siefkenj/homepage/index.html",
+    "https://www.math.toronto.edu/~alfonso/137/137.html",
+    "https://www.teach.cs.toronto.edu/~csc110y/fall/notes/",
+    "https://www.teach.cs.toronto.edu/~csc148h/notes/",
+    "https://www.teach.cs.toronto.edu/~heap/165/F19/",
+    "https://www.utsc.utoronto.ca/biosci/sites/utsc.utoronto.ca.biosci/files/docs/BIO%2BA01%2BF2018%2BSyllabus.pdf",
+    "https://www.utsc.utoronto.ca/ctl/facilitated-study-groups-program",
+    "https://www.utsc.utoronto.ca/~nick/CSCA48/"
+  ],
+  "verification_notes": [
+    "Public original HTML pages were read; historical PDF title/period metadata checked using original official indexed pages and response headers without mirroring PDF files.",
+    "CSCA08 Fall 2026 redirects to UTORid weblogin; no login attempted. CSCB09 Fall 2026 linked by the same portal returns 404 and was excluded.",
+    "MAT137Y1 is absent from the current catalogue: its two historical resources have empty course_code and are not mapped to MAT137H5 or replacement courses.",
+    "The F2026 FSG schedule is linked by the official programme, but no per-course schedule contents are imported.",
+    "CSSC guides are named student-organization opinions and advice, not numerical ratings, current official policy or representative evaluations.",
+    "All nonempty course_code values were validated against load_catalog with exact campus matching.",
+    "Indexed MAT223 Fall 2025 syllabus returned HTTP 404 and was excluded; replaced with verified HTTP 200 official MAT223 Winter 2018 syllabus/course site."
+  ],
+  "expansion_paths": [
+    {
+      "provider": "UTM CSSC",
+      "url": "https://cssc.utm.utoronto.ca/resources/",
+      "method": "Follow course-specific guide pages and check exact UTM full course codes; retain named authorship and original rights, not copied prose."
+    },
+    {
+      "provider": "UTM CSSC website source",
+      "url": "https://github.com/utm-cssc/website",
+      "method": "Public student-organization website source linked by CSSC. Inspect source paths and link metadata; GitHub visibility does not imply an open content licence."
+    },
+    {
+      "provider": "Official teaching sites",
+      "url": "https://www.teach.cs.toronto.edu/",
+      "method": "Follow verified course note indexes, preserve publication periods and independently confirm full current course codes."
+    },
+    {
+      "provider": "UofT Libraries Past Exams",
+      "url": "https://guides.library.utoronto.ca/tspace/aboutpastexams",
+      "method": "Link collection/search instructions. Individual course/exam metadata requires authorized metadata access; no protected-content harvesting."
+    }
+  ]
+}

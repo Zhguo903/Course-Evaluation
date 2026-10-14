@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-10-14",
+  "files": {
+    "reviews": {
+      "file": "student_reviews.json",
+      "count": 28,
+      "sha256": "f260cd4a0e7b79eba656a9579f21154a35a46f17ddc704e9bd8ee30a1ecd3d2f"
+    },
+    "resources": {
+      "file": "course_resources.json",
+      "count": 21,
+      "sha256": "8a55740687a09e601891d06ef63506bc5d18e4cd7ab76b49f3323383fb9aeab7"
+    },
+    "feedback_sources": {
+      "file": "feedback_sources.json",
+      "count": 6,
+      "sha256": "b39b2163da0e4dc2298d6e57b248855fcbdb8061b209a710a2dcd352b5978ba9"
+    }
+  },
+  "review_policy": "Public self-reported individual opinions. Student identity is not verified. No averaging or quality ranking.",
+  "resource_policy": "Verified metadata and original links only; no redistributed course materials or exam contents."
+}
