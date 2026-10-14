@@ -233,13 +233,14 @@ def render_student_reviews(frame: pd.DataFrame) -> None:
             source_title = text_value(review.get("source_title"))
             if source_title:
                 st.caption(f"来源：{source_title}")
-            if text_value(review.get("verification_level")) == "public_self_report":
-                st.caption("核验范围：公开自述；未核验作者选课身份。")
-            for field, label in [("code_mapping", "课程代码关联依据"), ("limitations", "适用范围")]:
-                detail = text_value(review.get(field))
-                if detail:
-                    st.caption(f"{label}：{detail}")
             source_link("查看这条评价的公开来源 ↗", review.get("source_url"))
+            with st.expander("评价来源与适用范围"):
+                if text_value(review.get("verification_level")) == "public_self_report":
+                    st.caption("核验范围：公开自述；未核验作者选课身份。")
+                for field, label in [("code_mapping", "课程代码关联依据"), ("limitations", "适用范围")]:
+                    detail = text_value(review.get(field))
+                    if detail:
+                        st.caption(f"{label}：{detail}")
 
 
 def render_historical_evaluations(frame: pd.DataFrame) -> None:
@@ -251,11 +252,13 @@ def render_historical_evaluations(frame: pd.DataFrame) -> None:
         "数据为第三方公开整理的历史官方评价结果副本，尚未与登录后的官方平台逐条核验。"
         "这里按历史学期逐条展示，不将不同问题、学期或教学班合成综合分。"
     )
-    st.caption(
-        "总体学习体验、工作量与推荐意愿保留来源的 1–5 尺度；工作量分数越高表示负担越重，不代表课程难度。"
-        "本报告回答数对应该报告的回收份数；同一问卷批次可能出现多份教师报告，不能相加当作独立学生人数。"
-        "缺失值保留为空，不视为 0；历史结果不代表当前学期。"
-    )
+    st.caption("保留原题 1–5 尺度；工作量高分表示负担更重，非课程难度。历史结果不代表当前学期。")
+    with st.expander("原始题目、回复数与缺失值说明"):
+        st.caption(
+            "总体学习体验、工作量与推荐意愿保留来源的 1–5 尺度；工作量分数越高表示负担越重，不代表课程难度。"
+            "本报告回答数对应该报告的回收份数；同一问卷批次可能出现多份教师报告，不能相加当作独立学生人数。"
+            "缺失值保留为空，不视为 0；历史结果不代表当前学期。"
+        )
     st.write(f"已导入 {len(frame):,} 条历史报告，以下最多展示最近 50 条。")
     if "term" in frame:
         frame = frame.assign(
@@ -270,7 +273,6 @@ def render_historical_evaluations(frame: pd.DataFrame) -> None:
         "year": "历史年份",
         "term": "学期",
         "teaching_section": "教学班",
-        "cohort_id": "问卷批次",
         "overall_score": "总体学习体验（1–5）",
         "workload_score": "工作量（1–5，非难度）",
         "recommendation_score": "推荐意愿（1–5）",
@@ -279,6 +281,7 @@ def render_historical_evaluations(frame: pd.DataFrame) -> None:
         "source_url": "公开数据来源",
         "source_retrieved_at": "来源采集日期",
         "quality_flags": "原始数据提示",
+        "cohort_id": "问卷批次",
     }
     columns = [field for field in labels if field in frame]
     visible = frame.head(50)[columns].copy()
@@ -353,11 +356,12 @@ def render_resource_cards(frame: pd.DataFrame, empty_message: str) -> None:
             verified = text_value(resource.get("verified_at"))
             if verified:
                 st.caption(f"入口核验日期：{verified}")
-            for field in ["rights_note", "limitations"]:
-                note = text_value(resource.get(field))
-                if note:
-                    st.caption(note)
             source_link("打开学习资料入口 ↗", resource.get("url"))
+            with st.expander("资料来源与使用说明"):
+                for field in ["rights_note", "limitations"]:
+                    note = text_value(resource.get(field))
+                    if note:
+                        st.caption(note)
             source_url = https_url(resource.get("source_url"))
             if source_url and source_url != https_url(resource.get("url")):
                 source_link("资料来源说明 ↗", source_url)
